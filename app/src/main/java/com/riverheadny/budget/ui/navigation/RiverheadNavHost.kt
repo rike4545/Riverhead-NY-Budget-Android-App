@@ -1,0 +1,42 @@
+package com.riverheadny.budget.ui.navigation
+
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.riverheadny.budget.ui.screens.budget.BudgetHubScreen
+import com.riverheadny.budget.ui.screens.budget.fundbalance.FundBalanceScreen
+import com.riverheadny.budget.ui.screens.budget.funds.FundDetailScreen
+import com.riverheadny.budget.ui.screens.budget.funds.FundsListScreen
+import com.riverheadny.budget.ui.screens.budget.generalfund.GeneralFundHistoryScreen
+import com.riverheadny.budget.ui.screens.budget.taxbill.TaxBillScreen
+import com.riverheadny.budget.ui.screens.budget.taxcap.TaxCapScreen
+import com.riverheadny.budget.ui.screens.civic.CivicScreen
+import com.riverheadny.budget.ui.screens.home.HomeScreen
+import com.riverheadny.budget.ui.screens.more.MoreScreen
+import com.riverheadny.budget.ui.screens.tools.ToolsScreen
+import com.riverheadny.budget.ui.screens.tools.payroll.PayrollScreen
+
+@Composable
+fun RiverheadNavHost(navController: NavHostController) {
+    NavHost(navController = navController, startDestination = Routes.HOME) {
+        composable(Routes.HOME) { HomeScreen() }
+        composable(Routes.BUDGET) { BudgetHubScreen(navController) }
+        composable(Routes.CIVIC) { CivicScreen() }
+        composable(Routes.TOOLS) { ToolsScreen(navController) }
+        composable(Routes.MORE) { MoreScreen() }
+
+        composable(Routes.FUNDS_LIST) { FundsListScreen(navController) }
+        composable(
+            Routes.FUND_DETAIL,
+            arguments = listOf(navArgument("code") { type = NavType.StringType }),
+        ) { FundDetailScreen() }
+        composable(Routes.GENERAL_FUND_HISTORY) { GeneralFundHistoryScreen() }
+        composable(Routes.TAX_CAP) { TaxCapScreen() }
+        composable(Routes.TAX_BILL) { TaxBillScreen() }
+        composable(Routes.FUND_BALANCE) { FundBalanceScreen() }
+        composable(Routes.PAYROLL) { PayrollScreen() }
+    }
+}
