@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Gavel
 import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -55,6 +56,8 @@ private val realDataShortcuts = listOf(
     RealDataShortcut("My Tax Bill", "Estimate your bill from assessed value and the real levy", Icons.Filled.Calculate, Routes.TAX_BILL),
     RealDataShortcut("Fund Balance", "Real 2025 AFR unassigned fund balance vs. policy targets", Icons.Filled.AccountBalance, Routes.FUND_BALANCE),
     RealDataShortcut("Payroll Explorer", "Real actual earnings 2018-2025, headcount, top earners", Icons.Filled.People, Routes.PAYROLL),
+    RealDataShortcut("2027 Spending Reduction", "A real, sourced recurring savings package, toggleable", Icons.Filled.Gavel, Routes.SPENDING_REDUCTION),
+    RealDataShortcut("2027 Budget Simulator", "Adjust the levy, COLA, and savings to test the plan", Icons.Filled.Tune, Routes.BUDGET_SIMULATOR),
 )
 
 @OptIn(ExperimentalLayoutApi::class)

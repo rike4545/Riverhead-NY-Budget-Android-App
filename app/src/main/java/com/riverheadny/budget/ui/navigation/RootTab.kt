@@ -41,4 +41,7 @@ object Routes {
     const val MEETINGS_LIST = "civic/meetings"
     const val MEETING_DETAIL = "civic/meetings/{slug}"
     fun meetingDetail(slug: String) = "civic/meetings/$slug"
+
+    const val SPENDING_REDUCTION = "budget/spendingreduction"
+    const val BUDGET_SIMULATOR = "budget/simulator"
 }

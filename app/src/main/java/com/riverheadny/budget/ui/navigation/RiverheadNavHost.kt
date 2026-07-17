@@ -11,6 +11,8 @@ import com.riverheadny.budget.ui.screens.budget.fundbalance.FundBalanceScreen
 import com.riverheadny.budget.ui.screens.budget.funds.FundDetailScreen
 import com.riverheadny.budget.ui.screens.budget.funds.FundsListScreen
 import com.riverheadny.budget.ui.screens.budget.generalfund.GeneralFundHistoryScreen
+import com.riverheadny.budget.ui.screens.budget.simulator.BudgetSimulatorScreen
+import com.riverheadny.budget.ui.screens.budget.spendingreduction.SpendingReductionScreen
 import com.riverheadny.budget.ui.screens.budget.taxbill.TaxBillScreen
 import com.riverheadny.budget.ui.screens.budget.taxcap.TaxCapScreen
 import com.riverheadny.budget.ui.screens.civic.CivicScreen
@@ -49,5 +51,7 @@ fun RiverheadNavHost(navController: NavHostController) {
             Routes.MEETING_DETAIL,
             arguments = listOf(navArgument("slug") { type = NavType.StringType }),
         ) { MeetingDetailScreen() }
+        composable(Routes.SPENDING_REDUCTION) { SpendingReductionScreen() }
+        composable(Routes.BUDGET_SIMULATOR) { BudgetSimulatorScreen() }
     }
 }
