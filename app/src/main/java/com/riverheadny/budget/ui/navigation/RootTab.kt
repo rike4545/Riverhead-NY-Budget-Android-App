@@ -37,4 +37,8 @@ object Routes {
 
     const val PROCUREMENT_WATCH = "civic/procurement"
     const val CAMPAIGN_ETHICS = "civic/ethics"
+
+    const val MEETINGS_LIST = "civic/meetings"
+    const val MEETING_DETAIL = "civic/meetings/{slug}"
+    fun meetingDetail(slug: String) = "civic/meetings/$slug"
 }

@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Gavel
+import androidx.compose.material.icons.filled.HowToVote
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.VolunteerActivism
 import androidx.compose.material3.CardDefaults
@@ -38,6 +39,7 @@ import com.riverheadny.budget.ui.theme.CardSurface
 private data class CivicRealDataShortcut(val title: String, val subtitle: String, val icon: ImageVector, val route: String)
 
 private val civicRealDataShortcuts = listOf(
+    CivicRealDataShortcut("Town Board Votes", "Every meeting, resolution, and roll-call vote since 2025", Icons.Filled.HowToVote, Routes.MEETINGS_LIST),
     CivicRealDataShortcut("Procurement Watch", "Sourced facts and open questions on the Town Square deal", Icons.Filled.Gavel, Routes.PROCUREMENT_WATCH),
     CivicRealDataShortcut("Campaign Donation Ethics", "How the \$1,000 aggregation rule actually works", Icons.Filled.VolunteerActivism, Routes.CAMPAIGN_ETHICS),
 )

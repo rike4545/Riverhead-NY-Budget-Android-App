@@ -6,6 +6,8 @@ import com.riverheadny.budget.data.models.CommunityData
 import com.riverheadny.budget.data.models.FundDetail
 import com.riverheadny.budget.data.models.FundsIndex
 import com.riverheadny.budget.data.models.GeneralFundHistory
+import com.riverheadny.budget.data.models.MeetingDetail
+import com.riverheadny.budget.data.models.MeetingsIndex
 import com.riverheadny.budget.data.models.PayrollSummary
 import com.riverheadny.budget.data.models.TaxBillData
 import com.riverheadny.budget.data.models.TaxCapData
@@ -32,6 +34,8 @@ class AssetRepository(private val assets: AssetManager) {
     private var payrollCache: PayrollSummary? = null
     private var afrCache: AfrData? = null
     private var taxBillCache: TaxBillData? = null
+    private var meetingsIndexCache: MeetingsIndex? = null
+    private val meetingDetailCache = mutableMapOf<String, MeetingDetail>()
 
     suspend fun fundsIndex(): FundsIndex = withContext(Dispatchers.IO) {
         fundsIndexCache ?: json.decodeFromString<FundsIndex>(readAsset("data/subaccounts/index.json"))
@@ -71,6 +75,16 @@ class AssetRepository(private val assets: AssetManager) {
     suspend fun taxBill(): TaxBillData = withContext(Dispatchers.IO) {
         taxBillCache ?: json.decodeFromString<TaxBillData>(readAsset("data/tax-bill.json"))
             .also { taxBillCache = it }
+    }
+
+    suspend fun meetingsIndex(): MeetingsIndex = withContext(Dispatchers.IO) {
+        meetingsIndexCache ?: json.decodeFromString<MeetingsIndex>(readAsset("data/meetings/index.json"))
+            .also { meetingsIndexCache = it }
+    }
+
+    suspend fun meetingDetail(slug: String): MeetingDetail = withContext(Dispatchers.IO) {
+        meetingDetailCache[slug] ?: json.decodeFromString<MeetingDetail>(readAsset("data/meetings/$slug.json"))
+            .also { meetingDetailCache[slug] = it }
     }
 
     private fun readAsset(path: String): String =
