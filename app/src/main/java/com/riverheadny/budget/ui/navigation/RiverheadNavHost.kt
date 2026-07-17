@@ -14,6 +14,8 @@ import com.riverheadny.budget.ui.screens.budget.generalfund.GeneralFundHistorySc
 import com.riverheadny.budget.ui.screens.budget.taxbill.TaxBillScreen
 import com.riverheadny.budget.ui.screens.budget.taxcap.TaxCapScreen
 import com.riverheadny.budget.ui.screens.civic.CivicScreen
+import com.riverheadny.budget.ui.screens.civic.ethics.CampaignEthicsScreen
+import com.riverheadny.budget.ui.screens.civic.procurement.ProcurementWatchScreen
 import com.riverheadny.budget.ui.screens.home.HomeScreen
 import com.riverheadny.budget.ui.screens.more.MoreScreen
 import com.riverheadny.budget.ui.screens.tools.ToolsScreen
@@ -24,7 +26,7 @@ fun RiverheadNavHost(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Routes.HOME) {
         composable(Routes.HOME) { HomeScreen() }
         composable(Routes.BUDGET) { BudgetHubScreen(navController) }
-        composable(Routes.CIVIC) { CivicScreen() }
+        composable(Routes.CIVIC) { CivicScreen(navController) }
         composable(Routes.TOOLS) { ToolsScreen(navController) }
         composable(Routes.MORE) { MoreScreen() }
 
@@ -38,5 +40,7 @@ fun RiverheadNavHost(navController: NavHostController) {
         composable(Routes.TAX_BILL) { TaxBillScreen() }
         composable(Routes.FUND_BALANCE) { FundBalanceScreen() }
         composable(Routes.PAYROLL) { PayrollScreen() }
+        composable(Routes.PROCUREMENT_WATCH) { ProcurementWatchScreen() }
+        composable(Routes.CAMPAIGN_ETHICS) { CampaignEthicsScreen() }
     }
 }

@@ -1,21 +1,70 @@
 package com.riverheadny.budget.ui.screens.civic
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Gavel
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.VolunteerActivism
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.riverheadny.budget.ui.components.HeroCard
 import com.riverheadny.budget.ui.components.LinkCard
 import com.riverheadny.budget.ui.components.PageColumn
+import com.riverheadny.budget.ui.components.SectionTitle
 import com.riverheadny.budget.ui.components.ToolCard
 import com.riverheadny.budget.ui.components.ToolLink
+import com.riverheadny.budget.ui.navigation.Routes
+import com.riverheadny.budget.ui.theme.BrandBlue
+import com.riverheadny.budget.ui.theme.CardSurface
+
+private data class CivicRealDataShortcut(val title: String, val subtitle: String, val icon: ImageVector, val route: String)
+
+private val civicRealDataShortcuts = listOf(
+    CivicRealDataShortcut("Procurement Watch", "Sourced facts and open questions on the Town Square deal", Icons.Filled.Gavel, Routes.PROCUREMENT_WATCH),
+    CivicRealDataShortcut("Campaign Donation Ethics", "How the \$1,000 aggregation rule actually works", Icons.Filled.VolunteerActivism, Routes.CAMPAIGN_ETHICS),
+)
 
 @Composable
-fun CivicScreen() {
+fun CivicScreen(navController: NavController) {
     PageColumn {
         HeroCard("Civic", "Civic Command Center", "Improvement ideas, scorecards, local signals, and public-meeting context.")
+
+        SectionTitle("Accountability Tools")
+        civicRealDataShortcuts.forEach { shortcut ->
+            ElevatedCard(
+                onClick = { navController.navigate(shortcut.route) },
+                colors = CardDefaults.elevatedCardColors(containerColor = CardSurface),
+            ) {
+                Row(modifier = Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(shortcut.icon, contentDescription = null, tint = BrandBlue)
+                    Spacer(Modifier.width(12.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(shortcut.title, fontWeight = FontWeight.SemiBold)
+                        Text(shortcut.subtitle, color = Color.DarkGray, style = MaterialTheme.typography.bodySmall)
+                    }
+                }
+            }
+        }
+
+        SectionTitle("More")
         listOf(
             ToolLink("Civic Improvements", "Project ideas, resident impact, and action paths", Icons.Filled.VolunteerActivism),
             ToolLink("Council Scorecard", "Track civic questions, votes, and follow-through", Icons.Filled.CheckCircle),
