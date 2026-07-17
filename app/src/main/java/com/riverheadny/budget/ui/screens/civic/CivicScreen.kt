@@ -39,6 +39,7 @@ import com.riverheadny.budget.ui.theme.CardSurface
 private data class CivicRealDataShortcut(val title: String, val subtitle: String, val icon: ImageVector, val route: String)
 
 private val civicRealDataShortcuts = listOf(
+    CivicRealDataShortcut("Town Board Scorecard", "Live campaign filings, cross-checked against related-party watch lists", Icons.Filled.CheckCircle, Routes.SCORECARD),
     CivicRealDataShortcut("Town Board Votes", "Every meeting, resolution, and roll-call vote since 2025", Icons.Filled.HowToVote, Routes.MEETINGS_LIST),
     CivicRealDataShortcut("Procurement Watch", "Sourced facts and open questions on the Town Square deal", Icons.Filled.Gavel, Routes.PROCUREMENT_WATCH),
     CivicRealDataShortcut("Campaign Donation Ethics", "How the \$1,000 aggregation rule actually works", Icons.Filled.VolunteerActivism, Routes.CAMPAIGN_ETHICS),
@@ -69,7 +70,6 @@ fun CivicScreen(navController: NavController) {
         SectionTitle("More")
         listOf(
             ToolLink("Civic Improvements", "Project ideas, resident impact, and action paths", Icons.Filled.VolunteerActivism),
-            ToolLink("Council Scorecard", "Track civic questions, votes, and follow-through", Icons.Filled.CheckCircle),
             ToolLink("Budget Signals", "Risk flags and context for the current budget", Icons.AutoMirrored.Filled.TrendingUp),
             ToolLink("Town Code", "eCode360 lookup entry point", Icons.Filled.Search, "https://ecode360.com/RI0756"),
         ).forEach { if (it.url == null) ToolCard(it) else LinkCard(it) }
