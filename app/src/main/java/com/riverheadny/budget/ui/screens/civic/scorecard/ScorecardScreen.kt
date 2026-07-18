@@ -27,6 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.riverheadny.budget.data.LoadState
+import com.riverheadny.budget.data.models.ContributorTypeAmount
+import com.riverheadny.budget.data.models.LoanEntry
 import com.riverheadny.budget.data.models.ScorecardResult
 import com.riverheadny.budget.data.models.TopContribution
 import com.riverheadny.budget.ui.components.HeroCard
@@ -65,14 +67,14 @@ fun ScorecardScreen(viewModel: ScorecardViewModel = viewModel()) {
                     color = Color.Gray,
                     style = MaterialTheme.typography.labelSmall,
                 )
-                s.data.forEach { result -> MemberCard(result) }
+                s.data.results.forEach { result -> MemberCard(result, s.data.townPopulation) }
             }
         }
     }
 }
 
 @Composable
-private fun MemberCard(result: ScorecardResult) {
+private fun MemberCard(result: ScorecardResult, townPopulation: Int?) {
     val member = result.member
     Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = CardSurface)) {
         Column(modifier = Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -102,6 +104,16 @@ private fun MemberCard(result: ScorecardResult) {
                         Text(it.take(10), fontWeight = FontWeight.SemiBold)
                     }
                 }
+            }
+
+            KpiGrid(result, townPopulation)
+
+            if (result.contributorTypeBreakdown.isNotEmpty()) {
+                ContributorTypeBreakdownRow(result.contributorTypeBreakdown, result.raisedTotal)
+            }
+
+            if (result.loans.isNotEmpty()) {
+                LoansNote(result.loans)
             }
 
             if (result.petrocelliContributions.isNotEmpty()) {
@@ -139,6 +151,86 @@ private fun GradeBadge(grade: String) {
             .padding(horizontal = 14.dp, vertical = 8.dp),
     ) {
         Text(grade, fontWeight = FontWeight.Black, color = color, style = MaterialTheme.typography.titleMedium)
+    }
+}
+
+@Composable
+private fun KpiGrid(result: ScorecardResult, townPopulation: Int?) {
+    val perCapita = townPopulation?.takeIf { it > 0 }?.let { pop -> result.raisedTotal?.let { it / pop } }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(BrandNavy.copy(alpha = 0.05f), RoundedCornerShape(14.dp))
+            .padding(12.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            KpiTile("Days to next election", daysToElectionLabel(result.daysUntilElection))
+            KpiTile("Avg. donation per donor", result.avgDonationPerDonor?.let { currency(it) } ?: "—", "${result.donorCount} donor${if (result.donorCount == 1) "" else "s"}")
+        }
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            KpiTile("Raised per resident", perCapita?.let { "$${"%.2f".format(it)}" } ?: "—", townPopulation?.let { "of ${"%,d".format(it)} residents" })
+            KpiTile("Candidate loans", result.loans.takeIf { it.isNotEmpty() }?.let { currency(it.sumOf { l -> l.amount }) } ?: "None on file")
+        }
+    }
+}
+
+@Composable
+private fun KpiTile(label: String, value: String, caption: String? = null) {
+    Column(modifier = Modifier.padding(4.dp)) {
+        Text(label, color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+        Text(value, fontWeight = FontWeight.Bold, color = BrandNavy, style = MaterialTheme.typography.bodyMedium)
+        caption?.let { Text(it, color = Color.Gray, style = MaterialTheme.typography.labelSmall) }
+    }
+}
+
+private fun daysToElectionLabel(days: Long?): String = when {
+    days == null -> "—"
+    days < 0 -> "Election passed"
+    days == 0L -> "Today"
+    else -> "$days day${if (days == 1L) "" else "s"}"
+}
+
+@Composable
+private fun ContributorTypeBreakdownRow(breakdown: List<ContributorTypeAmount>, raisedTotal: Double?) {
+    Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text("Who's giving", color = Color.Gray, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
+        breakdown.sortedByDescending { it.amount }.forEach { bucket ->
+            val share = raisedTotal?.takeIf { it > 0 }?.let { bucket.amount / it * 100 }
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(
+                    "${bucket.type} (${bucket.donorCount})",
+                    color = Color.DarkGray,
+                    style = MaterialTheme.typography.bodySmall,
+                )
+                Text(
+                    currency(bucket.amount) + (share?.let { " (${"%.0f".format(it)}%)" } ?: ""),
+                    color = BrandNavy,
+                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun LoansNote(loans: List<LoanEntry>) {
+    Card(colors = CardDefaults.cardColors(containerColor = Color(0xFF64748B).copy(alpha = 0.08f))) {
+        Column(modifier = Modifier.fillMaxWidth().padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text("Loans received", fontWeight = FontWeight.Bold, color = Color(0xFF475569), style = MaterialTheme.typography.labelMedium)
+            loans.forEach { loan ->
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text(loan.lenderName, color = Color.DarkGray, style = MaterialTheme.typography.bodySmall)
+                    Text(currency(loan.amount), color = Color(0xFF475569), fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodySmall)
+                }
+            }
+            Text(
+                "Local candidate committees are almost always self-funded through loans like these — lender names are shown as filed.",
+                color = Color.Gray,
+                style = MaterialTheme.typography.labelSmall,
+            )
+        }
     }
 }
 

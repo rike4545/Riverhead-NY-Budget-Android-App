@@ -10,11 +10,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+data class ScorecardUiData(
+    val results: List<ScorecardResult>,
+    val townPopulation: Int?,
+)
+
 class ScorecardViewModel : ViewModel() {
     private val repository = RiverheadApplication.instance.scorecardRepository
+    private val assetRepository = RiverheadApplication.instance.repository
 
-    private val _state = MutableStateFlow<LoadState<List<ScorecardResult>>>(LoadState.Loading)
-    val state: StateFlow<LoadState<List<ScorecardResult>>> = _state.asStateFlow()
+    private val _state = MutableStateFlow<LoadState<ScorecardUiData>>(LoadState.Loading)
+    val state: StateFlow<LoadState<ScorecardUiData>> = _state.asStateFlow()
 
     init {
         load()
@@ -24,7 +30,9 @@ class ScorecardViewModel : ViewModel() {
         _state.value = LoadState.Loading
         viewModelScope.launch {
             _state.value = try {
-                LoadState.Success(repository.fetchScorecard())
+                val results = repository.fetchScorecard()
+                val population = runCatching { assetRepository.community().population?.estimate2024 }.getOrNull()
+                LoadState.Success(ScorecardUiData(results, population?.takeIf { it > 0 }))
             } catch (e: Exception) {
                 LoadState.Error(e.message ?: "Couldn't reach NY Open Data")
             }
