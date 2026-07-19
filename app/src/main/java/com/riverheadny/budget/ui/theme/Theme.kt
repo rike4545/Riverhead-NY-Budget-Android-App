@@ -5,8 +5,9 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-val BrandNavy = Color(0xFF19537B)
-val BrandBlue = Color(0xFF4E7595)
+// Extracted directly from townofriverheadny.gov's own CSS variables, not approximated.
+val BrandNavy = Color(0xFF284A69)
+val BrandBlue = Color(0xFF4A7297)
 val BrandSky = Color(0xFF4285A7)
 val BrandTeal = Color(0xFF8DBABE)
 val BrandGold = Color(0xFFBDAC34)
