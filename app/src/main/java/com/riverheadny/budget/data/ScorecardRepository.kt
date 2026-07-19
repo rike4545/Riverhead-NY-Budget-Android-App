@@ -124,12 +124,11 @@ class ScorecardRepository {
                     label = currentCycleYear,
                     rows = memberTypeRows.filter { it.election_year == currentCycleYear },
                 )
-                val historicalRows = memberTypeRows.filter { it.election_year != currentCycleYear }
-                val historical = if (historicalRows.isNotEmpty()) {
-                    buildCycleBreakdown(label = "$filingStartYear–${filingEndYear - 1}", rows = historicalRows)
-                } else {
-                    null
-                }
+                val historicalByYear = memberTypeRows
+                    .filter { it.election_year != currentCycleYear }
+                    .groupBy { it.election_year ?: "Unknown" }
+                    .map { (year, rows) -> buildCycleBreakdown(label = year, rows = rows) }
+                    .sortedByDescending { it.label }
                 val outstanding = latestOutstandingByFiler[member.filerId]
 
                 ScorecardResult(
@@ -137,13 +136,13 @@ class ScorecardRepository {
                     lifetimeRaisedTotal = raisedByFiler[member.filerId]?.total_raised?.toDoubleOrNull(),
                     lastReported = raisedByFiler[member.filerId]?.last_reported,
                     currentCycle = currentCycle,
-                    historical = historical,
                     petrocelliContributions = rows.filter { isPetrocelliContribution(it) }.map { it.toTopContribution() },
                     scottPointeContributions = rows.filter { isScottPointeRelatedContribution(it) }.map { it.toTopContribution() },
                     loansReceivedTotal = loanTotalByFiler[member.filerId]?.amount?.toDoubleOrNull(),
                     outstandingLoanBalance = outstanding?.amount?.toDoubleOrNull(),
                     outstandingLoanYear = outstanding?.election_year,
                     daysUntilElection = daysUntil(member.nextElection),
+                    historicalByYear = historicalByYear,
                 )
             }
         }

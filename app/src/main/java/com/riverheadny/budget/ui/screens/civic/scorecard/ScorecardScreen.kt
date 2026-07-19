@@ -107,9 +107,9 @@ private fun MemberCard(result: ScorecardResult, townPopulation: Int?) {
 
             CurrentCycleCard(result, townPopulation)
 
-            if (result.historical != null) {
+            if (result.historicalByYear.isNotEmpty()) {
                 Text(
-                    (if (showHistory) "Hide" else "See") + " full donation history (${result.historical.label})",
+                    (if (showHistory) "Hide" else "See") + " donations by year (${result.historicalByYear.last().label}–${result.historicalByYear.first().label})",
                     color = BrandNavy,
                     fontWeight = FontWeight.SemiBold,
                     style = MaterialTheme.typography.labelMedium,
@@ -118,7 +118,7 @@ private fun MemberCard(result: ScorecardResult, townPopulation: Int?) {
                         .padding(vertical = 4.dp),
                 )
                 if (showHistory) {
-                    HistoricalCard(result.historical, result.lifetimeRaisedTotal, result.lastReported)
+                    result.historicalByYear.forEach { yearBreakdown -> YearCard(yearBreakdown) }
                 }
             }
 
@@ -209,7 +209,7 @@ private fun CurrentCycleCard(result: ScorecardResult, townPopulation: Int?) {
 }
 
 @Composable
-private fun HistoricalCard(historical: CycleBreakdown, lifetimeRaised: Double?, lastReported: String?) {
+private fun YearCard(year: CycleBreakdown) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -218,15 +218,15 @@ private fun HistoricalCard(historical: CycleBreakdown, lifetimeRaised: Double?, 
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            KpiTile("Raised before this cycle", currency(historical.raised))
+            KpiTile(year.label, currency(year.raised))
             KpiTile(
                 "Avg. donation per donor",
-                historical.avgDonationPerDonor?.let { currency(it) } ?: "—",
-                "${historical.donorCount} donor${if (historical.donorCount == 1) "" else "s"}",
+                year.avgDonationPerDonor?.let { currency(it) } ?: "—",
+                "${year.donorCount} donor${if (year.donorCount == 1) "" else "s"}",
             )
         }
-        if (historical.typeBreakdown.isNotEmpty()) {
-            ContributorTypeBreakdownRow(historical.typeBreakdown, historical.raised)
+        if (year.typeBreakdown.isNotEmpty()) {
+            ContributorTypeBreakdownRow(year.typeBreakdown, year.raised)
         }
     }
 }

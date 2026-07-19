@@ -114,11 +114,12 @@ data class ScorecardResult(
     val lifetimeRaisedTotal: Double?,
     val lastReported: String?,
     val currentCycle: CycleBreakdown,
-    val historical: CycleBreakdown?,
     val petrocelliContributions: List<TopContribution>,
     val scottPointeContributions: List<TopContribution>,
     val loansReceivedTotal: Double?,
     val outstandingLoanBalance: Double?,
     val outstandingLoanYear: String?,
     val daysUntilElection: Long?,
+    /** Direct contributions by calendar/election year, most recent first, excluding the current cycle. */
+    val historicalByYear: List<CycleBreakdown>,
 )
