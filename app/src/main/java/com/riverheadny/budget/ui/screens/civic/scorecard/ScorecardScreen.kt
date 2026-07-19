@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.riverheadny.budget.data.LoadState
+import com.riverheadny.budget.data.buildCandidateSummary
 import com.riverheadny.budget.data.models.CycleBreakdown
 import com.riverheadny.budget.data.models.ScorecardMember
 import com.riverheadny.budget.data.models.ScorecardResult
@@ -45,6 +46,7 @@ import com.riverheadny.budget.data.models.TopContribution
 import com.riverheadny.budget.ui.components.HeroCard
 import com.riverheadny.budget.ui.components.PageColumn
 import com.riverheadny.budget.ui.components.currency
+import com.riverheadny.budget.ui.theme.BrandBlue
 import com.riverheadny.budget.ui.theme.BrandNavy
 import com.riverheadny.budget.ui.theme.CardSurface
 
@@ -104,6 +106,8 @@ private fun MemberCard(result: ScorecardResult, townPopulation: Int?) {
             }
 
             Text("Committee: ${member.committeeName} (Filer ID ${member.filerId})", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+
+            SummaryCallout(buildCandidateSummary(result))
 
             CurrentCycleCard(result, townPopulation)
 
@@ -267,6 +271,18 @@ private fun LoansCard(result: ScorecardResult) {
                 style = MaterialTheme.typography.labelSmall,
             )
         }
+    }
+}
+
+@Composable
+private fun SummaryCallout(summary: String) {
+    Card(colors = CardDefaults.cardColors(containerColor = BrandBlue.copy(alpha = 0.10f))) {
+        Text(
+            summary,
+            color = Color(0xFF1E3A5F),
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.fillMaxWidth().padding(12.dp),
+        )
     }
 }
 
