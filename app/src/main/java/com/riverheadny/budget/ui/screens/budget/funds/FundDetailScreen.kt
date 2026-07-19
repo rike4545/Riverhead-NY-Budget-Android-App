@@ -26,6 +26,7 @@ import com.riverheadny.budget.ui.components.HeroCard
 import com.riverheadny.budget.ui.components.LoadStateView
 import com.riverheadny.budget.ui.components.PageColumn
 import com.riverheadny.budget.ui.components.currency
+import com.riverheadny.budget.ui.theme.MutedText
 
 @Composable
 fun FundDetailScreen(viewModel: FundDetailViewModel = viewModel()) {
@@ -81,11 +82,11 @@ private fun DepartmentCard(dept: FundDepartment) {
                 }
                 Text(
                     "${dept.lineItems.size} line items — tap to collapse",
-                    color = Color.Gray,
+                    color = MutedText,
                     style = MaterialTheme.typography.labelSmall,
                 )
             } else {
-                Text("Tap to see category breakdown", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+                Text("Tap to see category breakdown", color = MutedText, style = MaterialTheme.typography.labelSmall)
             }
         }
     }

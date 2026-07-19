@@ -27,6 +27,7 @@ import com.riverheadny.budget.ui.components.MetricRow
 import com.riverheadny.budget.ui.components.PageColumn
 import com.riverheadny.budget.ui.components.currency
 import com.riverheadny.budget.ui.components.currencyPrecise
+import com.riverheadny.budget.ui.theme.MutedText
 
 @Composable
 fun TaxBillScreen(viewModel: TaxBillViewModel = viewModel()) {
@@ -96,6 +97,6 @@ private fun TaxBillCalculator(data: TaxBillData) {
     }
 
     data.equalization?.note?.let {
-        Text(it, color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+        Text(it, color = MutedText, style = MaterialTheme.typography.labelSmall)
     }
 }

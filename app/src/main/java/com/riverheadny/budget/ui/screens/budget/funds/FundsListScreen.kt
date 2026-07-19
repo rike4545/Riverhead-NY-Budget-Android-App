@@ -26,6 +26,7 @@ import com.riverheadny.budget.ui.components.currency
 import com.riverheadny.budget.ui.navigation.Routes
 import com.riverheadny.budget.ui.theme.BrandMint
 import com.riverheadny.budget.ui.theme.CardSurface
+import com.riverheadny.budget.ui.theme.MutedText
 
 @Composable
 fun FundsListScreen(navController: NavController, viewModel: FundsListViewModel = viewModel()) {
@@ -57,7 +58,7 @@ private fun FundRow(fund: FundSummary, onClick: () -> Unit) {
         Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(fund.name, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f).padding(end = 8.dp))
-                Text(fund.code, color = Color.Gray, style = MaterialTheme.typography.bodySmall)
+                Text(fund.code, color = MutedText, style = MaterialTheme.typography.bodySmall)
             }
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(currency(fund.expenditureTotal2026), fontWeight = FontWeight.Bold)

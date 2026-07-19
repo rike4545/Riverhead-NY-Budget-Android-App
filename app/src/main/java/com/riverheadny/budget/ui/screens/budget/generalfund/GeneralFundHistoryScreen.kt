@@ -22,6 +22,7 @@ import com.riverheadny.budget.ui.components.HeroCard
 import com.riverheadny.budget.ui.components.LoadStateView
 import com.riverheadny.budget.ui.components.PageColumn
 import com.riverheadny.budget.ui.components.currency
+import com.riverheadny.budget.ui.theme.MutedText
 
 @Composable
 fun GeneralFundHistoryScreen(viewModel: GeneralFundHistoryViewModel = viewModel()) {
@@ -53,7 +54,7 @@ private fun YearRow(row: GeneralFundRow) {
         Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(row.year.toString(), fontWeight = FontWeight.Bold)
-                row.status?.let { Text(it, color = Color.Gray, style = MaterialTheme.typography.bodySmall) }
+                row.status?.let { Text(it, color = MutedText, style = MaterialTheme.typography.bodySmall) }
             }
             MetricLine("Appropriations", currency(row.appropriations))
             MetricLine("Tax levy", currency(row.taxLevy))

@@ -20,6 +20,7 @@ import com.riverheadny.budget.ui.components.MetricRow
 import com.riverheadny.budget.ui.components.PageColumn
 import com.riverheadny.budget.ui.components.currency
 import com.riverheadny.budget.ui.theme.BrandMint
+import com.riverheadny.budget.ui.theme.MutedText
 
 @Composable
 fun FundBalanceScreen(viewModel: FundBalanceViewModel = viewModel()) {
@@ -64,7 +65,7 @@ fun FundBalanceScreen(viewModel: FundBalanceViewModel = viewModel()) {
             }
 
             data.afrSourceTitle?.let {
-                Text("Source: $it", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+                Text("Source: $it", color = MutedText, style = MaterialTheme.typography.labelSmall)
             }
         }
     }

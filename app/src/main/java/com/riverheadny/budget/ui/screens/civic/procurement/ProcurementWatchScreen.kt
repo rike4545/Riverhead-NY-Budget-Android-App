@@ -14,6 +14,7 @@ import com.riverheadny.budget.ui.screens.civic.FactRow
 import com.riverheadny.budget.ui.screens.civic.HighlightBox
 import com.riverheadny.budget.ui.screens.civic.InfoSectionCard
 import com.riverheadny.budget.ui.screens.civic.SourceLinkRow
+import com.riverheadny.budget.ui.theme.MutedText
 
 @Composable
 fun ProcurementWatchScreen() {
@@ -156,7 +157,7 @@ fun ProcurementWatchScreen() {
             SourceLinkRow("K&L Gates (land use / municipal law background)", "https://www.klgates.com")
             Text(
                 "Additional sources: Town Square core-terms summary (public deal terms), and contemporaneous Town Board meeting materials.",
-                color = Color.Gray,
+                color = MutedText,
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Normal,
             )

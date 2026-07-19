@@ -27,6 +27,7 @@ import com.riverheadny.budget.ui.components.LoadStateView
 import com.riverheadny.budget.ui.components.MetricRow
 import com.riverheadny.budget.ui.components.PageColumn
 import com.riverheadny.budget.ui.components.currency
+import com.riverheadny.budget.ui.theme.MutedText
 
 @Composable
 fun PayrollScreen(viewModel: PayrollViewModel = viewModel()) {
@@ -64,7 +65,7 @@ private fun YearCard(year: PayrollYearSummary) {
                 Text("Top earners", fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 8.dp))
                 year.topEarners.take(10).forEach { TopEarnerRow(it) }
             } else {
-                Text("Tap to see top earners", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+                Text("Tap to see top earners", color = MutedText, style = MaterialTheme.typography.labelSmall)
             }
         }
     }
@@ -76,7 +77,7 @@ private fun TopEarnerRow(earner: TopEarner) {
         Column(modifier = Modifier.weight(1f)) {
             Text(earner.name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Medium)
             earner.title?.takeIf { it.isNotBlank() }?.let {
-                Text(it, style = MaterialTheme.typography.labelSmall, color = Color.Gray)
+                Text(it, style = MaterialTheme.typography.labelSmall, color = MutedText)
             }
         }
         Text(currency(earner.gross), style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)

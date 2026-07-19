@@ -29,6 +29,7 @@ import com.riverheadny.budget.ui.components.HeroCard
 import com.riverheadny.budget.ui.components.LoadStateView
 import com.riverheadny.budget.ui.components.PageColumn
 import com.riverheadny.budget.ui.components.SectionTitle
+import com.riverheadny.budget.ui.theme.MutedText
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -60,7 +61,7 @@ fun MeetingDetailScreen(viewModel: MeetingDetailViewModel = viewModel()) {
 private fun RosterRow(member: RosterMember) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         Text(member.name, fontWeight = FontWeight.SemiBold)
-        Text(member.title + (member.party?.let { " · $it" } ?: ""), color = Color.Gray, style = MaterialTheme.typography.bodySmall)
+        Text(member.title + (member.party?.let { " · $it" } ?: ""), color = MutedText, style = MaterialTheme.typography.bodySmall)
     }
 }
 
@@ -69,7 +70,7 @@ private fun resultColor(tag: String?): Color = when (tag) {
     "failed" -> Color(0xFFB3261E)
     "tabled" -> Color(0xFF64748B)
     "split" -> Color(0xFFB45309)
-    else -> Color.Gray
+    else -> MutedText
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -82,7 +83,7 @@ private fun ResolutionCard(resolution: Resolution) {
                 Text(
                     resolution.number ?: "#${resolution.seq}",
                     fontWeight = FontWeight.Bold,
-                    color = Color.Gray,
+                    color = MutedText,
                     style = MaterialTheme.typography.labelMedium,
                 )
                 resolution.result?.let {
@@ -104,7 +105,7 @@ private fun ResolutionCard(resolution: Resolution) {
                     resolution.votes.forEach { (member, vote) -> VoteChip(member, vote) }
                 }
             } else if (resolution.votes.isNotEmpty()) {
-                Text("Tap to see the roll call", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+                Text("Tap to see the roll call", color = MutedText, style = MaterialTheme.typography.labelSmall)
             }
         }
     }
@@ -116,7 +117,7 @@ private fun VoteChip(member: String, vote: String) {
         "aye" -> Color(0xFF1F7A5C)
         "nay" -> Color(0xFFB3261E)
         "abstain" -> Color(0xFFB45309)
-        else -> Color.Gray
+        else -> MutedText
     }
     Text(
         "$member: ${vote.replaceFirstChar { it.uppercase() }}",

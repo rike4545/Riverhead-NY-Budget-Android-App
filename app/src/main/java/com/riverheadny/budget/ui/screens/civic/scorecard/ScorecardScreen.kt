@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -32,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -49,6 +51,7 @@ import com.riverheadny.budget.ui.components.currency
 import com.riverheadny.budget.ui.theme.BrandBlue
 import com.riverheadny.budget.ui.theme.BrandNavy
 import com.riverheadny.budget.ui.theme.CardSurface
+import com.riverheadny.budget.ui.theme.MutedText
 
 @Composable
 fun ScorecardScreen(viewModel: ScorecardViewModel = viewModel()) {
@@ -65,7 +68,7 @@ fun ScorecardScreen(viewModel: ScorecardViewModel = viewModel()) {
             is LoadState.Loading -> Box(Modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     CircularProgressIndicator()
-                    Text("Fetching live filings from data.ny.gov…", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
+                    Text("Fetching live filings from data.ny.gov…", color = MutedText, style = MaterialTheme.typography.bodySmall)
                 }
             }
             is LoadState.Error -> Box(Modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
@@ -77,7 +80,7 @@ fun ScorecardScreen(viewModel: ScorecardViewModel = viewModel()) {
             is LoadState.Success -> {
                 Text(
                     "Source: New York State Board of Elections / NY Open Data. Filing totals use the 2005-2026 window.",
-                    color = Color.Gray,
+                    color = MutedText,
                     style = MaterialTheme.typography.labelSmall,
                 )
                 s.data.results.forEach { result -> MemberCard(result, s.data.townPopulation) }
@@ -98,29 +101,32 @@ private fun MemberCard(result: ScorecardResult, townPopulation: Int?) {
                     MemberPhoto(member)
                     Column(modifier = Modifier.padding(start = 10.dp)) {
                         Text(member.name, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium, color = BrandNavy)
-                        Text(member.role, color = Color.Gray, style = MaterialTheme.typography.bodySmall)
+                        Text(member.role, color = MutedText, style = MaterialTheme.typography.bodySmall)
                         Text(member.superlative, color = Color(0xFF64748B), style = MaterialTheme.typography.labelSmall, fontStyle = FontStyle.Italic)
                     }
                 }
                 GradeBadge(member.grade)
             }
 
-            Text("Committee: ${member.committeeName} (Filer ID ${member.filerId})", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+            Text("Committee: ${member.committeeName} (Filer ID ${member.filerId})", color = MutedText, style = MaterialTheme.typography.labelSmall)
 
             SummaryCallout(buildCandidateSummary(result))
 
             CurrentCycleCard(result, townPopulation)
 
             if (result.historicalByYear.isNotEmpty()) {
-                Text(
-                    (if (showHistory) "Hide" else "See") + " donations by year (${result.historicalByYear.last().label}–${result.historicalByYear.first().label})",
-                    color = BrandNavy,
-                    fontWeight = FontWeight.SemiBold,
-                    style = MaterialTheme.typography.labelMedium,
+                val toggleLabel = (if (showHistory) "Hide" else "See") +
+                    " donations by year (${result.historicalByYear.last().label}–${result.historicalByYear.first().label})"
+                Box(
                     modifier = Modifier
-                        .clickable { showHistory = !showHistory }
-                        .padding(vertical = 4.dp),
-                )
+                        .fillMaxWidth()
+                        .defaultMinSize(minHeight = 48.dp)
+                        .clickable(role = Role.Button) { showHistory = !showHistory }
+                        .padding(vertical = 12.dp),
+                    contentAlignment = Alignment.CenterStart,
+                ) {
+                    Text(toggleLabel, color = BrandNavy, fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.labelMedium)
+                }
                 if (showHistory) {
                     result.historicalByYear.forEach { yearBreakdown -> YearCard(yearBreakdown) }
                 }
@@ -182,12 +188,12 @@ private fun CurrentCycleCard(result: ScorecardResult, townPopulation: Int?) {
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Column {
-                Text("Raised this cycle", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+                Text("Raised this cycle", color = MutedText, style = MaterialTheme.typography.labelSmall)
                 Text(currency(cycle.raised), fontWeight = FontWeight.Black, color = BrandNavy, style = MaterialTheme.typography.titleLarge)
             }
             result.lastReported?.let {
                 Column(horizontalAlignment = Alignment.End) {
-                    Text("Last reported", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+                    Text("Last reported", color = MutedText, style = MaterialTheme.typography.labelSmall)
                     Text(it.take(10), fontWeight = FontWeight.SemiBold)
                 }
             }
@@ -241,7 +247,7 @@ private fun LoansCard(result: ScorecardResult) {
     val outstanding = result.outstandingLoanBalance
     if ((received == null || received == 0.0) && (outstanding == null || outstanding == 0.0)) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text("Candidate loans", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+            Text("Candidate loans", color = MutedText, style = MaterialTheme.typography.labelSmall)
             Text("None on file", fontWeight = FontWeight.SemiBold, color = BrandNavy, style = MaterialTheme.typography.bodySmall)
         }
         return
@@ -267,7 +273,7 @@ private fun LoansCard(result: ScorecardResult) {
             }
             Text(
                 "Local candidate committees are almost always self-funded through loans like these.",
-                color = Color.Gray,
+                color = MutedText,
                 style = MaterialTheme.typography.labelSmall,
             )
         }
@@ -289,9 +295,9 @@ private fun SummaryCallout(summary: String) {
 @Composable
 private fun KpiTile(label: String, value: String, caption: String? = null) {
     Column(modifier = Modifier.padding(4.dp)) {
-        Text(label, color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+        Text(label, color = MutedText, style = MaterialTheme.typography.labelSmall)
         Text(value, fontWeight = FontWeight.Bold, color = BrandNavy, style = MaterialTheme.typography.bodyMedium)
-        caption?.let { Text(it, color = Color.Gray, style = MaterialTheme.typography.labelSmall) }
+        caption?.let { Text(it, color = MutedText, style = MaterialTheme.typography.labelSmall) }
     }
 }
 
@@ -305,7 +311,7 @@ private fun daysToElectionLabel(days: Long?): String = when {
 @Composable
 private fun ContributorTypeBreakdownRow(breakdown: List<com.riverheadny.budget.data.models.ContributorTypeAmount>, raisedTotal: Double?) {
     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text("Who's giving", color = Color.Gray, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
+        Text("Who's giving", color = MutedText, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
         breakdown.sortedByDescending { it.amount }.forEach { bucket ->
             val share = raisedTotal?.takeIf { it > 0 }?.let { bucket.amount / it * 100 }
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {

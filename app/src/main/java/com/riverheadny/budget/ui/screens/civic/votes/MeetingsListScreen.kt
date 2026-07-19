@@ -23,6 +23,7 @@ import com.riverheadny.budget.ui.components.HeroCard
 import com.riverheadny.budget.ui.components.LoadStateView
 import com.riverheadny.budget.ui.components.PageColumn
 import com.riverheadny.budget.ui.navigation.Routes
+import com.riverheadny.budget.ui.theme.MutedText
 
 @Composable
 fun MeetingsListScreen(navController: NavController, viewModel: MeetingsListViewModel = viewModel()) {
@@ -54,7 +55,7 @@ private fun MeetingRow(meeting: MeetingSummary, onClick: () -> Unit) {
         Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(meeting.date, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f).padding(end = 8.dp))
-                Text("${meeting.total} votes", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
+                Text("${meeting.total} votes", color = MutedText, style = MaterialTheme.typography.bodySmall)
             }
             Text(meeting.type, color = Color.DarkGray, style = MaterialTheme.typography.bodySmall)
             val flags = buildList {

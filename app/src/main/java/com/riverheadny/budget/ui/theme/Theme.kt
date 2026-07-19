@@ -16,6 +16,14 @@ val BrandCoral = Color(0xFFC6503C)
 val Page = Color(0xFFEBF1F4)
 val CardSurface = Color(0xFFFBFCFE)
 
+/**
+ * Secondary/label text color. Compose's built-in `Color.Gray` (#888888) contrasts only ~3.5:1
+ * against white/CardSurface — below the 4.5:1 WCAG AA minimum for normal-size text. This value
+ * (#5F6368, Google's own Material "on-surface-variant" gray) contrasts ~4.6:1 while still reading
+ * as a clearly secondary/muted tone next to BrandNavy body text.
+ */
+val MutedText = Color(0xFF5F6368)
+
 @Composable
 fun RiverheadTheme(content: @Composable () -> Unit) {
     MaterialTheme(

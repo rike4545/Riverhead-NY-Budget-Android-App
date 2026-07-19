@@ -46,6 +46,7 @@ import com.riverheadny.budget.ui.components.SectionTitle
 import com.riverheadny.budget.ui.navigation.Routes
 import com.riverheadny.budget.ui.theme.BrandBlue
 import com.riverheadny.budget.ui.theme.CardSurface
+import com.riverheadny.budget.ui.theme.MutedText
 
 private data class RealDataShortcut(val title: String, val subtitle: String, val icon: ImageVector, val route: String)
 
@@ -137,7 +138,7 @@ private fun BudgetDetailCard(section: String, mode: AudienceMode) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(section, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
             Text(if (mode == AudienceMode.Expert) expertCopy else residentCopy, color = Color.DarkGray)
-            Text("This section is still a placeholder — real data is coming in a later phase.", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+            Text("This section is still a placeholder — real data is coming in a later phase.", style = MaterialTheme.typography.bodySmall, color = MutedText)
         }
     }
 }

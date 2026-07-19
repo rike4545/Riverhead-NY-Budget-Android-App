@@ -30,6 +30,7 @@ import com.riverheadny.budget.ui.components.currency
 import com.riverheadny.budget.ui.theme.BrandMint
 import com.riverheadny.budget.ui.theme.BrandNavy
 import com.riverheadny.budget.ui.theme.CardSurface
+import com.riverheadny.budget.ui.theme.MutedText
 
 @Composable
 fun BudgetSimulatorScreen(viewModel: BudgetSimulatorViewModel = viewModel()) {
@@ -106,7 +107,7 @@ private fun ResultCard(viewModel: BudgetSimulatorViewModel, appropriations: Doub
 @Composable
 private fun MetricTile(label: String, value: String) {
     Column {
-        Text(label, color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+        Text(label, color = MutedText, style = MaterialTheme.typography.labelSmall)
         Text(value, fontWeight = FontWeight.Bold, color = BrandNavy, style = MaterialTheme.typography.bodyMedium)
     }
 }

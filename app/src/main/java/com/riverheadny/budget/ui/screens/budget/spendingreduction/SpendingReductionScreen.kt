@@ -37,6 +37,7 @@ import com.riverheadny.budget.ui.components.currency
 import com.riverheadny.budget.ui.theme.BrandMint
 import com.riverheadny.budget.ui.theme.BrandNavy
 import com.riverheadny.budget.ui.theme.CardSurface
+import com.riverheadny.budget.ui.theme.MutedText
 
 private data class SpendingReductionItem(
     val id: String,
@@ -125,9 +126,9 @@ fun SpendingReductionScreen() {
 
         Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = CardSurface)) {
             Column(modifier = Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text("YOUR SELECTED PACKAGE", color = Color.Gray, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+                Text("YOUR SELECTED PACKAGE", color = MutedText, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
                 Text(currency(grandSelected), color = BrandMint, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Black)
-                Text("out of ${currency(grandFullTotal)} available", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
+                Text("out of ${currency(grandFullTotal)} available", color = MutedText, style = MaterialTheme.typography.bodySmall)
 
                 Row(
                     modifier = Modifier
@@ -144,7 +145,7 @@ fun SpendingReductionScreen() {
                 }
                 Text(
                     "${(coverage * 100).toInt()}% of the ${currency(payrollPressureGap)} modeled 2027 payroll-pressure gap",
-                    color = Color.Gray,
+                    color = MutedText,
                     style = MaterialTheme.typography.labelSmall,
                 )
 
@@ -204,7 +205,7 @@ private fun MetricTile(label: String, value: Double, color: Color, modifier: Mod
             .background(color.copy(alpha = 0.08f), RoundedCornerShape(10.dp))
             .padding(10.dp),
     ) {
-        Text(label.uppercase(), color = Color.Gray, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
+        Text(label.uppercase(), color = MutedText, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
         Text(currency(value), color = color, fontWeight = FontWeight.Black, style = MaterialTheme.typography.titleMedium)
     }
 }
@@ -252,11 +253,11 @@ private fun ItemSection(
                         Text(
                             currency(item.amount),
                             fontWeight = FontWeight.Bold,
-                            color = if (selected) BrandMint else Color.Gray,
+                            color = if (selected) BrandMint else MutedText,
                             style = MaterialTheme.typography.bodyMedium,
                         )
                     }
-                    Text(item.source, color = Color.Gray, style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(start = 22.dp, top = 3.dp))
+                    Text(item.source, color = MutedText, style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(start = 22.dp, top = 3.dp))
                     Text(
                         item.rationale,
                         color = Color(0xFF94A3B8),

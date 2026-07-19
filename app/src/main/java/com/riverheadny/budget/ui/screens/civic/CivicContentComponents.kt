@@ -6,9 +6,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -16,15 +18,18 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.riverheadny.budget.ui.theme.BrandBlue
 import com.riverheadny.budget.ui.theme.BrandNavy
 import com.riverheadny.budget.ui.theme.CardSurface
+import com.riverheadny.budget.ui.theme.MutedText
 
 /** Shared building blocks for the static civic-accountability content screens (Procurement Watch, Campaign Ethics). */
 
@@ -45,7 +50,7 @@ fun InfoSectionCard(title: String? = null, content: @Composable () -> Unit) {
 fun BulletItem(text: String) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         Column(modifier = Modifier.padding(top = 7.dp)) {
-            Column(modifier = Modifier.size(6.dp).background(Color.Gray, CircleShape)) {}
+            Column(modifier = Modifier.size(6.dp).background(MutedText, CircleShape)) {}
         }
         Text(text, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
     }
@@ -67,7 +72,7 @@ fun HighlightBox(title: String, message: String) {
 @Composable
 fun FactRow(label: String, value: String) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(label, color = Color.Gray, style = MaterialTheme.typography.labelMedium)
+        Text(label, color = MutedText, style = MaterialTheme.typography.labelMedium)
         Text(value, style = MaterialTheme.typography.bodyMedium)
     }
 }
@@ -93,11 +98,11 @@ fun ClaimVsCodeRow(leftTitle: String, leftDetail: String, rightTitle: String, ri
     ) {
         Row(modifier = Modifier.fillMaxWidth().padding(14.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(leftTitle.uppercase(), color = Color.Gray, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
+                Text(leftTitle.uppercase(), color = MutedText, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
                 Text(leftDetail, style = MaterialTheme.typography.bodySmall)
             }
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(rightTitle.uppercase(), color = Color.Gray, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
+                Text(rightTitle.uppercase(), color = MutedText, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
                 Text(rightDetail, style = MaterialTheme.typography.bodySmall)
             }
         }
@@ -113,7 +118,9 @@ fun SourceLinkRow(label: String, url: String) {
         style = MaterialTheme.typography.bodyMedium,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { context.startActivity(Intent(Intent.ACTION_VIEW, url.toUri())) }
+            .defaultMinSize(minHeight = 48.dp)
+            .clickable(role = Role.Button) { context.startActivity(Intent(Intent.ACTION_VIEW, url.toUri())) }
+            .wrapContentHeight(Alignment.CenterVertically)
             .padding(vertical = 6.dp),
     )
 }
