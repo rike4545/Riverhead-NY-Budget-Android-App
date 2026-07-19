@@ -1,6 +1,7 @@
 package com.riverheadny.budget.ui.screens.civic.scorecard
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,27 +9,37 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.riverheadny.budget.data.LoadState
-import com.riverheadny.budget.data.models.ContributorTypeAmount
-import com.riverheadny.budget.data.models.LoanEntry
+import com.riverheadny.budget.data.models.CycleBreakdown
+import com.riverheadny.budget.data.models.ScorecardMember
 import com.riverheadny.budget.data.models.ScorecardResult
 import com.riverheadny.budget.data.models.TopContribution
 import com.riverheadny.budget.ui.components.HeroCard
@@ -76,45 +87,42 @@ fun ScorecardScreen(viewModel: ScorecardViewModel = viewModel()) {
 @Composable
 private fun MemberCard(result: ScorecardResult, townPopulation: Int?) {
     val member = result.member
+    var showHistory by remember { mutableStateOf(false) }
+
     Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = CardSurface)) {
         Column(modifier = Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Top) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(member.name, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium, color = BrandNavy)
-                    Text(member.role, color = Color.Gray, style = MaterialTheme.typography.bodySmall)
-                    Text(member.superlative, color = Color(0xFF64748B), style = MaterialTheme.typography.labelSmall, fontStyle = FontStyle.Italic)
+                Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
+                    MemberPhoto(member)
+                    Column(modifier = Modifier.padding(start = 10.dp)) {
+                        Text(member.name, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium, color = BrandNavy)
+                        Text(member.role, color = Color.Gray, style = MaterialTheme.typography.bodySmall)
+                        Text(member.superlative, color = Color(0xFF64748B), style = MaterialTheme.typography.labelSmall, fontStyle = FontStyle.Italic)
+                    }
                 }
                 GradeBadge(member.grade)
             }
 
             Text("Committee: ${member.committeeName} (Filer ID ${member.filerId})", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
 
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Column {
-                    Text("Total raised (live)", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
-                    Text(
-                        result.raisedTotal?.let { currency(it) } ?: "No filings found",
-                        fontWeight = FontWeight.Bold,
-                        color = BrandNavy,
-                    )
+            CurrentCycleCard(result, townPopulation)
+
+            if (result.historical != null) {
+                Text(
+                    (if (showHistory) "Hide" else "See") + " full donation history (${result.historical.label})",
+                    color = BrandNavy,
+                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.labelMedium,
+                    modifier = Modifier
+                        .clickable { showHistory = !showHistory }
+                        .padding(vertical = 4.dp),
+                )
+                if (showHistory) {
+                    HistoricalCard(result.historical, result.lifetimeRaisedTotal, result.lastReported)
                 }
-                result.lastReported?.let {
-                    Column {
-                        Text("Last reported", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
-                        Text(it.take(10), fontWeight = FontWeight.SemiBold)
-                    }
-                }
             }
 
-            KpiGrid(result, townPopulation)
-
-            if (result.contributorTypeBreakdown.isNotEmpty()) {
-                ContributorTypeBreakdownRow(result.contributorTypeBreakdown, result.raisedTotal)
-            }
-
-            if (result.loans.isNotEmpty()) {
-                LoansNote(result.loans)
-            }
+            LoansCard(result)
 
             if (result.petrocelliContributions.isNotEmpty()) {
                 WatchListNote(
@@ -137,40 +145,127 @@ private fun MemberCard(result: ScorecardResult, townPopulation: Int?) {
 }
 
 @Composable
-private fun GradeBadge(grade: String) {
-    val color = when {
-        grade.startsWith("A") -> Color(0xFF1F7A5C)
-        grade.startsWith("B") -> Color(0xFF2563EB)
-        grade.startsWith("C") -> Color(0xFFB45309)
-        else -> Color(0xFFB3261E)
-    }
-    Box(
-        modifier = Modifier
-            .padding(start = 8.dp)
-            .background(color.copy(alpha = 0.12f), CircleShape)
-            .padding(horizontal = 14.dp, vertical = 8.dp),
-    ) {
-        Text(grade, fontWeight = FontWeight.Black, color = color, style = MaterialTheme.typography.titleMedium)
+private fun MemberPhoto(member: ScorecardMember) {
+    if (member.photoUrl != null) {
+        AsyncImage(
+            model = member.photoUrl,
+            contentDescription = member.name,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.size(56.dp).clip(CircleShape),
+        )
+    } else {
+        Box(
+            modifier = Modifier.size(56.dp).clip(CircleShape).background(BrandNavy.copy(alpha = 0.12f)),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(Icons.Filled.Person, contentDescription = member.name, tint = BrandNavy)
+        }
     }
 }
 
 @Composable
-private fun KpiGrid(result: ScorecardResult, townPopulation: Int?) {
-    val perCapita = townPopulation?.takeIf { it > 0 }?.let { pop -> result.raisedTotal?.let { it / pop } }
+private fun CurrentCycleCard(result: ScorecardResult, townPopulation: Int?) {
+    val cycle = result.currentCycle
+    val perCapita = townPopulation?.takeIf { it > 0 }?.let { cycle.raised / it }
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(BrandNavy.copy(alpha = 0.05f), RoundedCornerShape(14.dp))
+            .background(BrandNavy.copy(alpha = 0.06f), RoundedCornerShape(16.dp))
+            .padding(14.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        Text("${cycle.label} ELECTION CYCLE", color = BrandNavy, fontWeight = FontWeight.Black, style = MaterialTheme.typography.labelMedium)
+
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Column {
+                Text("Raised this cycle", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+                Text(currency(cycle.raised), fontWeight = FontWeight.Black, color = BrandNavy, style = MaterialTheme.typography.titleLarge)
+            }
+            result.lastReported?.let {
+                Column(horizontalAlignment = Alignment.End) {
+                    Text("Last reported", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+                    Text(it.take(10), fontWeight = FontWeight.SemiBold)
+                }
+            }
+        }
+
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            KpiTile("Days to next election", daysToElectionLabel(result.daysUntilElection))
+            KpiTile(
+                "Avg. donation per donor",
+                cycle.avgDonationPerDonor?.let { currency(it) } ?: "—",
+                "${cycle.donorCount} donor${if (cycle.donorCount == 1) "" else "s"} this cycle",
+            )
+        }
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            KpiTile("Raised per resident", perCapita?.let { "$${"%.2f".format(it)}" } ?: "—", townPopulation?.let { "of ${"%,d".format(it)} residents" })
+            KpiTile("Lifetime total raised", result.lifetimeRaisedTotal?.let { currency(it) } ?: "—")
+        }
+
+        if (cycle.typeBreakdown.isNotEmpty()) {
+            ContributorTypeBreakdownRow(cycle.typeBreakdown, cycle.raised)
+        }
+    }
+}
+
+@Composable
+private fun HistoricalCard(historical: CycleBreakdown, lifetimeRaised: Double?, lastReported: String?) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFFF1F5F9), RoundedCornerShape(14.dp))
             .padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            KpiTile("Days to next election", daysToElectionLabel(result.daysUntilElection))
-            KpiTile("Avg. donation per donor", result.avgDonationPerDonor?.let { currency(it) } ?: "—", "${result.donorCount} donor${if (result.donorCount == 1) "" else "s"}")
+            KpiTile("Raised before this cycle", currency(historical.raised))
+            KpiTile(
+                "Avg. donation per donor",
+                historical.avgDonationPerDonor?.let { currency(it) } ?: "—",
+                "${historical.donorCount} donor${if (historical.donorCount == 1) "" else "s"}",
+            )
         }
+        if (historical.typeBreakdown.isNotEmpty()) {
+            ContributorTypeBreakdownRow(historical.typeBreakdown, historical.raised)
+        }
+    }
+}
+
+@Composable
+private fun LoansCard(result: ScorecardResult) {
+    val received = result.loansReceivedTotal
+    val outstanding = result.outstandingLoanBalance
+    if ((received == null || received == 0.0) && (outstanding == null || outstanding == 0.0)) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            KpiTile("Raised per resident", perCapita?.let { "$${"%.2f".format(it)}" } ?: "—", townPopulation?.let { "of ${"%,d".format(it)} residents" })
-            KpiTile("Candidate loans", result.loans.takeIf { it.isNotEmpty() }?.let { currency(it.sumOf { l -> l.amount }) } ?: "None on file")
+            Text("Candidate loans", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+            Text("None on file", fontWeight = FontWeight.SemiBold, color = BrandNavy, style = MaterialTheme.typography.bodySmall)
+        }
+        return
+    }
+    Card(colors = CardDefaults.cardColors(containerColor = Color(0xFF64748B).copy(alpha = 0.08f))) {
+        Column(modifier = Modifier.fillMaxWidth().padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text("Loans", fontWeight = FontWeight.Bold, color = Color(0xFF475569), style = MaterialTheme.typography.labelMedium)
+            if (received != null && received > 0) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text("Received (all-time)", color = Color.DarkGray, style = MaterialTheme.typography.bodySmall)
+                    Text(currency(received), color = Color(0xFF475569), fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodySmall)
+                }
+            }
+            if (outstanding != null && outstanding > 0) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text(
+                        "Currently outstanding" + (result.outstandingLoanYear?.let { " (as of $it filing)" } ?: ""),
+                        color = Color.DarkGray,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    Text(currency(outstanding), color = Color(0xFF475569), fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodySmall)
+                }
+            }
+            Text(
+                "Local candidate committees are almost always self-funded through loans like these.",
+                color = Color.Gray,
+                style = MaterialTheme.typography.labelSmall,
+            )
         }
     }
 }
@@ -192,7 +287,7 @@ private fun daysToElectionLabel(days: Long?): String = when {
 }
 
 @Composable
-private fun ContributorTypeBreakdownRow(breakdown: List<ContributorTypeAmount>, raisedTotal: Double?) {
+private fun ContributorTypeBreakdownRow(breakdown: List<com.riverheadny.budget.data.models.ContributorTypeAmount>, raisedTotal: Double?) {
     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text("Who's giving", color = Color.Gray, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
         breakdown.sortedByDescending { it.amount }.forEach { bucket ->
@@ -215,22 +310,20 @@ private fun ContributorTypeBreakdownRow(breakdown: List<ContributorTypeAmount>, 
 }
 
 @Composable
-private fun LoansNote(loans: List<LoanEntry>) {
-    Card(colors = CardDefaults.cardColors(containerColor = Color(0xFF64748B).copy(alpha = 0.08f))) {
-        Column(modifier = Modifier.fillMaxWidth().padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text("Loans received", fontWeight = FontWeight.Bold, color = Color(0xFF475569), style = MaterialTheme.typography.labelMedium)
-            loans.forEach { loan ->
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Text(loan.lenderName, color = Color.DarkGray, style = MaterialTheme.typography.bodySmall)
-                    Text(currency(loan.amount), color = Color(0xFF475569), fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodySmall)
-                }
-            }
-            Text(
-                "Local candidate committees are almost always self-funded through loans like these — lender names are shown as filed.",
-                color = Color.Gray,
-                style = MaterialTheme.typography.labelSmall,
-            )
-        }
+private fun GradeBadge(grade: String) {
+    val color = when {
+        grade.startsWith("A") -> Color(0xFF1F7A5C)
+        grade.startsWith("B") -> Color(0xFF2563EB)
+        grade.startsWith("C") -> Color(0xFFB45309)
+        else -> Color(0xFFB3261E)
+    }
+    Box(
+        modifier = Modifier
+            .padding(start = 8.dp)
+            .background(color.copy(alpha = 0.12f), CircleShape)
+            .padding(horizontal = 14.dp, vertical = 8.dp),
+    ) {
+        Text(grade, fontWeight = FontWeight.Black, color = color, style = MaterialTheme.typography.titleMedium)
     }
 }
 

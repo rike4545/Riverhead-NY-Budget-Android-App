@@ -12,14 +12,38 @@ data class ScorecardMember(
     val filerId: String,
     /** ISO yyyy-MM-dd, matches web's campaign-finance.json nextElection field. */
     val nextElection: String,
+    /** Official Town headshot, same source iOS uses. */
+    val photoUrl: String? = null,
 )
 
 val currentCouncilMembers = listOf(
-    ScorecardMember("Honorable Jerome Halpin", "Riverhead Town Supervisor", "B-", "The Budget Referee", "Friends of Jerry Halpin", "506796", "2026-11-03"),
-    ScorecardMember("Kenneth Rothwell", "Councilman", "C+", "The Process Hawk", "Friends of Ken Rothwell", "154927", "2028-11-07"),
-    ScorecardMember("Joann Waski", "Councilwoman", "B-", "The Community Anchor", "Friends of Joann Waski", "320293", "2027-11-02"),
-    ScorecardMember("Robert \"Bob\" Kern", "Councilman", "C", "The Detail Driver", "Friends of Robert Kern", "527501", "2028-11-07"),
-    ScorecardMember("Denise Merrifield", "Councilwoman", "C", "The Community Listener", "Committee to Elect Denise Merrifield", "319756", "2027-11-02"),
+    ScorecardMember(
+        "Honorable Jerome Halpin", "Riverhead Town Supervisor", "B-", "The Budget Referee",
+        "Friends of Jerry Halpin", "506796", "2026-11-03",
+        "https://www.townofriverheadny.gov/ImageRepository/Document?documentID=3086",
+    ),
+    // Rothwell is actively running for Supervisor in the Nov 2026 election (same race as
+    // Halpin), not waiting out his council term through 2028 — nextElection reflects that race.
+    ScorecardMember(
+        "Kenneth Rothwell", "Councilman", "C+", "The Process Hawk",
+        "Friends of Ken Rothwell", "154927", "2026-11-03",
+        "https://www.townofriverheadny.gov/ImageRepository/Document?documentID=186",
+    ),
+    ScorecardMember(
+        "Joann Waski", "Councilwoman", "B-", "The Community Anchor",
+        "Friends of Joann Waski", "320293", "2027-11-02",
+        "https://www.townofriverheadny.gov/ImageRepository/Document?documentID=195",
+    ),
+    ScorecardMember(
+        "Robert \"Bob\" Kern", "Councilman", "C", "The Detail Driver",
+        "Friends of Robert Kern", "527501", "2028-11-07",
+        "https://www.townofriverheadny.gov/ImageRepository/Document?documentID=3106",
+    ),
+    ScorecardMember(
+        "Denise Merrifield", "Councilwoman", "C", "The Community Listener",
+        "Committee to Elect Denise Merrifield", "319756", "2027-11-02",
+        "https://www.townofriverheadny.gov/ImageRepository/Document?documentID=193",
+    ),
 )
 
 // Socrata returns every field as a JSON string, matching NY BOE's raw schema.
@@ -45,19 +69,23 @@ data class ContributionRow(
 @Serializable
 data class ContributorTypeRow(
     val filer_id: String,
+    val election_year: String? = null,
     val cntrbr_type_desc: String? = null,
     val amount: String? = null,
     val row_count: String? = null,
 )
 
 @Serializable
-data class LoanRow(
+data class LoanTotalRow(
     val filer_id: String,
-    val flng_ent_name: String? = null,
-    val flng_ent_first_name: String? = null,
-    val flng_ent_last_name: String? = null,
-    val org_amt: String? = null,
-    val sched_date: String? = null,
+    val amount: String? = null,
+)
+
+@Serializable
+data class OutstandingLoanRow(
+    val filer_id: String,
+    val election_year: String? = null,
+    val amount: String? = null,
 )
 
 data class TopContribution(
@@ -72,21 +100,25 @@ data class ContributorTypeAmount(
     val donorCount: Int,
 )
 
-data class LoanEntry(
-    val lenderName: String,
-    val amount: Double,
-    val date: String?,
+/** One cycle's donation summary — either the current election cycle or everything before it. */
+data class CycleBreakdown(
+    val label: String,
+    val raised: Double,
+    val donorCount: Int,
+    val avgDonationPerDonor: Double?,
+    val typeBreakdown: List<ContributorTypeAmount>,
 )
 
 data class ScorecardResult(
     val member: ScorecardMember,
-    val raisedTotal: Double?,
+    val lifetimeRaisedTotal: Double?,
     val lastReported: String?,
+    val currentCycle: CycleBreakdown,
+    val historical: CycleBreakdown?,
     val petrocelliContributions: List<TopContribution>,
     val scottPointeContributions: List<TopContribution>,
-    val donorCount: Int,
-    val avgDonationPerDonor: Double?,
-    val contributorTypeBreakdown: List<ContributorTypeAmount>,
-    val loans: List<LoanEntry>,
+    val loansReceivedTotal: Double?,
+    val outstandingLoanBalance: Double?,
+    val outstandingLoanYear: String?,
     val daysUntilElection: Long?,
 )

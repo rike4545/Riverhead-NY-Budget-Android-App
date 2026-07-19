@@ -3,8 +3,9 @@ package com.riverheadny.budget.data
 import com.riverheadny.budget.data.models.ContributionRow
 import com.riverheadny.budget.data.models.ContributorTypeAmount
 import com.riverheadny.budget.data.models.ContributorTypeRow
-import com.riverheadny.budget.data.models.LoanEntry
-import com.riverheadny.budget.data.models.LoanRow
+import com.riverheadny.budget.data.models.CycleBreakdown
+import com.riverheadny.budget.data.models.LoanTotalRow
+import com.riverheadny.budget.data.models.OutstandingLoanRow
 import com.riverheadny.budget.data.models.RaisedRow
 import com.riverheadny.budget.data.models.ScorecardMember
 import com.riverheadny.budget.data.models.ScorecardResult
@@ -23,7 +24,9 @@ import java.time.temporal.ChronoUnit
 /**
  * Live campaign-finance fetch from NY State's Open Data (Socrata) Board of Elections dataset —
  * the one screen in this app that calls a live network API rather than reading bundled JSON.
- * Matches iOS's CouncilScorecardView data source exactly: contributions endpoint 4j2b-6a2j.
+ * Two datasets are used: 4j2b-6a2j (itemized contribution transactions — schedules A/B/C only,
+ * this dataset has no loan rows for these filers) and e9ss-239a (per-filing aggregates, which is
+ * where schedule I "Loans Received" and N "Outstanding Liabilities/Loans" actually live).
  */
 class ScorecardRepository {
     private val client = OkHttpClient()
@@ -31,6 +34,7 @@ class ScorecardRepository {
 
     private val filingStartYear = 2005
     private val filingEndYear = 2026
+    private val currentCycleYear = "2026"
     private val electionYearClause: String
         get() = "election_year in(${(filingStartYear..filingEndYear).joinToString(",") { "'$it'" }})"
 
@@ -56,63 +60,106 @@ class ScorecardRepository {
             val inClause = filerIds.joinToString(",") { "'$it'" }
 
             val raisedRows = fetchRows<RaisedRow>(
-                mapOf(
+                resource = "4j2b-6a2j.json",
+                params = mapOf(
                     "\$select" to "filer_id,sum(org_amt) as total_raised,max(sched_date) as last_reported",
                     "\$where" to "filer_id in ($inClause) and $electionYearClause and filing_sched_abbrev in('A','B','C','G')",
                     "\$group" to "filer_id",
                 ),
             )
             val contributionRows = fetchRows<ContributionRow>(
-                mapOf(
+                resource = "4j2b-6a2j.json",
+                params = mapOf(
                     "\$select" to "filer_id,cntrbr_type_desc,flng_ent_name,flng_ent_first_name,flng_ent_middle_name,flng_ent_last_name,org_amt,sched_date",
                     "\$where" to "filer_id in ($inClause) and $electionYearClause and filing_sched_abbrev in('A','B','C')",
                     "\$limit" to "5000",
                 ),
             )
-            // Aggregate donor-type breakdown and donor count — a $group query stays accurate even for
-            // high-volume filers where the raw contributionRows list above is capped at 5000 rows.
+            // Per (filer, election_year, contributor type) so current-cycle and historical
+            // breakdowns can both be built from one query.
             val typeRows = fetchRows<ContributorTypeRow>(
-                mapOf(
-                    "\$select" to "filer_id,cntrbr_type_desc,sum(org_amt) as amount,count(*) as row_count",
+                resource = "4j2b-6a2j.json",
+                params = mapOf(
+                    "\$select" to "filer_id,election_year,cntrbr_type_desc,sum(org_amt) as amount,count(*) as row_count",
                     "\$where" to "filer_id in ($inClause) and $electionYearClause and filing_sched_abbrev in('A','B','C')",
-                    "\$group" to "filer_id,cntrbr_type_desc",
+                    "\$group" to "filer_id,election_year,cntrbr_type_desc",
                 ),
             )
-            // Schedule I = Loans Received. Local candidate committees are almost always self-funded
-            // this way, so this is shown as-is (lender name from the filing) rather than auto-labeled
-            // "self-funded" — the resident can read the lender name directly.
-            val loanRows = fetchRows<LoanRow>(
-                mapOf(
-                    "\$select" to "filer_id,flng_ent_name,flng_ent_first_name,flng_ent_last_name,org_amt,sched_date",
+            // Schedule I = Loans Received (new money that period — safe to sum across the window).
+            // Only e9ss-239a (the per-filing-aggregate dataset) carries schedule I/N rows; the
+            // itemized-transaction dataset above has none for these filers.
+            val loanTotalRows = fetchRows<LoanTotalRow>(
+                resource = "e9ss-239a.json",
+                params = mapOf(
+                    "\$select" to "filer_id,sum(org_amt) as amount",
                     "\$where" to "filer_id in ($inClause) and $electionYearClause and filing_sched_abbrev='I'",
-                    "\$limit" to "500",
+                    "\$group" to "filer_id",
+                ),
+            )
+            // Schedule N = Outstanding Liabilities/Loans, re-reported as a running balance every
+            // filing year — summing across years double-counts, so we take only the most recent
+            // election_year's balance. Its sched_date is NOT reliable for finding "most recent":
+            // NY BOE carries the loan's original transaction date forward on every re-report, so a
+            // balance re-stated in a 2026 filing can still show a 2021 sched_date.
+            val outstandingRows = fetchRows<OutstandingLoanRow>(
+                resource = "e9ss-239a.json",
+                params = mapOf(
+                    "\$select" to "filer_id,election_year,sum(org_amt) as amount",
+                    "\$where" to "filer_id in ($inClause) and $electionYearClause and filing_sched_abbrev='N'",
+                    "\$group" to "filer_id,election_year",
+                    "\$order" to "election_year DESC",
                 ),
             )
 
             val raisedByFiler = raisedRows.associateBy { it.filer_id }
             val contributionsByFiler = contributionRows.groupBy { it.filer_id }
-            val typesByFiler = typeRows.groupBy { it.filer_id }
-            val loansByFiler = loanRows.groupBy { it.filer_id }
+            val typeRowsByFiler = typeRows.groupBy { it.filer_id }
+            val loanTotalByFiler = loanTotalRows.associateBy { it.filer_id }
+            val latestOutstandingByFiler = outstandingRows.groupBy { it.filer_id }.mapValues { it.value.first() }
 
             members.map { member ->
                 val rows = contributionsByFiler[member.filerId].orEmpty()
-                val raisedTotal = raisedByFiler[member.filerId]?.total_raised?.toDoubleOrNull()
-                val typeBreakdown = bucketContributorTypes(typesByFiler[member.filerId].orEmpty())
-                val donorCount = typeBreakdown.sumOf { it.donorCount }
+                val memberTypeRows = typeRowsByFiler[member.filerId].orEmpty()
+                val currentCycle = buildCycleBreakdown(
+                    label = currentCycleYear,
+                    rows = memberTypeRows.filter { it.election_year == currentCycleYear },
+                )
+                val historicalRows = memberTypeRows.filter { it.election_year != currentCycleYear }
+                val historical = if (historicalRows.isNotEmpty()) {
+                    buildCycleBreakdown(label = "$filingStartYear–${filingEndYear - 1}", rows = historicalRows)
+                } else {
+                    null
+                }
+                val outstanding = latestOutstandingByFiler[member.filerId]
+
                 ScorecardResult(
                     member = member,
-                    raisedTotal = raisedTotal,
+                    lifetimeRaisedTotal = raisedByFiler[member.filerId]?.total_raised?.toDoubleOrNull(),
                     lastReported = raisedByFiler[member.filerId]?.last_reported,
+                    currentCycle = currentCycle,
+                    historical = historical,
                     petrocelliContributions = rows.filter { isPetrocelliContribution(it) }.map { it.toTopContribution() },
                     scottPointeContributions = rows.filter { isScottPointeRelatedContribution(it) }.map { it.toTopContribution() },
-                    donorCount = donorCount,
-                    avgDonationPerDonor = if (donorCount > 0 && raisedTotal != null) raisedTotal / donorCount else null,
-                    contributorTypeBreakdown = typeBreakdown,
-                    loans = loansByFiler[member.filerId].orEmpty().map { it.toLoanEntry() },
+                    loansReceivedTotal = loanTotalByFiler[member.filerId]?.amount?.toDoubleOrNull(),
+                    outstandingLoanBalance = outstanding?.amount?.toDoubleOrNull(),
+                    outstandingLoanYear = outstanding?.election_year,
                     daysUntilElection = daysUntil(member.nextElection),
                 )
             }
         }
+
+    private fun buildCycleBreakdown(label: String, rows: List<ContributorTypeRow>): CycleBreakdown {
+        val typeBreakdown = bucketContributorTypes(rows)
+        val raised = typeBreakdown.sumOf { it.amount }
+        val donorCount = typeBreakdown.sumOf { it.donorCount }
+        return CycleBreakdown(
+            label = label,
+            raised = raised,
+            donorCount = donorCount,
+            avgDonationPerDonor = if (donorCount > 0) raised / donorCount else null,
+            typeBreakdown = typeBreakdown,
+        )
+    }
 
     private fun bucketContributorTypes(rows: List<ContributorTypeRow>): List<ContributorTypeAmount> {
         val buckets = linkedMapOf("Individual" to (0.0 to 0), "PAC / Committee" to (0.0 to 0), "Business / Other" to (0.0 to 0))
@@ -138,17 +185,11 @@ class ScorecardRepository {
         null
     }
 
-    private fun LoanRow.toLoanEntry(): LoanEntry {
-        val name = flng_ent_name
-            ?: listOfNotNull(flng_ent_first_name, flng_ent_last_name).joinToString(" ").ifBlank { "Unknown lender" }
-        return LoanEntry(lenderName = name, amount = org_amt?.toDoubleOrNull() ?: 0.0, date = sched_date)
-    }
-
-    private suspend inline fun <reified T> fetchRows(params: Map<String, String>): List<T> = withContext(Dispatchers.IO) {
+    private suspend inline fun <reified T> fetchRows(resource: String, params: Map<String, String>): List<T> = withContext(Dispatchers.IO) {
         val urlBuilder = HttpUrl.Builder()
             .scheme("https")
             .host("data.ny.gov")
-            .addPathSegments("resource/4j2b-6a2j.json")
+            .addPathSegments("resource/$resource")
         params.forEach { (key, value) -> urlBuilder.addQueryParameter(key, value) }
         val request = Request.Builder().url(urlBuilder.build()).build()
         client.newCall(request).execute().use { response ->
