@@ -51,4 +51,5 @@ object Routes {
     const val COMMUNITY_BLOCK_GRANTS = "budget/blockgrants"
 
     const val OFFICIALS_PENSIONS = "civic/officials"
+    const val CANDIDATE_WATCH = "civic/candidates"
 }
