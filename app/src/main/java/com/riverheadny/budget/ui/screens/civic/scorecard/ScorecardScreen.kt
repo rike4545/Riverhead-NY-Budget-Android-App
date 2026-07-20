@@ -84,6 +84,85 @@ fun ScorecardScreen(viewModel: ScorecardViewModel = viewModel()) {
                     style = MaterialTheme.typography.labelSmall,
                 )
                 s.data.results.forEach { result -> MemberCard(result, s.data.townPopulation) }
+                if (s.data.employeeDonorMatches.isNotEmpty()) {
+                    EmployeeDonorWatchCard(s.data.employeeDonorMatches)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun EmployeeDonorWatchCard(matches: List<com.riverheadny.budget.data.models.EmployeeDonorMatch>) {
+    val byYear = remember(matches) {
+        matches.groupBy { it.electionYear.ifEmpty { "Unlabeled year" } }
+            .toSortedMap(compareByDescending { it })
+    }
+    val total = matches.sumOf { it.amount }
+
+    Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = CardSurface)) {
+        Column(modifier = Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Filled.Person, contentDescription = null, tint = BrandNavy, modifier = Modifier.size(20.dp))
+                Text(
+                    "Town Employee Donors",
+                    fontWeight = FontWeight.Bold,
+                    color = BrandNavy,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(start = 8.dp),
+                )
+            }
+            Text(
+                "Town payroll employees whose name matches an individual campaign donor to a tracked committee. Disclosure context, not an accusation — modest personal donations from Town employees to sitting or former officials are common and legal. Matched by name only.",
+                color = MutedText,
+                style = MaterialTheme.typography.bodySmall,
+            )
+            Text(
+                "${matches.size} matched totaling ${currency(total)}",
+                fontWeight = FontWeight.SemiBold,
+                color = BrandNavy,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            byYear.forEach { (year, yearMatches) -> EmployeeDonorYearGroup(year, yearMatches) }
+        }
+    }
+}
+
+@Composable
+private fun EmployeeDonorYearGroup(year: String, matches: List<com.riverheadny.budget.data.models.EmployeeDonorMatch>) {
+    var expanded by remember { mutableStateOf(false) }
+    val total = matches.sumOf { it.amount }
+    val employeeCount = matches.map { it.employeeName }.distinct().size
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFFF1F5F9), RoundedCornerShape(14.dp))
+            .clickable(role = Role.Button) { expanded = !expanded }
+            .padding(12.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(year, fontWeight = FontWeight.Bold, color = BrandNavy, style = MaterialTheme.typography.bodyMedium)
+            Text(
+                "$employeeCount employee${if (employeeCount == 1) "" else "s"} · ${currency(total)}",
+                color = MutedText,
+                style = MaterialTheme.typography.labelSmall,
+            )
+        }
+        if (expanded) {
+            matches.forEach { match ->
+                Column(modifier = Modifier.padding(top = 4.dp)) {
+                    Text(match.employeeName, fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodySmall)
+                    val subtitle = listOfNotNull(match.title, match.department).joinToString(", ")
+                    if (subtitle.isNotEmpty()) {
+                        Text("$subtitle (${match.mostRecentPayrollYear})", color = MutedText, style = MaterialTheme.typography.labelSmall)
+                    }
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text("${match.officialName} · ${match.filingDesc}", color = Color.DarkGray, style = MaterialTheme.typography.labelSmall)
+                        Text(currency(match.amount), fontWeight = FontWeight.SemiBold, color = BrandNavy, style = MaterialTheme.typography.labelSmall)
+                    }
+                }
             }
         }
     }

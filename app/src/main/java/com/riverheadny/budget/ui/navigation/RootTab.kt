@@ -46,4 +46,7 @@ object Routes {
     const val BUDGET_SIMULATOR = "budget/simulator"
 
     const val SCORECARD = "civic/scorecard"
+
+    const val COMMUNITY_PRESERVATION_FUND = "budget/cpf"
+    const val COMMUNITY_BLOCK_GRANTS = "budget/blockgrants"
 }

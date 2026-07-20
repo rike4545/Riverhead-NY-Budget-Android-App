@@ -8,6 +8,7 @@ import com.riverheadny.budget.data.models.FundsIndex
 import com.riverheadny.budget.data.models.GeneralFundHistory
 import com.riverheadny.budget.data.models.MeetingDetail
 import com.riverheadny.budget.data.models.MeetingsIndex
+import com.riverheadny.budget.data.models.PayrollRecordsFile
 import com.riverheadny.budget.data.models.PayrollSummary
 import com.riverheadny.budget.data.models.TaxBillData
 import com.riverheadny.budget.data.models.TaxCapData
@@ -32,6 +33,7 @@ class AssetRepository(private val assets: AssetManager) {
     private var taxCapCache: TaxCapData? = null
     private var communityCache: CommunityData? = null
     private var payrollCache: PayrollSummary? = null
+    private var payrollRecordsCache: PayrollRecordsFile? = null
     private var afrCache: AfrData? = null
     private var taxBillCache: TaxBillData? = null
     private var meetingsIndexCache: MeetingsIndex? = null
@@ -65,6 +67,11 @@ class AssetRepository(private val assets: AssetManager) {
     suspend fun payrollSummary(): PayrollSummary = withContext(Dispatchers.IO) {
         payrollCache ?: json.decodeFromString<PayrollSummary>(readAsset("data/payroll/summary.json"))
             .also { payrollCache = it }
+    }
+
+    suspend fun payrollRecords(): PayrollRecordsFile = withContext(Dispatchers.IO) {
+        payrollRecordsCache ?: json.decodeFromString<PayrollRecordsFile>(readAsset("data/payroll/records.json"))
+            .also { payrollRecordsCache = it }
     }
 
     suspend fun afr2025(): AfrData = withContext(Dispatchers.IO) {

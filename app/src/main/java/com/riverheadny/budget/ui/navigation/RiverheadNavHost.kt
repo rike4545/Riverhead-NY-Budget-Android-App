@@ -7,7 +7,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.riverheadny.budget.ui.screens.budget.BudgetHubScreen
+import com.riverheadny.budget.ui.screens.budget.cpf.CommunityPreservationFundScreen
 import com.riverheadny.budget.ui.screens.budget.fundbalance.FundBalanceScreen
+import com.riverheadny.budget.ui.screens.budget.reserves.CommunityBlockGrantsScreen
 import com.riverheadny.budget.ui.screens.budget.funds.FundDetailScreen
 import com.riverheadny.budget.ui.screens.budget.funds.FundsListScreen
 import com.riverheadny.budget.ui.screens.budget.generalfund.GeneralFundHistoryScreen
@@ -55,5 +57,7 @@ fun RiverheadNavHost(navController: NavHostController) {
         composable(Routes.SPENDING_REDUCTION) { SpendingReductionScreen() }
         composable(Routes.BUDGET_SIMULATOR) { BudgetSimulatorScreen() }
         composable(Routes.SCORECARD) { ScorecardScreen() }
+        composable(Routes.COMMUNITY_PRESERVATION_FUND) { CommunityPreservationFundScreen() }
+        composable(Routes.COMMUNITY_BLOCK_GRANTS) { CommunityBlockGrantsScreen() }
     }
 }

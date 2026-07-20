@@ -33,3 +33,20 @@ data class TopEarner(
     val gross: Double = 0.0,
     val overtime: Double = 0.0,
 )
+
+// Matches web/public/data/payroll/records.json — full per-employee-per-year rows (name in
+// "Last, First Middle" form), used for the employee-donor name cross-reference. Only the fields
+// needed for that match are declared; the pay figures are unused here so they're skipped.
+@Serializable
+data class PayrollRecordsFile(
+    val count: Int = 0,
+    val records: List<PayrollRecordRaw> = emptyList(),
+)
+
+@Serializable
+data class PayrollRecordRaw(
+    val y: Int,
+    val n: String,
+    val d: String? = null,
+    val t: String? = null,
+)

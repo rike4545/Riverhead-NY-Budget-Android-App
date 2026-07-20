@@ -1,6 +1,7 @@
 package com.riverheadny.budget.ui.screens.civic.ethics
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.riverheadny.budget.ui.components.HeroCard
 import com.riverheadny.budget.ui.components.PageColumn
 import com.riverheadny.budget.ui.components.currency
+import com.riverheadny.budget.ui.components.currencyPrecise
 import com.riverheadny.budget.ui.screens.civic.BulletItem
 import com.riverheadny.budget.ui.screens.civic.ClaimVsCodeRow
 import com.riverheadny.budget.ui.screens.civic.ComparisonRow
@@ -29,12 +31,35 @@ import com.riverheadny.budget.ui.screens.civic.InfoSectionCard
 
 private data class DonationExample(val label: String, val amount: Int)
 
+// Riverhead Town-race contribution limits under NY Election Law § 14-114, computed by the
+// Business Council of NYS from the registered-voter-count formula. Published August 2022, so it
+// reflects that cycle's registered-voter count, not necessarily the current one — voter rolls
+// (and therefore these dollar caps) shift over time, so treat this as a concrete recent
+// reference point rather than this exact cycle's number. Confirm the current figure with the
+// Suffolk County Board of Elections' own Comprehensive Limits Report before relying on it.
+private data class ContributionLimit(val individual: Double, val family: Double)
+private const val LIMITS_AS_OF_YEAR = 2022
+private val generalElectionLimit = ContributionLimit(individual = 1109.30, family = 5546.50)
+private val democraticPrimaryLimit = ContributionLimit(individual = 1000.00, family = 1538.00)
+private val republicanPrimaryLimit = ContributionLimit(individual = 1000.00, family = 2000.75)
+
 private val examples = listOf(
     DonationExample("Donation #1", 225),
     DonationExample("Donation #2", 250),
     DonationExample("Donation #3", 300),
     DonationExample("Donation #4", 300),
 )
+
+@Composable
+private fun ContributionLimitRow(label: String, limit: ContributionLimit) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Text(label, fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
+        Column {
+            Text("Individual: ${currencyPrecise(limit.individual)}", style = MaterialTheme.typography.bodySmall)
+            Text("Family: ${currencyPrecise(limit.family)}", style = MaterialTheme.typography.bodySmall)
+        }
+    }
+}
 
 @Composable
 fun CampaignEthicsScreen() {
@@ -210,6 +235,36 @@ fun CampaignEthicsScreen() {
             HighlightBox(
                 title = "Plain-English rebuttal",
                 message = "The appearance of a connection may create political criticism, but the code does not treat every small lawful donation followed by later Town business as an automatic ethics violation.",
+            )
+        }
+
+        InfoSectionCard("What NY Law Actually Limits") {
+            Text(
+                "This is the general shape of the law (NY Election Law § 14-114) — those formulas produce an actual dollar cap once you know the district's registered-voter count. For a Riverhead Town race, the Business Council of New York State computed that cap as of $LIMITS_AS_OF_YEAR:",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            ContributionLimitRow("General election", generalElectionLimit)
+            ContributionLimitRow("Democratic primary", democraticPrimaryLimit)
+            ContributionLimitRow("Republican primary", republicanPrimaryLimit)
+            HorizontalDivider()
+            Text("Most donors", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodySmall)
+            Text(
+                "Capped at the number of registered voters in the district × \$0.05, minimum \$1,000 — a limit that scales with the size of the race, not a flat dollar figure.",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            Text("Family donors", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodySmall)
+            Text(
+                "Child, parent, grandparent, sibling, or the spouse of any of those get a higher cap — the greater of (registered voters × \$0.25) or \$1,250.",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            Text("The candidate's own money", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodySmall)
+            Text(
+                "No cap at all. New York's self-funding limit only applies to candidates in the state's public campaign-financing program — local town races aren't part of it, so a candidate (or, per the cap above, their family) can put in far more than any ordinary donor could.",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            HighlightBox(
+                title = "Treat this as a reference point",
+                message = "Registered-voter counts (and therefore these dollar caps) shift over time. Confirm the up-to-date figure with the Suffolk County Board of Elections' own Comprehensive Limits Report before treating any specific donor or committee as over or under the line. Source: Business Council of New York State, \"NYS Campaign Contribution Limits\".",
             )
         }
 

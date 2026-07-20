@@ -4,8 +4,11 @@ import com.riverheadny.budget.data.models.ContributionRow
 import com.riverheadny.budget.data.models.ContributorTypeAmount
 import com.riverheadny.budget.data.models.ContributorTypeRow
 import com.riverheadny.budget.data.models.CycleBreakdown
+import com.riverheadny.budget.data.models.EmployeeDonorMatch
+import com.riverheadny.budget.data.models.IndividualContributionRow
 import com.riverheadny.budget.data.models.LoanTotalRow
 import com.riverheadny.budget.data.models.OutstandingLoanRow
+import com.riverheadny.budget.data.models.PayrollRecordRaw
 import com.riverheadny.budget.data.models.RaisedRow
 import com.riverheadny.budget.data.models.ScorecardMember
 import com.riverheadny.budget.data.models.ScorecardResult
@@ -220,5 +223,80 @@ class ScorecardRepository {
         val first = row.flng_ent_first_name?.trim()?.lowercase() ?: ""
         val last = row.flng_ent_last_name?.trim()?.lowercase() ?: ""
         return scottPointePeople.any { (relatedFirst, relatedLast) -> first == relatedFirst && last == relatedLast }
+    }
+
+    // A council member draws a Town salary too, so without this a candidate donating to their
+    // own committee would show up as a "town employee donor" — trivially true and not a
+    // meaningful finding. Excludes those self-donations from the results. Matches iOS/web.
+    private val selfNameKeys: Map<String, List<String>> = mapOf(
+        "Honorable Jerome Halpin" to listOf("halpin|jerome", "halpin|jerry"),
+        "Kenneth Rothwell" to listOf("rothwell|kenneth", "rothwell|ken"),
+        "Robert \"Bob\" Kern" to listOf("kern|robert", "kern|bob"),
+        "Joann Waski" to listOf("waski|joann"),
+        "Denise Merrifield" to listOf("merrifield|denise"),
+    )
+
+    private fun nameKey(last: String?, first: String?): String? {
+        val l = last?.trim()?.lowercase().orEmpty()
+        val f = first?.trim()?.lowercase()?.split(Regex("\\s+"))?.firstOrNull().orEmpty()
+        if (l.isEmpty() || f.isEmpty()) return null
+        return "$l|$f"
+    }
+
+    // Payroll names are "Last, First Middle" — split on the first comma.
+    private fun payrollNameKey(name: String): String? {
+        val commaIndex = name.indexOf(',')
+        if (commaIndex < 0) return null
+        val last = name.substring(0, commaIndex)
+        val first = name.substring(commaIndex + 1).trim().split(Regex("\\s+")).firstOrNull()
+        return nameKey(last, first)
+    }
+
+    suspend fun fetchEmployeeDonorMatches(
+        members: List<ScorecardMember> = currentCouncilMembers,
+        payrollRecords: List<PayrollRecordRaw>,
+    ): List<EmployeeDonorMatch> = withContext(Dispatchers.IO) {
+        val filerIds = members.map { it.filerId }.distinct()
+        val inClause = filerIds.joinToString(",") { "'$it'" }
+        val committeeByFiler = members.associateBy({ it.filerId }, { it.committeeName to it.name })
+
+        val contributions = fetchRows<IndividualContributionRow>(
+            resource = "4j2b-6a2j.json",
+            params = mapOf(
+                "\$select" to "filer_id,election_year,filing_desc,flng_ent_first_name,flng_ent_last_name,org_amt,sched_date,cntrbr_type_desc",
+                "\$where" to "filer_id in ($inClause) and $electionYearClause and filing_sched_abbrev in('A','B','C') and cntrbr_type_desc='Individual'",
+                "\$limit" to "5000",
+            ),
+        )
+
+        val employeeByKey = mutableMapOf<String, Triple<String, String?, String?>>()
+        val employeeYear = mutableMapOf<String, Int>()
+        payrollRecords.forEach { rec ->
+            val key = payrollNameKey(rec.n) ?: return@forEach
+            val existingYear = employeeYear[key]
+            if (existingYear == null || rec.y > existingYear) {
+                employeeYear[key] = rec.y
+                employeeByKey[key] = Triple(rec.n, rec.d?.ifBlank { null }, rec.t?.ifBlank { null })
+            }
+        }
+
+        contributions.mapNotNull { row ->
+            val key = nameKey(row.flng_ent_last_name, row.flng_ent_first_name) ?: return@mapNotNull null
+            val (employeeName, department, title) = employeeByKey[key] ?: return@mapNotNull null
+            val (committeeName, officialName) = committeeByFiler[row.filer_id] ?: return@mapNotNull null
+            if (selfNameKeys[officialName]?.contains(key) == true) return@mapNotNull null
+            EmployeeDonorMatch(
+                employeeName = employeeName,
+                department = department,
+                title = title,
+                mostRecentPayrollYear = employeeYear[key] ?: 0,
+                officialName = officialName,
+                committeeName = committeeName,
+                electionYear = row.election_year.orEmpty(),
+                filingDesc = row.filing_desc ?: "Unlabeled filing",
+                amount = row.org_amt?.toDoubleOrNull() ?: 0.0,
+                date = row.sched_date,
+            )
+        }.sortedByDescending { it.date ?: "" }
     }
 }

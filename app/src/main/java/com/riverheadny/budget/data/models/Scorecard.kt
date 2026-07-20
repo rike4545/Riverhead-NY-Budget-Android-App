@@ -109,6 +109,35 @@ data class CycleBreakdown(
     val typeBreakdown: List<ContributorTypeAmount>,
 )
 
+// Socrata row for the employee-donor cross-reference query — needs election_year and
+// filing_desc alongside the donor name fields, unlike ContributionRow used elsewhere.
+@Serializable
+data class IndividualContributionRow(
+    val filer_id: String,
+    val election_year: String? = null,
+    val filing_desc: String? = null,
+    val flng_ent_first_name: String? = null,
+    val flng_ent_last_name: String? = null,
+    val org_amt: String? = null,
+    val sched_date: String? = null,
+)
+
+/** A Town payroll employee whose name matches an individual campaign donor. Disclosure context,
+ * not an accusation — modest personal donations from Town employees to sitting or former
+ * officials are common and legal. Matched by name only. */
+data class EmployeeDonorMatch(
+    val employeeName: String,
+    val department: String?,
+    val title: String?,
+    val mostRecentPayrollYear: Int,
+    val officialName: String,
+    val committeeName: String,
+    val electionYear: String,
+    val filingDesc: String,
+    val amount: Double,
+    val date: String?,
+)
+
 data class ScorecardResult(
     val member: ScorecardMember,
     val lifetimeRaisedTotal: Double?,

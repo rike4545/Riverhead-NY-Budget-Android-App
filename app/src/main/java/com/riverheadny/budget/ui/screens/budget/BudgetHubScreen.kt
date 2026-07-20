@@ -59,6 +59,8 @@ private val realDataShortcuts = listOf(
     RealDataShortcut("Payroll Explorer", "Real actual earnings 2018-2025, headcount, top earners", Icons.Filled.People, Routes.PAYROLL),
     RealDataShortcut("2027 Spending Reduction", "A real, sourced recurring savings package, toggleable", Icons.Filled.Gavel, Routes.SPENDING_REDUCTION),
     RealDataShortcut("2027 Budget Simulator", "Adjust the levy, COLA, and savings to test the plan", Icons.Filled.Tune, Routes.BUDGET_SIMULATOR),
+    RealDataShortcut("Community Preservation Fund", "The CPF's real revenue swings, debt, and the rate-increase question", Icons.Filled.AccountBalance, Routes.COMMUNITY_PRESERVATION_FUND),
+    RealDataShortcut("Community Block Grants", "A one-time surplus-funded grant round for four East End nonprofits", Icons.Filled.People, Routes.COMMUNITY_BLOCK_GRANTS),
 )
 
 @OptIn(ExperimentalLayoutApi::class)
