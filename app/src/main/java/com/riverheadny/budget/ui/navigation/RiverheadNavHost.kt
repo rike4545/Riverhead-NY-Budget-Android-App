@@ -19,6 +19,7 @@ import com.riverheadny.budget.ui.screens.budget.taxbill.TaxBillScreen
 import com.riverheadny.budget.ui.screens.budget.taxcap.TaxCapScreen
 import com.riverheadny.budget.ui.screens.civic.CivicScreen
 import com.riverheadny.budget.ui.screens.civic.ethics.CampaignEthicsScreen
+import com.riverheadny.budget.ui.screens.civic.officials.OfficialsPensionsScreen
 import com.riverheadny.budget.ui.screens.civic.procurement.ProcurementWatchScreen
 import com.riverheadny.budget.ui.screens.civic.scorecard.ScorecardScreen
 import com.riverheadny.budget.ui.screens.civic.votes.MeetingDetailScreen
@@ -59,5 +60,6 @@ fun RiverheadNavHost(navController: NavHostController) {
         composable(Routes.SCORECARD) { ScorecardScreen() }
         composable(Routes.COMMUNITY_PRESERVATION_FUND) { CommunityPreservationFundScreen() }
         composable(Routes.COMMUNITY_BLOCK_GRANTS) { CommunityBlockGrantsScreen() }
+        composable(Routes.OFFICIALS_PENSIONS) { OfficialsPensionsScreen() }
     }
 }

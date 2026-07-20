@@ -49,4 +49,6 @@ object Routes {
 
     const val COMMUNITY_PRESERVATION_FUND = "budget/cpf"
     const val COMMUNITY_BLOCK_GRANTS = "budget/blockgrants"
+
+    const val OFFICIALS_PENSIONS = "civic/officials"
 }
