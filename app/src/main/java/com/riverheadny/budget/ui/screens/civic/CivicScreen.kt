@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Gavel
+import androidx.compose.material.icons.automirrored.filled.ListAlt
 import androidx.compose.material.icons.filled.Campaign
 import androidx.compose.material.icons.filled.HowToVote
 import androidx.compose.material.icons.filled.Savings
@@ -47,6 +48,7 @@ private val civicRealDataShortcuts = listOf(
     CivicRealDataShortcut("Campaign Donation Ethics", "How the \$1,000 aggregation rule actually works", Icons.Filled.VolunteerActivism, Routes.CAMPAIGN_ETHICS),
     CivicRealDataShortcut("Officials & Pensions", "Which elected officials also collect a public pension, and how much", Icons.Filled.Savings, Routes.OFFICIALS_PENSIONS),
     CivicRealDataShortcut("Candidate Watch", "Who's running in November 2026, campaign links, and platforms", Icons.Filled.Campaign, Routes.CANDIDATE_WATCH),
+    CivicRealDataShortcut("How the Board Was Elected", "Each member's winning vote count vs. town population and registered voters", Icons.AutoMirrored.Filled.ListAlt, Routes.BOARD_ELECTIONS),
 )
 
 @Composable

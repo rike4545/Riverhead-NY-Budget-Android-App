@@ -52,4 +52,5 @@ object Routes {
 
     const val OFFICIALS_PENSIONS = "civic/officials"
     const val CANDIDATE_WATCH = "civic/candidates"
+    const val BOARD_ELECTIONS = "civic/board-elections"
 }
