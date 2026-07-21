@@ -1,6 +1,7 @@
 package com.riverheadny.budget.ui.screens.civic.candidates
 
 import android.content.Intent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -95,50 +96,62 @@ fun CandidateWatchScreen() {
             body = "Who's running for Riverhead Town office in the November 2026 general election, their campaign links, and their stated platforms — sourced from each campaign's own website and social media plus local news coverage.",
         )
 
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Town Supervisor", fontWeight = FontWeight.Bold, color = BrandNavy, style = MaterialTheme.typography.titleMedium)
+        }
+        Text(
+            "1 seat · ${townSupervisorCandidates.size} candidates · Election Nov 3, 2026",
+            style = MaterialTheme.typography.bodySmall, color = MutedText,
+        )
+        townSupervisorCandidates.forEach { CandidateCard(it) }
+
         ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
             Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text("Election Calendar", fontWeight = FontWeight.Bold, color = BrandNavy)
+                Text("Key dates", fontWeight = FontWeight.Bold, color = BrandNavy)
                 electionCalendar.forEach { (label, value) ->
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                         Text(label, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
                         Text(value, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold, color = BrandNavy)
                     }
                 }
-                HorizontalDivider()
-                Text(
-                    "Bold = Active Candidate · * = Incumbent. Incumbent party listed first.",
-                    style = MaterialTheme.typography.labelSmall, color = MutedText,
-                )
             }
         }
 
-        Text("Town Supervisor", fontWeight = FontWeight.Bold, color = BrandNavy, style = MaterialTheme.typography.titleMedium)
-        townSupervisorCandidates.forEach { CandidateCard(it) }
-
         ElevatedCard(colors = CardDefaults.elevatedCardColors(containerColor = Color(0xFFFFF7ED))) {
             Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text("Why there's only one race", fontWeight = FontWeight.Bold, color = Color(0xFF7C2D12))
+                Text("Only the Supervisor seat is on this ballot", fontWeight = FontWeight.Bold, color = Color(0xFF7C2D12))
                 Text(NO_RACE_NOTE, style = MaterialTheme.typography.bodySmall, color = Color(0xFF7C2D12))
             }
         }
     }
 }
 
+private fun partyName(code: String): String = when (code) {
+    "D" -> "Democrat"
+    "R" -> "Republican"
+    "R/C" -> "Republican · Conservative"
+    "C" -> "Conservative"
+    else -> code
+}
+
 @Composable
 private fun CandidateCard(c: Candidate) {
     val context = LocalContext.current
+    val isDem = c.party == "D"
+    val partyColor = if (isDem) Color(0xFF1E40AF) else Color(0xFFB91C1C)
     ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
-        Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text(
-                buildString {
-                    append(c.name)
-                    if (c.incumbent) append(" *")
-                    append(" · ")
-                    append(c.party)
-                },
-                fontWeight = FontWeight.Bold,
-                color = BrandNavy,
-            )
+        Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(c.name, fontWeight = FontWeight.Bold, color = BrandNavy, style = MaterialTheme.typography.titleMedium)
+
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                Badge(
+                    text = if (c.incumbent) "Incumbent" else "Challenger",
+                    fg = if (c.incumbent) Color.White else BrandNavy,
+                    bg = if (c.incumbent) BrandNavy else BrandNavy.copy(alpha = 0.12f),
+                )
+                Badge(text = partyName(c.party), fg = partyColor, bg = partyColor.copy(alpha = 0.14f))
+            }
+
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 c.links.forEach { link ->
                     Text(
@@ -156,11 +169,24 @@ private fun CandidateCard(c: Candidate) {
                 }
             }
             Text(c.background, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
-            Text("Stated platform:", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.labelMedium)
+            Text("What they say they'll do", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.labelMedium, color = BrandNavy)
             c.platform.forEach { line ->
                 Text("• $line", style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
             }
             Text("Sources: ${c.sources}", style = MaterialTheme.typography.labelSmall, color = MutedText)
         }
     }
+}
+
+@Composable
+private fun Badge(text: String, fg: Color, bg: Color) {
+    Text(
+        text,
+        style = MaterialTheme.typography.labelSmall,
+        fontWeight = FontWeight.Bold,
+        color = fg,
+        modifier = Modifier
+            .background(bg, androidx.compose.foundation.shape.RoundedCornerShape(50))
+            .padding(horizontal = 9.dp, vertical = 3.dp),
+    )
 }
