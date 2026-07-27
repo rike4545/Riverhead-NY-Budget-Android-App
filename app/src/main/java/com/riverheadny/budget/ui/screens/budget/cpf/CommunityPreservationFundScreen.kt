@@ -156,6 +156,40 @@ fun CommunityPreservationFundScreen() {
             }
         }
 
+        // Adopted July 7, 2026 (Resolution 2026-642, unanimous) — settle the
+        // remaining CPF preservation debt ~5 years early. Figures per RiverheadLOCAL.
+        ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
+            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text("Adopted: paying off the preservation debt ~5 years early", fontWeight = FontWeight.Bold, color = BrandNavy)
+                Text(
+                    "Adopted July 7, 2026 · Res. 2026-642 · unanimous",
+                    color = Color(0xFF1F7A5C),
+                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.labelMedium,
+                )
+                Text(
+                    "On July 7, 2026 the Town Board voted unanimously (Resolution 2026-642, \"Budget Adjustment to Pay Down " +
+                        "2018 Series B Bond Refunding\") to settle the remaining CPF preservation debt about five years early, using " +
+                        "${currency(7_200_000.0)} of CPF fund balance plus about ${currency(92_000.0)} from the general fund.",
+                    color = MutedText,
+                    style = MaterialTheme.typography.bodySmall,
+                )
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text("Estimated interest saved", color = Color.DarkGray)
+                    Text("~${currency(660_000.0)}", fontWeight = FontWeight.SemiBold, color = Color(0xFF1F7A5C))
+                }
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text("CPF balance: end 2025 → after", color = MutedText, style = MaterialTheme.typography.labelSmall)
+                    Text("${currency(30_100_000.0)} → ~${currency(20_100_000.0)}", color = MutedText, style = MaterialTheme.typography.labelSmall)
+                }
+                Text(
+                    "Trades a one-time cash use for lower long-run debt service. Figures reported by RiverheadLOCAL; the vote is in the Town Board record.",
+                    color = MutedText,
+                    style = MaterialTheme.typography.labelSmall,
+                )
+            }
+        }
+
         ElevatedCard(colors = CardDefaults.elevatedCardColors(containerColor = BrandBlue.copy(alpha = 0.06f))) {
             Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text("Is the current rate still enough?", fontWeight = FontWeight.Bold, color = BrandNavy)
