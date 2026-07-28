@@ -53,7 +53,51 @@ private val members = listOf(
 )
 
 private const val NOTE = "Vote counts are the winning candidate's own total, from the Suffolk County Board of Elections' final certified results (including the 2025 supervisor recount). The registered-voter denominator is the November 2025 figure; the 2023 winners are compared against it as an approximate reference. Percentages are the winner's votes divided by each denominator — not a turnout rate."
-private const val SOURCES = "RiverheadLOCAL / Riverhead News-Review 2025 and 2023 election results · Suffolk County Board of Elections, Election Results · U.S. Census Bureau, 2020 Census."
+private const val SOURCES = "RiverheadLOCAL / Riverhead News-Review 2025 and 2023 election results · Suffolk County Board of Elections, Election Results (incl. 2019/2021/2025 general-election Riverhead town pages) · U.S. Census Bureau, 2020 Census."
+private const val PRIOR_NOTE = "Prior Riverhead town general-election results from the Suffolk County Board of Elections. Totals combine each candidate's party lines (e.g. Republican + Conservative). Turnout stayed near 39% in 2019 and 2021 and fell to about 32% in 2025 — the same low-participation pattern that decides who controls the Town's budget."
+
+private data class ElectionCandidate(val name: String, val party: String, val votes: Int, val won: Boolean)
+private data class ElectionRace(val office: String, val seats: Int, val note: String?, val candidates: List<ElectionCandidate>)
+private data class PriorElection(val year: Int, val turnoutNote: String, val races: List<ElectionRace>)
+
+private val priorElections = listOf(
+    PriorElection(2025, "7,879 of 24,429 voted for supervisor (32.3%).", listOf(
+        ElectionRace("Supervisor", 1, "Jerry Halpin flipped the seat for the Democrats by 37 votes, confirmed on a full manual recount.", listOf(
+            ElectionCandidate("Jerome (Jerry) Halpin", "D/TF", 3_958, true),
+            ElectionCandidate("Timothy C. Hubbard", "R/C", 3_921, false),
+        )),
+        ElectionRace("Council member", 2, null, listOf(
+            ElectionCandidate("Bob Kern", "R/C", 3_958, true),
+            ElectionCandidate("Kenneth Rothwell", "R/C", 3_882, true),
+            ElectionCandidate("Mark A. Woolley", "D/TF", 3_824, false),
+            ElectionCandidate("Kevin M. Shea", "D/TF", 3_515, false),
+        )),
+    )),
+    PriorElection(2021, "9,142 of 23,133 voted for supervisor (39.5%).", listOf(
+        ElectionRace("Supervisor", 1, null, listOf(
+            ElectionCandidate("Yvette Aguiar", "R/C", 5_335, true),
+            ElectionCandidate("Catherine Kent", "D/WF", 3_807, false),
+        )),
+        ElectionRace("Councilman", 2, "Current members Kenneth Rothwell and Robert Kern first won their council seats here.", listOf(
+            ElectionCandidate("Kenneth Rothwell", "R/C", 5_453, true),
+            ElectionCandidate("Robert Kern", "R/C", 5_206, true),
+            ElectionCandidate("Evelyn Hobson-Womack", "D/WF", 3_760, false),
+            ElectionCandidate("Juan Micieli-Martinez", "D/WF", 3_137, false),
+        )),
+    )),
+    PriorElection(2019, "8,587 of 21,798 voted for supervisor (39.4%).", listOf(
+        ElectionRace("Supervisor", 1, null, listOf(
+            ElectionCandidate("Yvette Aguiar", "R/C", 4_647, true),
+            ElectionCandidate("Laura M. Jens-Smith", "D/WF/I", 3_940, false),
+        )),
+        ElectionRace("Councilman", 2, "Timothy Hubbard — later supervisor, defeated in 2025 — first won a council seat here.", listOf(
+            ElectionCandidate("Timothy C. Hubbard", "R/C", 4_924, true),
+            ElectionCandidate("Frank R. Beyrodt Jr.", "R/C", 4_564, true),
+            ElectionCandidate("Diane E. Tucci", "D", 3_634, false),
+            ElectionCandidate("Patricia A. Snyder", "D", 3_130, false),
+        )),
+    )),
+)
 
 private fun pct(votes: Int, denom: Int) = "%.1f%%".format(votes.toDouble() / denom * 100)
 
@@ -81,8 +125,65 @@ fun BoardElectionsScreen() {
 
         members.forEach { MemberCard(it) }
 
+        Text("Recent general elections", fontWeight = FontWeight.Bold, color = BrandNavy, style = MaterialTheme.typography.titleMedium)
+        priorElections.forEach { PriorElectionCard(it) }
+
+        Text(PRIOR_NOTE, style = MaterialTheme.typography.labelSmall, color = MutedText)
         Text(NOTE, style = MaterialTheme.typography.labelSmall, color = MutedText)
         Text("Sources: $SOURCES", style = MaterialTheme.typography.labelSmall, color = MutedText)
+    }
+}
+
+@Composable
+private fun PriorElectionCard(election: PriorElection) {
+    ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
+        Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text("${election.year} General Election", fontWeight = FontWeight.Bold, color = BrandNavy)
+                Text(election.turnoutNote, style = MaterialTheme.typography.labelSmall, color = MutedText)
+            }
+            election.races.forEach { race ->
+                val maxVotes = race.candidates.maxOf { it.votes }
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text(race.office, fontWeight = FontWeight.Bold, color = BrandNavy, style = MaterialTheme.typography.bodyMedium)
+                        Text(if (race.seats == 1) "1 seat" else "${race.seats} seats", style = MaterialTheme.typography.labelSmall, color = MutedText)
+                    }
+                    race.note?.let { Text(it, style = MaterialTheme.typography.labelSmall, color = BrandBlue) }
+                    race.candidates.forEach { c ->
+                        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                Text(
+                                    "${if (c.won) "✓ " else ""}${c.name} (${c.party})",
+                                    color = if (c.won) BrandNavy else MutedText,
+                                    fontWeight = if (c.won) FontWeight.SemiBold else FontWeight.Normal,
+                                    style = MaterialTheme.typography.labelMedium,
+                                )
+                                Text(
+                                    "%,d".format(c.votes),
+                                    color = if (c.won) BrandNavy else MutedText,
+                                    fontWeight = if (c.won) FontWeight.Bold else FontWeight.Normal,
+                                    style = MaterialTheme.typography.labelMedium,
+                                )
+                            }
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(6.dp)
+                                    .background(Color(0xFFE2E8F0), androidx.compose.foundation.shape.RoundedCornerShape(3.dp)),
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth(fraction = c.votes.toFloat() / maxVotes)
+                                        .height(6.dp)
+                                        .background(if (c.won) BrandBlue else MutedText.copy(alpha = 0.4f), androidx.compose.foundation.shape.RoundedCornerShape(3.dp)),
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
