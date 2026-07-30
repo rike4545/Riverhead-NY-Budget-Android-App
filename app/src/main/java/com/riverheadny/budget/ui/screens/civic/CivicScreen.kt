@@ -48,6 +48,7 @@ private val civicRealDataShortcuts = listOf(
     CivicRealDataShortcut("Campaign Donation Ethics", "How the \$1,000 aggregation rule actually works", Icons.Filled.VolunteerActivism, Routes.CAMPAIGN_ETHICS),
     CivicRealDataShortcut("Officials & Pensions", "Which elected officials also collect a public pension, and how much", Icons.Filled.Savings, Routes.OFFICIALS_PENSIONS),
     CivicRealDataShortcut("Candidate Watch", "Who's running in November 2026, campaign links, and platforms", Icons.Filled.Campaign, Routes.CANDIDATE_WATCH),
+    CivicRealDataShortcut("Candidate Proposals: Cost & Benefit", "Every plank weighed evenly, plus a neutral fiscal view of the Town's tax increases", Icons.Filled.Campaign, Routes.CANDIDATE_COST_BENEFIT),
     CivicRealDataShortcut("How the Board Was Elected", "Each member's winning vote count vs. town population and registered voters", Icons.AutoMirrored.Filled.ListAlt, Routes.BOARD_ELECTIONS),
 )
 

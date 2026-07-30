@@ -32,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.riverheadny.budget.data.models.Budget2027ScenarioModel
 import com.riverheadny.budget.data.models.Budget2027TaxCapOffsetModel
+import com.riverheadny.budget.data.models.CloseTheGap2027
 import com.riverheadny.budget.data.models.DepartmentBudgetLensData
 import com.riverheadny.budget.ui.components.HeroCard
 import com.riverheadny.budget.ui.components.PageColumn
@@ -171,6 +172,14 @@ fun SpendingReductionScreen() {
     val rawCoverage = if (payrollPressureGap > 0) grandSelected / payrollPressureGap else 0.0
     val coverage = rawCoverage.coerceAtMost(1.0)
 
+    // The real binding constraint: the cap-piercing gap, closed with only firm
+    // items + the unanimous buyout.
+    val firmSupplementTotal = supplementItems.filter { it.confidence == "firm" }.sumOf { it.amount }
+    val firmRecurringTotal = personnelFullTotal + operationalFullTotal + firmSupplementTotal
+    val capGap = CloseTheGap2027.capPiercingGap
+    val comboLowPct = ((CloseTheGap2027.RetirementIncentive.projectedSavingsLow + firmRecurringTotal) / capGap * 100).toInt()
+    val comboHighPct = ((CloseTheGap2027.RetirementIncentive.projectedSavingsHigh + firmRecurringTotal) / capGap * 100).toInt()
+
     PageColumn {
         HeroCard(
             eyebrow = "Budget",
@@ -233,6 +242,15 @@ fun SpendingReductionScreen() {
             }
         }
 
+        CapGapCard(
+            payrollPressureGap = payrollPressureGap,
+            capGap = capGap,
+            firmRecurringTotal = firmRecurringTotal,
+            comboLowPct = comboLowPct,
+            comboHighPct = comboHighPct,
+        )
+        RetirementLeverCard()
+
         ItemSection(
             title = "Personnel & Policy Savings",
             selectedAmount = personnelSelected,
@@ -264,7 +282,117 @@ fun SpendingReductionScreen() {
                 footer = "Every controllable, non-mandated line the 2026 Supplement budgets more than 30% above its trailing actuals — trimmed back to that run-rate. Tagged FIRM (operating / professional services), MODERATE (capital / maintenance that fluctuates), or VOLATILE (price-driven fuel and energy). Mandated costs — pension, workers' comp, insurance, debt service — are excluded, since their growth is obligation, not waste.",
             )
         }
+
+        SplitBoardCard()
     }
+}
+
+@Composable
+private fun CapGapCard(
+    payrollPressureGap: Double,
+    capGap: Double,
+    firmRecurringTotal: Double,
+    comboLowPct: Int,
+    comboHighPct: Int,
+) {
+    Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = CardSurface)) {
+        Column(modifier = Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("The real constraint", color = MutedText, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+            Text("Two different “gaps” — and which one actually binds", color = BrandNavy, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+            Text(
+                "The payroll-pressure gap above (${currency(payrollPressureGap)}) is the recurring cost of standing still. The number that actually forces a decision is bigger: the projected 2027 levy overshoots New York's 2% property-tax cap by about ${currency(capGap)} (a ~${CloseTheGap2027.predictedLevyPct}% levy against a ~${CloseTheGap2027.capBasePct}% ceiling). That is the real overage to resolve.",
+                color = Color(0xFF334155), style = MaterialTheme.typography.bodySmall,
+            )
+            Text("Closing it without piercing the cap", color = BrandNavy, fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
+            Text(
+                "The unanimous retirement incentive plus only the firmest line trims — nothing volatile, no fund-balance raid, no override — already sum to roughly the whole gap:",
+                color = Color(0xFF334155), style = MaterialTheme.typography.bodySmall,
+            )
+            GapTile("Retirement incentive", "${currency(CloseTheGap2027.RetirementIncentive.projectedSavingsLow)}–${currency(CloseTheGap2027.RetirementIncentive.projectedSavingsHigh)}", "Town projection · adopted 5–0", BrandMint)
+            GapTile("Firm-confidence trims", currency(firmRecurringTotal), "Excludes volatile & capital-timing items", Color(0xFF1F5F8F))
+            GapTile("Combined vs. the cap gap", "$comboLowPct–$comboHighPct%", "of the ${currency(capGap)} overage", BrandNavy)
+        }
+    }
+}
+
+@Composable
+private fun GapTile(label: String, value: String, note: String, tint: Color) {
+    Row(
+        modifier = Modifier.fillMaxWidth().background(tint.copy(alpha = 0.08f), RoundedCornerShape(10.dp)).padding(12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(label, color = MutedText, fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.labelMedium)
+            Text(note, color = MutedText, style = MaterialTheme.typography.labelSmall)
+        }
+        Text(value, color = tint, fontWeight = FontWeight.Black, style = MaterialTheme.typography.titleMedium)
+    }
+}
+
+@Composable
+private fun RetirementLeverCard() {
+    val ri = CloseTheGap2027.RetirementIncentive
+    Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = CardSurface)) {
+        Column(modifier = Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Text("Retirement incentive · ${ri.eligibleTotal} eligible", color = BrandNavy, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+            Text(
+                "The Town Board unanimously approved three voluntary retirement incentives on July 7, 2026 (${ri.resolutions}). The Town projects ${currency(ri.projectedSavingsLow)}–${currency(ri.projectedSavingsHigh)} in savings over ${ri.savingsWindow}.",
+                color = Color(0xFF334155), style = MaterialTheme.typography.bodySmall,
+            )
+            ri.eligible.forEach { u ->
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text("${u.unit} · ${u.count} eligible", fontWeight = FontWeight.SemiBold, color = BrandNavy, style = MaterialTheme.typography.labelMedium, modifier = Modifier.padding(end = 8.dp))
+                    Text(u.benefit, color = MutedText, style = MaterialTheme.typography.labelSmall)
+                }
+            }
+            Text(ri.note, color = Color(0xFF94A3B8), style = MaterialTheme.typography.labelSmall)
+        }
+    }
+}
+
+@Composable
+private fun SplitBoardCard() {
+    Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = CardSurface)) {
+        Column(modifier = Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text("The best way forward through a split board", color = BrandNavy, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+            Text(
+                "Closing the gap has to pass a divided board: a Democratic Supervisor with a four-member Republican Council majority. Under NY Town Law the Supervisor prepares the tentative budget and the Council adopts it, so a durable plan needs both. These levers are ordered by how well each survives that split — least partisan first.",
+                color = Color(0xFF334155), style = MaterialTheme.typography.bodySmall,
+            )
+            CloseTheGap2027.paths.forEachIndexed { i, p ->
+                Column(
+                    modifier = Modifier.fillMaxWidth().background(Color(0xFFF8FAFC), RoundedCornerShape(12.dp)).padding(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Row {
+                        Text("${i + 1}", color = MutedText, fontWeight = FontWeight.Black, style = MaterialTheme.typography.labelMedium, modifier = Modifier.padding(end = 8.dp))
+                        Text(p.name, fontWeight = FontWeight.SemiBold, color = BrandNavy, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+                    }
+                    val (sc, sbg) = standingColors(p.standing)
+                    Text(
+                        p.standing.label, color = sc, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.labelSmall,
+                        modifier = Modifier.background(sbg, RoundedCornerShape(999.dp)).padding(horizontal = 8.dp, vertical = 2.dp),
+                    )
+                    Text("Closes: ${p.closes}", color = BrandMint, fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.labelMedium)
+                    Text(p.politics, color = MutedText, style = MaterialTheme.typography.bodySmall)
+                }
+            }
+            Text(CloseTheGap2027.pragmaticReading, color = Color(0xFF1E293B), style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Medium)
+            Text(
+                "Board composition from the November 2025 results; budget roles per NY Town Law §§104–106. Cap-override mechanics per General Municipal Law §3-c (a 60% vote of the governing body).",
+                color = Color(0xFF94A3B8), style = MaterialTheme.typography.labelSmall,
+            )
+        }
+    }
+}
+
+private fun standingColors(s: CloseTheGap2027.Standing): Pair<Color, Color> = when (s) {
+    CloseTheGap2027.Standing.AGREED, CloseTheGap2027.Standing.LOW_FRICTION -> Color(0xFF1F7A5C) to Color(0xFFD1FAE5)
+    CloseTheGap2027.Standing.NEUTRAL -> Color(0xFF1E40AF) to Color(0xFFDBEAFE)
+    CloseTheGap2027.Standing.ONE_TIME -> Color(0xFFB45309) to Color(0xFFFEF3C7)
+    CloseTheGap2027.Standing.DELIBERATE -> Color(0xFF7C3AED) to Color(0xFFF3E8FF)
+    CloseTheGap2027.Standing.BLUNT -> Color(0xFFB91C1C) to Color(0xFFFEE2E2)
 }
 
 @Composable

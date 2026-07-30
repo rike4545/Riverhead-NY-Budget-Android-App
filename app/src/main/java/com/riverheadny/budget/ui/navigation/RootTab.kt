@@ -52,5 +52,6 @@ object Routes {
 
     const val OFFICIALS_PENSIONS = "civic/officials"
     const val CANDIDATE_WATCH = "civic/candidates"
+    const val CANDIDATE_COST_BENEFIT = "civic/candidate-cost-benefit"
     const val BOARD_ELECTIONS = "civic/board-elections"
 }
