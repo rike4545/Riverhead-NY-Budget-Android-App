@@ -184,12 +184,23 @@ fun SpendingReductionScreen() {
         HeroCard(
             eyebrow = "Budget",
             title = "2027 Spending Reduction",
-            body = "A real, sourced recurring spending-reduction package for the 2027 budget — not a wishlist. Toggle items to build your own package and watch it move against the modeled payroll-pressure gap.",
+            body = "Riverhead's 2027 budget is on track to pierce the state tax cap. Here's the plainest way to close the gap — the plan first, then the detail as far as you want it.",
         )
 
+        // Answer first: the real cap gap and the plan that closes it.
+        CapGapCard(
+            payrollPressureGap = payrollPressureGap,
+            capGap = capGap,
+            firmRecurringTotal = firmRecurringTotal,
+            comboLowPct = comboLowPct,
+            comboHighPct = comboHighPct,
+        )
+        RetirementLeverCard()
+
+        // Then the interactive tool to explore / build the package.
         Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = CardSurface)) {
             Column(modifier = Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text("YOUR SELECTED PACKAGE", color = MutedText, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+                Text("BUILD YOUR OWN PACKAGE", color = MutedText, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
                 Text(currency(grandSelected), color = BrandMint, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Black)
                 Text("out of ${currency(grandFullTotal)} available", color = MutedText, style = MaterialTheme.typography.bodySmall)
 
@@ -207,7 +218,7 @@ fun SpendingReductionScreen() {
                     ) {}
                 }
                 Text(
-                    "${(rawCoverage * 100).toInt()}% of the ${currency(payrollPressureGap)} modeled 2027 payroll-pressure gap${if (rawCoverage >= 1.0) " — fully covered" else ""} — the smaller of the two gaps; the ~\$2.62M cap-piercing gap below is the one that actually binds.",
+                    "${(rawCoverage * 100).toInt()}% of the ${currency(payrollPressureGap)} modeled 2027 payroll-pressure gap${if (rawCoverage >= 1.0) " — fully covered" else ""} — the smaller of the two gaps; the ~\$2.62M cap-piercing gap above is the one that actually binds.",
                     color = MutedText,
                     style = MaterialTheme.typography.labelSmall,
                 )
@@ -227,29 +238,18 @@ fun SpendingReductionScreen() {
             }
         }
 
-        Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFF8FAFC))) {
-            Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text(
-                    "Union wage growth (\$907.9K of modeled PBA/SOA/CSEA pressure) is the single largest driver in the 2027 model, but it's contractually locked and cannot be treated as a spending-reduction lever without a successor labor agreement — it stays on the pressure side of the budget, not here. Every dollar below is traceable to either a named formula input or an actual 2025→2026 account-level change in the Town's own 2026 Budget Supplement. Tap any item to test a package that leaves it out.",
-                    color = Color(0xFF334155),
-                    style = MaterialTheme.typography.bodySmall,
-                )
-                Text(
-                    "PBA and SOA contracts both expire 12/31/2026 (CSEA is already locked through a ratified 2026-2029 agreement). New York law routes police/fire bargaining impasses to binding arbitration rather than legislative resolution, and comparable Long Island police contracts have taken 1-3+ years past expiration to settle — so the PBA/SOA figures above will likely remain placeholder estimates through the 2027 budget cycle, with any successor terms applied retroactively once reached.",
-                    color = Color(0xFF334155),
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            }
+        ExpandableCard("About this package & scope") {
+            Text(
+                "Union wage growth (\$907.9K of modeled PBA/SOA/CSEA pressure) is the single largest driver in the 2027 model, but it's contractually locked and cannot be treated as a spending-reduction lever without a successor labor agreement — it stays on the pressure side of the budget, not here. Every dollar below is traceable to either a named formula input or an actual 2025→2026 account-level change in the Town's own 2026 Budget Supplement.",
+                color = Color(0xFF334155),
+                style = MaterialTheme.typography.bodySmall,
+            )
+            Text(
+                "PBA and SOA contracts both expire 12/31/2026 (CSEA is already locked through a ratified 2026-2029 agreement). New York law routes police/fire bargaining impasses to binding arbitration rather than legislative resolution, and comparable Long Island police contracts have taken 1-3+ years past expiration to settle — so the PBA/SOA figures above will likely remain placeholder estimates through the 2027 budget cycle, with any successor terms applied retroactively once reached.",
+                color = Color(0xFF334155),
+                style = MaterialTheme.typography.bodySmall,
+            )
         }
-
-        CapGapCard(
-            payrollPressureGap = payrollPressureGap,
-            capGap = capGap,
-            firmRecurringTotal = firmRecurringTotal,
-            comboLowPct = comboLowPct,
-            comboHighPct = comboHighPct,
-        )
-        RetirementLeverCard()
 
         ItemSection(
             title = "Personnel & Policy Savings",
@@ -300,7 +300,7 @@ private fun CapGapCard(
             Text("The real constraint", color = MutedText, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
             Text("Two different “gaps” — and which one actually binds", color = BrandNavy, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
             Text(
-                "The payroll-pressure gap above (${currency(payrollPressureGap)}) is the recurring cost of standing still. The number that actually forces a decision is bigger: the projected 2027 levy overshoots New York's 2% property-tax cap by about ${currency(capGap)} (a ~${CloseTheGap2027.predictedLevyPct}% levy against a ~${CloseTheGap2027.capBasePct}% ceiling). That is the real overage to resolve.",
+                "There are two numbers. The payroll-pressure gap (${currency(payrollPressureGap)}) is the recurring cost of standing still. The one that actually forces a decision is bigger: the projected 2027 levy overshoots New York's 2% property-tax cap by about ${currency(capGap)} (a ~${CloseTheGap2027.predictedLevyPct}% levy against a ~${CloseTheGap2027.capBasePct}% ceiling). That is the real overage to resolve.",
                 color = Color(0xFF334155), style = MaterialTheme.typography.bodySmall,
             )
             Text("Closing it without piercing the cap", color = BrandNavy, fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
@@ -352,10 +352,32 @@ private fun RetirementLeverCard() {
 }
 
 @Composable
-private fun SplitBoardCard() {
+private fun ExpandableCard(title: String, content: @Composable androidx.compose.foundation.layout.ColumnScope.() -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
     Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = CardSurface)) {
-        Column(modifier = Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text("The best way forward through a split board", color = BrandNavy, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier.fillMaxWidth().clickable { expanded = !expanded }.padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(title, fontWeight = FontWeight.Bold, color = BrandNavy, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f).padding(end = 8.dp))
+                Text(if (expanded) "Hide ▴" else "Open ▾", color = MutedText, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.labelMedium)
+            }
+            if (expanded) {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    content = content,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SplitBoardCard() {
+    ExpandableCard("Will it pass a divided board? The politics") {
             Text(
                 "Closing the gap has to pass a divided board: a Democratic Supervisor with a four-member Republican Council majority. Under NY Town Law the Supervisor prepares the tentative budget and the Council adopts it, so a durable plan needs both. These levers are ordered by how well each survives that split — least partisan first.",
                 color = Color(0xFF334155), style = MaterialTheme.typography.bodySmall,
@@ -383,7 +405,6 @@ private fun SplitBoardCard() {
                 "Board composition from the November 2025 results; budget roles per NY Town Law §§104–106. Cap-override mechanics per General Municipal Law §3-c (a 60% vote of the governing body).",
                 color = Color(0xFF94A3B8), style = MaterialTheme.typography.labelSmall,
             )
-        }
     }
 }
 
