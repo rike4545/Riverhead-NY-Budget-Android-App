@@ -47,7 +47,7 @@ private val electionCalendar = listOf(
     "Filing Deadline (Major Parties)" to "April 6, 2026",
     "Filing Deadline (Independents)" to "June 15, 2026",
     "Filing Deadline (Other Parties)" to "July 2026",
-    "Primary" to "June 23, 2026",
+    "Primary (held)" to "June 23, 2026",
     "General Election" to "November 3, 2026",
 )
 

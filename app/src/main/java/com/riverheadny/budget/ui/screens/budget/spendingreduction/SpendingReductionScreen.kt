@@ -207,7 +207,7 @@ fun SpendingReductionScreen() {
                     ) {}
                 }
                 Text(
-                    "${(rawCoverage * 100).toInt()}% of the ${currency(payrollPressureGap)} modeled 2027 payroll-pressure gap${if (rawCoverage >= 1.0) " — fully covered" else ""}",
+                    "${(rawCoverage * 100).toInt()}% of the ${currency(payrollPressureGap)} modeled 2027 payroll-pressure gap${if (rawCoverage >= 1.0) " — fully covered" else ""} — the smaller of the two gaps; the ~\$2.62M cap-piercing gap below is the one that actually binds.",
                     color = MutedText,
                     style = MaterialTheme.typography.labelSmall,
                 )
