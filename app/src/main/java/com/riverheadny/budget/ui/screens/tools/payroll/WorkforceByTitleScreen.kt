@@ -37,12 +37,30 @@ import kotlinx.serialization.json.Json
 // year (2022 onward). Reads the shared titles-by-year.json asset (same data as
 // the web "Workforce by Title" view).
 @Serializable
+private data class Wage(
+    val n: Int = 0,
+    val hrAvg: Double? = null,
+    val hrMed: Double? = null,
+    val annAvg: Int? = null,
+    val annMed: Int? = null,
+)
+
+@Serializable
 private data class TitleRow(
     val title: String,
     val counts: Map<String, Int> = emptyMap(),
     val latest: Int = 0,
     val delta: Int = 0,
+    val wage2026: Wage? = null,
 )
+
+private fun wageLine(w: Wage): String {
+    val parts = mutableListOf<String>()
+    w.hrAvg?.let { parts += "avg $%.4f/hr".format(it) }
+    w.hrMed?.let { parts += "median $%.4f/hr".format(it) }
+    w.annAvg?.let { parts += "~$%,d/yr".format(it) }
+    return if (parts.isEmpty()) "" else "2026 authorized · " + parts.joinToString(" · ")
+}
 
 @Serializable
 private data class TitlesFile(
@@ -150,6 +168,12 @@ private fun TitleCard(t: TitleRow, years: List<Int>, latestYear: String) {
                             style = MaterialTheme.typography.titleMedium,
                         )
                     }
+                }
+            }
+            t.wage2026?.let { w ->
+                val line = wageLine(w)
+                if (line.isNotEmpty()) {
+                    Text(line, color = Color(0xFF0F766E), style = MaterialTheme.typography.labelMedium)
                 }
             }
         }
