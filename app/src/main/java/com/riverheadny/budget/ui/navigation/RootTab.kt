@@ -24,6 +24,7 @@ object Routes {
     const val CIVIC = "civic"
     const val TOOLS = "tools"
     const val MORE = "more"
+    const val BUDGET_GUIDE = "more/guide"
 
     const val FUNDS_LIST = "budget/funds"
     const val FUND_DETAIL = "budget/funds/{code}"

@@ -29,6 +29,7 @@ import com.riverheadny.budget.ui.screens.civic.votes.MeetingDetailScreen
 import com.riverheadny.budget.ui.screens.civic.votes.MeetingsListScreen
 import com.riverheadny.budget.ui.screens.home.HomeScreen
 import com.riverheadny.budget.ui.screens.more.MoreScreen
+import com.riverheadny.budget.ui.screens.more.BudgetGuideScreen
 import com.riverheadny.budget.ui.screens.tools.ToolsScreen
 import com.riverheadny.budget.ui.screens.tools.payroll.PayrollScreen
 import com.riverheadny.budget.ui.screens.tools.payroll.WorkforceByTitleScreen
@@ -40,7 +41,8 @@ fun RiverheadNavHost(navController: NavHostController) {
         composable(Routes.BUDGET) { BudgetHubScreen(navController) }
         composable(Routes.CIVIC) { CivicScreen(navController) }
         composable(Routes.TOOLS) { ToolsScreen(navController) }
-        composable(Routes.MORE) { MoreScreen() }
+        composable(Routes.MORE) { MoreScreen(navController) }
+        composable(Routes.BUDGET_GUIDE) { BudgetGuideScreen() }
 
         composable(Routes.FUNDS_LIST) { FundsListScreen(navController) }
         composable(
