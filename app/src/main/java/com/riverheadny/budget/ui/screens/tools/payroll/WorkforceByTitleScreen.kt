@@ -47,6 +47,8 @@ private data class Wage(
     // hourly column blank: the annual bracketed between the two CSEA workweeks.
     val hrBasisLow: Int? = null,
     val hrBasisHigh: Int? = null,
+    val hrLowLabel: String? = null,
+    val hrHighLabel: String? = null,
     val hrDerivedMin: Double? = null,
     val hrDerivedMax: Double? = null,
 )
@@ -77,8 +79,9 @@ private fun wageLine(w: Wage): String {
 // salary for — kept out of wageLine so it never reads as a Board-authorized rate.
 private fun derivedWageLine(w: Wage): String {
     if (w.hrMin != null || w.hrDerivedMin == null || w.hrDerivedMax == null) return ""
-    return "≈ $%.4f/hr on a 40-hour week to $%.4f/hr on a 35-hour week — computed by this app, not a published rate"
-        .format(w.hrDerivedMin, w.hrDerivedMax)
+    if (w.hrLowLabel == null || w.hrHighLabel == null) return ""
+    return "≈ $%.4f/hr on %s to $%.4f/hr on %s — computed by this app, not a published rate"
+        .format(w.hrDerivedMin, w.hrLowLabel, w.hrDerivedMax, w.hrHighLabel)
 }
 
 @Serializable
@@ -161,10 +164,14 @@ fun WorkforceByTitleScreen() {
                 "other full-time title no hourly rate is published, so the grey ≈ line brackets it: the annual " +
                 "over 2,088 hours (a 40-hour week) to over 1,827 hours (a 35-hour week). Those are the two regular " +
                 "workweeks in the CSEA agreement on Riverhead's 261-workday year, and all 16 of the Water " +
-                "District's published rates land on exactly one or the other. The rosters don't say which workweek " +
-                "each title is on — that's why it's a range, and why it's arithmetic by this app rather than a rate " +
-                "the Board voted on. No hourly figure at all is shown for elected officials, board members (paid a " +
-                "stipend, not a wage) or sworn police, whose contract workweek these resolutions don't state.",
+                "District's published rates land on exactly one or the other. The Town pays biweekly, but the rate " +
+                "is struck on that 261-day year, not on 26 × 80 hours. Police Officers and Detectives are bracketed " +
+                "on their own contract: the PBA agreement sets an eight-hour tour and a duty chart of 238 work days " +
+                "a year, or 260 during an officer's first 30 months. The rosters don't say which schedule each " +
+                "title is on — that's why it's a range, and why it's arithmetic by this app rather than a rate the " +
+                "Board voted on. No hourly figure at all is shown for elected officials, board members (paid a " +
+                "stipend, not a wage), or sergeants and above, a separate Superior Officers unit whose duty chart " +
+                "we don't hold.",
             color = MutedText,
             style = MaterialTheme.typography.labelSmall,
         )
