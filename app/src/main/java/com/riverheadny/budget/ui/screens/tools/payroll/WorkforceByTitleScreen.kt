@@ -39,10 +39,10 @@ import kotlinx.serialization.json.Json
 @Serializable
 private data class Wage(
     val n: Int = 0,
-    val hrAvg: Double? = null,
-    val hrMed: Double? = null,
-    val annAvg: Int? = null,
-    val annMed: Int? = null,
+    val hrMin: Double? = null,
+    val hrMax: Double? = null,
+    val annMin: Int? = null,
+    val annMax: Int? = null,
 )
 
 @Serializable
@@ -56,10 +56,15 @@ private data class TitleRow(
 
 private fun wageLine(w: Wage): String {
     val parts = mutableListOf<String>()
-    w.hrAvg?.let { parts += "avg $%.4f/hr".format(it) }
-    w.hrMed?.let { parts += "median $%.4f/hr".format(it) }
-    w.annAvg?.let { parts += "~$%,d/yr".format(it) }
-    return if (parts.isEmpty()) "" else "2026 authorized · " + parts.joinToString(" · ")
+    if (w.hrMin != null && w.hrMax != null) {
+        parts += if (w.hrMin == w.hrMax) "$%.4f/hr".format(w.hrMin)
+        else "$%.4f–$%.4f/hr".format(w.hrMin, w.hrMax)
+    }
+    if (w.annMin != null && w.annMax != null) {
+        parts += if (w.annMin == w.annMax) "$%,d/yr".format(w.annMin)
+        else "$%,d–$%,d/yr".format(w.annMin, w.annMax)
+    }
+    return if (parts.isEmpty()) "" else "2026 authorized rate · " + parts.joinToString(" · ")
 }
 
 @Serializable
