@@ -43,6 +43,12 @@ private data class Wage(
     val hrMax: Double? = null,
     val annMin: Int? = null,
     val annMax: Int? = null,
+    // Present only where the resolution prints an annual salary and leaves the
+    // hourly column blank: the annual bracketed between the two CSEA workweeks.
+    val hrBasisLow: Int? = null,
+    val hrBasisHigh: Int? = null,
+    val hrDerivedMin: Double? = null,
+    val hrDerivedMax: Double? = null,
 )
 
 @Serializable
@@ -65,6 +71,14 @@ private fun wageLine(w: Wage): String {
         else "$%,d–$%,d/yr".format(w.annMin, w.annMax)
     }
     return if (parts.isEmpty()) "" else "2026 authorized rate · " + parts.joinToString(" · ")
+}
+
+// The computed hourly bracket for titles the Town publishes only an annual
+// salary for — kept out of wageLine so it never reads as a Board-authorized rate.
+private fun derivedWageLine(w: Wage): String {
+    if (w.hrMin != null || w.hrDerivedMin == null || w.hrDerivedMax == null) return ""
+    return "≈ $%.4f/hr on a 40-hour week to $%.4f/hr on a 35-hour week — computed by this app, not a published rate"
+        .format(w.hrDerivedMin, w.hrDerivedMax)
 }
 
 @Serializable
@@ -140,6 +154,20 @@ fun WorkforceByTitleScreen() {
         if (data.note.isNotEmpty()) {
             Text(data.note, color = MutedText, style = MaterialTheme.typography.labelSmall)
         }
+        Text(
+            "The teal line is what the Board's January 2026 salary resolutions actually print. Those rosters have " +
+                "an ANNUAL SALARY column and an HOURLY column, but the Town fills the hourly one in only for " +
+                "part-time staff and for the Water District — the one department that publishes both. For every " +
+                "other full-time title no hourly rate is published, so the grey ≈ line brackets it: the annual " +
+                "over 2,088 hours (a 40-hour week) to over 1,827 hours (a 35-hour week). Those are the two regular " +
+                "workweeks in the CSEA agreement on Riverhead's 261-workday year, and all 16 of the Water " +
+                "District's published rates land on exactly one or the other. The rosters don't say which workweek " +
+                "each title is on — that's why it's a range, and why it's arithmetic by this app rather than a rate " +
+                "the Board voted on. No hourly figure at all is shown for elected officials, board members (paid a " +
+                "stipend, not a wage) or sworn police, whose contract workweek these resolutions don't state.",
+            color = MutedText,
+            style = MaterialTheme.typography.labelSmall,
+        )
     }
 }
 
@@ -179,6 +207,10 @@ private fun TitleCard(t: TitleRow, years: List<Int>, latestYear: String) {
                 val line = wageLine(w)
                 if (line.isNotEmpty()) {
                     Text(line, color = Color(0xFF0F766E), style = MaterialTheme.typography.labelMedium)
+                }
+                val derived = derivedWageLine(w)
+                if (derived.isNotEmpty()) {
+                    Text(derived, color = MutedText, style = MaterialTheme.typography.labelSmall)
                 }
             }
         }
