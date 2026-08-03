@@ -31,6 +31,7 @@ import com.riverheadny.budget.ui.screens.home.HomeScreen
 import com.riverheadny.budget.ui.screens.more.MoreScreen
 import com.riverheadny.budget.ui.screens.tools.ToolsScreen
 import com.riverheadny.budget.ui.screens.tools.payroll.PayrollScreen
+import com.riverheadny.budget.ui.screens.tools.payroll.WorkforceByTitleScreen
 
 @Composable
 fun RiverheadNavHost(navController: NavHostController) {
@@ -51,6 +52,7 @@ fun RiverheadNavHost(navController: NavHostController) {
         composable(Routes.TAX_BILL) { TaxBillScreen() }
         composable(Routes.FUND_BALANCE) { FundBalanceScreen() }
         composable(Routes.PAYROLL) { PayrollScreen() }
+        composable(Routes.WORKFORCE_BY_TITLE) { WorkforceByTitleScreen() }
         composable(Routes.PROCUREMENT_WATCH) { ProcurementWatchScreen() }
         composable(Routes.CAMPAIGN_ETHICS) { CampaignEthicsScreen() }
         composable(Routes.MEETINGS_LIST) { MeetingsListScreen(navController) }
