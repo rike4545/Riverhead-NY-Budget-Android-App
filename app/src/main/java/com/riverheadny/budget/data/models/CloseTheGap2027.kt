@@ -67,7 +67,7 @@ object CloseTheGap2027 {
             "Use a modest, disclosed one-time fund-balance appropriation for the residual only",
             "whatever gap remains after the recurring measures above",
             Standing.ONE_TIME,
-            "An easy vote — it raises no tax and cuts no service — but it spends one-time money on recurring cost, so it can only bridge a transitional remainder. Appropriating the full \$2.62M would burn ~7.8% of the General Fund cushion for something that recurs.",
+            "An easy vote — it raises no tax and cuts no service — but it spends one-time money on recurring cost, so it can only bridge a transitional remainder. Appropriating the full \$2.62M would burn ~8.8% of the \$29.7M unassigned fund balance — the truly flexible cushion — for something that recurs.",
         ),
         GapPath(
             "If the Board still wants the spending, override the cap — deliberately and in public",
