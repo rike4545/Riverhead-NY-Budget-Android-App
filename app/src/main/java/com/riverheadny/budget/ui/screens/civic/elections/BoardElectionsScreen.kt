@@ -18,6 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.riverheadny.budget.data.models.CodeDecision
+import com.riverheadny.budget.data.models.ElectorTest
+import com.riverheadny.budget.data.models.OfficeQualifications
+import com.riverheadny.budget.data.models.OfficeRequirement
 import com.riverheadny.budget.ui.components.HeroCard
 import com.riverheadny.budget.ui.components.PageColumn
 import com.riverheadny.budget.ui.theme.BrandBlue
@@ -128,6 +132,64 @@ fun BoardElectionsScreen() {
         Text("Recent general elections", fontWeight = FontWeight.Bold, color = BrandNavy, style = MaterialTheme.typography.titleMedium)
         priorElections.forEach { PriorElectionCard(it) }
 
+        // ---- What the law actually requires of these offices ----
+        Text("What the job legally requires", fontWeight = FontWeight.Bold, color = BrandNavy, style = MaterialTheme.typography.titleMedium)
+        Text(
+            "The votes above put these people in office. This is what the law asked of them before they could stand for it — for the Supervisor and every Council member alike, since the qualifications are identical.",
+            style = MaterialTheme.typography.bodySmall, color = Color.DarkGray,
+        )
+        OfficeQualifications.electedRequirements.forEach { RequirementCard(it) }
+
+        ElectorCard()
+
+        ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
+            Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(OfficeQualifications.NOT_REQUIRED_TITLE, fontWeight = FontWeight.Bold, color = BrandNavy)
+                OfficeQualifications.notRequired.forEach {
+                    Text("\u2715  $it", style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+                }
+                Text(OfficeQualifications.NOT_REQUIRED_CLOSING, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+            }
+        }
+
+        ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
+            Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text(OfficeQualifications.TERM_LIMIT_TITLE, fontWeight = FontWeight.Bold, color = BrandNavy)
+                Text(OfficeQualifications.TERM_LIMIT_ADOPTED, style = MaterialTheme.typography.labelSmall, color = MutedText)
+                Text(OfficeQualifications.TERM_LIMIT_INTENT, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+                Text(OfficeQualifications.TERM_LIMIT_MECHANICS, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+                Text(OfficeQualifications.TERM_LIMIT_AUTHORITY, style = MaterialTheme.typography.labelSmall, color = MutedText)
+            }
+        }
+
+        ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
+            Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(OfficeQualifications.ELECTED_OFFICES_TITLE, fontWeight = FontWeight.Bold, color = BrandNavy)
+                Text(OfficeQualifications.ELECTED_OFFICES_LEDE, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+                Text(OfficeQualifications.electedOffices.joinToString(" · "), style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold, color = BrandBlue)
+                OfficeQualifications.codeDecisions.forEach { DecisionRow(it) }
+            }
+        }
+
+        ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
+            Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(OfficeQualifications.ODD_YEAR_TITLE, fontWeight = FontWeight.Bold, color = BrandNavy)
+                OfficeQualifications.oddYearBody.forEach {
+                    Text(it, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+                }
+            }
+        }
+
+        ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
+            Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(OfficeQualifications.STAFF_TITLE, fontWeight = FontWeight.Bold, color = BrandNavy)
+                Text(OfficeQualifications.STAFF_LEDE, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+            }
+        }
+        OfficeQualifications.staffRequirements.forEach { RequirementCard(it) }
+        Text(OfficeQualifications.OFFICER_VS_EMPLOYEE, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+        Text(OfficeQualifications.DISCLAIMER, style = MaterialTheme.typography.labelSmall, color = MutedText)
+
         Text(PRIOR_NOTE, style = MaterialTheme.typography.labelSmall, color = MutedText)
         Text(NOTE, style = MaterialTheme.typography.labelSmall, color = MutedText)
         Text("Sources: $SOURCES", style = MaterialTheme.typography.labelSmall, color = MutedText)
@@ -234,5 +296,48 @@ private fun MemberCard(m: ElectionMember) {
             }
             Text(m.result, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
         }
+    }
+}
+
+@Composable
+private fun RequirementCard(r: OfficeRequirement) {
+    ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
+        Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(r.label.uppercase(), style = MaterialTheme.typography.labelSmall, color = MutedText)
+            Text(r.value, fontWeight = FontWeight.Bold, color = BrandNavy)
+            Text(r.detail, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+            Text(r.source, style = MaterialTheme.typography.labelSmall, color = MutedText)
+        }
+    }
+}
+
+@Composable
+private fun ElectorCard() {
+    ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
+        Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(OfficeQualifications.ELECTOR_TITLE, fontWeight = FontWeight.Bold, color = BrandNavy)
+            Text(OfficeQualifications.ELECTOR_LEDE, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+            OfficeQualifications.electorTests.forEach { ElectorTestRow(it) }
+            Text(OfficeQualifications.ELECTOR_DISQUALIFIED, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+            Text(OfficeQualifications.ELECTOR_NOTE, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+            Text(OfficeQualifications.ELECTOR_SOURCES, style = MaterialTheme.typography.labelSmall, color = MutedText)
+        }
+    }
+}
+
+@Composable
+private fun ElectorTestRow(t: ElectorTest) {
+    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        Text(t.label, fontWeight = FontWeight.SemiBold, color = BrandBlue, style = MaterialTheme.typography.bodySmall)
+        Text(t.detail, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+    }
+}
+
+@Composable
+private fun DecisionRow(d: CodeDecision) {
+    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        Text(d.what, fontWeight = FontWeight.SemiBold, color = BrandNavy, style = MaterialTheme.typography.bodySmall)
+        Text(d.detail, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+        Text(d.source, style = MaterialTheme.typography.labelSmall, color = MutedText)
     }
 }
