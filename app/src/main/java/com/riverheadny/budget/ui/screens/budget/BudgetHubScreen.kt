@@ -57,6 +57,7 @@ private val realDataShortcuts = listOf(
     RealDataShortcut("My Tax Bill", "Estimate your bill from assessed value and the real levy", Icons.Filled.Calculate, Routes.TAX_BILL),
     RealDataShortcut("Fund Balance", "Real 2025 AFR unassigned fund balance vs. policy targets", Icons.Filled.AccountBalance, Routes.FUND_BALANCE),
     RealDataShortcut("Payroll Explorer", "Real actual earnings 2018-2025, headcount, top earners", Icons.Filled.People, Routes.PAYROLL),
+    RealDataShortcut("Road Spending per Mile", "Riverhead vs. every Suffolk town, on the Comptroller's own figures", Icons.Filled.Gavel, Routes.ROAD_SPENDING),
     RealDataShortcut("Workforce by Title", "How many hold each job title, and the change 2022-2025", Icons.Filled.People, Routes.WORKFORCE_BY_TITLE),
     RealDataShortcut("2027 Spending Reduction", "A real, sourced recurring savings package, toggleable", Icons.Filled.Gavel, Routes.SPENDING_REDUCTION),
     RealDataShortcut("2027 Budget Simulator", "Adjust the levy, COLA, and savings to test the plan", Icons.Filled.Tune, Routes.BUDGET_SIMULATOR),

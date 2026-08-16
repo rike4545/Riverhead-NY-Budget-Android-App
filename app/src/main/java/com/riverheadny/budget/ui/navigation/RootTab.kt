@@ -33,6 +33,7 @@ object Routes {
     const val GENERAL_FUND_HISTORY = "budget/generalfund"
     const val TAX_CAP = "budget/taxcap"
     const val TAX_BILL = "budget/taxbill"
+    const val ROAD_SPENDING = "budget/roadspending"
     const val FUND_BALANCE = "budget/fundbalance"
     const val PAYROLL = "tools/payroll"
     const val WORKFORCE_BY_TITLE = "tools/payroll/titles"
