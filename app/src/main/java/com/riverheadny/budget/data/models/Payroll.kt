@@ -49,6 +49,12 @@ data class PayrollRecordRaw(
     val n: String,
     val d: String? = null,
     val t: String? = null,
+    /**
+     * Payroll file number. Stable per person and survives a name change — three
+     * people in this dataset appear under two surnames — so it is the right
+     * identity key for anything that tracks someone across years.
+     */
+    val f: String? = null,
     /** Pay class, e.g. "PBA 8-40". Names the bargaining unit in many cases. */
     val c: String? = null,
     /** Union / group code: PBA, SOA, CSE, NON, ELE, APT, CON. */

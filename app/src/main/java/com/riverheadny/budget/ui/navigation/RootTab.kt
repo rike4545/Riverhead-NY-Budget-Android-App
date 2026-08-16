@@ -37,6 +37,7 @@ object Routes {
     const val FUND_BALANCE = "budget/fundbalance"
     const val PAYROLL = "tools/payroll"
     const val OVERTIME_STAFFING = "tools/overtimestaffing"
+    const val SEPARATION_PAY = "tools/separationpay"
     const val WORKFORCE_BY_TITLE = "tools/payroll/titles"
 
     const val PROCUREMENT_WATCH = "civic/procurement"
