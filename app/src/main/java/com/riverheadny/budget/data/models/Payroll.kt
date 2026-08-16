@@ -49,4 +49,20 @@ data class PayrollRecordRaw(
     val n: String,
     val d: String? = null,
     val t: String? = null,
-)
+    /**
+     * Which of this row's descriptive fields were carried back from the same
+     * person's other years rather than reported for this one: "d" department,
+     * "t" title, "c" pay class, "u" union.
+     *
+     * The Town's export only carries title, department and pay class from 2022
+     * onward. Where a person held one unchanging value across every year on
+     * record the ETL carries it back — but only where the observed values are
+     * unanimous, so a promotion is never written into an earlier year. Anything
+     * inferred is flagged here so it can be shown as such, and excluded from any
+     * analysis that needs ground truth.
+     */
+    val i: String? = null,
+) {
+    val titleIsInferred: Boolean get() = i?.contains("t") == true
+    val departmentIsInferred: Boolean get() = i?.contains("d") == true
+}
