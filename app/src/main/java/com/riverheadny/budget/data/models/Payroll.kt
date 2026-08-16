@@ -49,6 +49,16 @@ data class PayrollRecordRaw(
     val n: String,
     val d: String? = null,
     val t: String? = null,
+    /** Pay class, e.g. "PBA 8-40". Names the bargaining unit in many cases. */
+    val c: String? = null,
+    /** Union / group code: PBA, SOA, CSE, NON, ELE, APT, CON. */
+    val u: String? = null,
+    /** Regular (base) earnings. */
+    val r: Double = 0.0,
+    /** Overtime earnings. */
+    val o: Double = 0.0,
+    /** Gross pay. */
+    val g: Double = 0.0,
     /**
      * Which of this row's descriptive fields were carried back from the same
      * person's other years rather than reported for this one: "d" department,

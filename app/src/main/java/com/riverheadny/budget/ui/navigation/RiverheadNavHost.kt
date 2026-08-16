@@ -22,6 +22,7 @@ import com.riverheadny.budget.ui.screens.civic.ethics.CampaignEthicsScreen
 import com.riverheadny.budget.ui.screens.civic.candidates.CandidateWatchScreen
 import com.riverheadny.budget.ui.screens.civic.candidates.CandidateCostBenefitScreen
 import com.riverheadny.budget.ui.screens.budget.roads.RoadSpendingScreen
+import com.riverheadny.budget.ui.screens.tools.payroll.OvertimeStaffingScreen
 import com.riverheadny.budget.ui.screens.civic.elections.BoardElectionsScreen
 import com.riverheadny.budget.ui.screens.civic.officials.OfficialsPensionsScreen
 import com.riverheadny.budget.ui.screens.civic.procurement.ProcurementWatchScreen
@@ -57,6 +58,7 @@ fun RiverheadNavHost(navController: NavHostController) {
         composable(Routes.FUND_BALANCE) { FundBalanceScreen() }
         composable(Routes.PAYROLL) { PayrollScreen() }
         composable(Routes.WORKFORCE_BY_TITLE) { WorkforceByTitleScreen() }
+        composable(Routes.OVERTIME_STAFFING) { OvertimeStaffingScreen() }
         composable(Routes.PROCUREMENT_WATCH) { ProcurementWatchScreen() }
         composable(Routes.CAMPAIGN_ETHICS) { CampaignEthicsScreen() }
         composable(Routes.MEETINGS_LIST) { MeetingsListScreen(navController) }
