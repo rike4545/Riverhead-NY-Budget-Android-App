@@ -64,15 +64,22 @@ object SeparationPay {
      * union-covered by definition. Lumping a police chief in with an
      * unidentifiable seasonal worker as "unlabelled" hides the most interesting
      * row in the table.
+     *
+     * Where the inference lands on the SAME real category the Town's own union
+     * code already names — ELE for elected, APT for appointed board members —
+     * return that code directly rather than a separate derived bucket. A blank
+     * code doesn't make someone a different kind of person, and emitting both
+     * produced two rows for what is really one group. Only "department head /
+     * contractual" has no corresponding raw code, so it keeps its own bucket.
      */
     private fun groupOf(r: PayrollRecordRaw): String {
         val union = r.u?.trim().orEmpty()
         if (union.isNotEmpty()) return union
         val payClass = r.c?.trim()?.lowercase().orEmpty()
         val title = r.t?.trim()?.lowercase().orEmpty()
-        if (payClass == "elected" || title == "town clerk" || title == "supervisor") return "~elected"
+        if (payClass == "elected" || title == "town clerk" || title == "supervisor") return "ELE"
+        if (title.startsWith("member of")) return "APT"
         if (payClass.contains("dept head") || payClass.contains("contractual")) return "~appointed"
-        if (title.startsWith("member of")) return "~appointed"
         return "~unknown"
     }
 
@@ -85,7 +92,6 @@ object SeparationPay {
         "APT" to "Appointed board members",
         "CON" to "Individual contract",
         "ELE" to "Elected",
-        "~elected" to "Elected — group inferred from pay class",
         "~appointed" to "Department head / appointed — group inferred",
         "~unknown" to "Group not recorded",
     )
