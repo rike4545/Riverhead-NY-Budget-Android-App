@@ -62,3 +62,77 @@ object PluralityGovernance {
         GovernanceQuestion("Contracts and development", listOf("Was an independent valuation or competing option shown?", "Did the public see the fiscal exposure before approval?", "Were recusals, campaign contributions, and conflicts handled in the open?")),
     )
 }
+
+data class BudgetChangeItem(
+    val title: String,
+    val from: String,
+    val to: String,
+    val impact: String,
+    val explanation: String,
+)
+
+/** The resident-friendly diff: not what changed numerically, but what changed in the story. */
+object BudgetChanges {
+    const val intro =
+        "This view is a resident-friendly diff: not just what changed numerically, but what changed in the budget story and what residents should ask next."
+
+    val changes: List<BudgetChangeItem> = listOf(
+        BudgetChangeItem(
+            "Budget posture", "2025 adopted baseline", "2026/2027 planning frame",
+            "More focus on recurring balance",
+            "The app now separates structural operating pressure from one-time reserve decisions.",
+        ),
+        BudgetChangeItem(
+            "Fund balance story", "Reserve level as a single number",
+            "Reserve floor, practical range, and deployable capacity",
+            "Clearer public tradeoff",
+            "Residents can see why not every dollar of fund balance should be treated as free cash.",
+        ),
+        BudgetChangeItem(
+            "Resident tax view", "Town-wide budget totals", "Household assessment examples",
+            "Easier personal context",
+            "The tax tools translate levy/rate changes into annual, monthly, and per-\$100K views.",
+        ),
+        BudgetChangeItem(
+            "Verification", "Analysis screens", "Source trail plus accuracy watchlist",
+            "Higher trust",
+            "The app now makes it clearer which claims are loaded values, models, or policy interpretations.",
+        ),
+        BudgetChangeItem(
+            "Meeting readiness", "Read-only insight", "Questions, notes, and testimony workflow",
+            "More useful civic action",
+            "Residents can move from understanding to asking better public questions.",
+        ),
+    )
+}
+
+/** The 2026 snow and ice line, DA1-5-5142. */
+object SnowOverrun {
+    const val personalServicesAdopted = 75_000.0
+    const val contractualAdopted = 225_000.0
+    val adoptedTotal: Double get() = personalServicesAdopted + contractualAdopted
+
+    const val codeNote =
+        "Code set: DA1-5-5142-000 / 100 / 111 / 400. 2026 adopted totals: OT \$75,000 + Contractual \$225,000 = \$300,000."
+
+    val whatUsuallyHappens: List<String> = listOf(
+        "Department reports the overrun risk as storms accumulate.",
+        "Town Board can adopt a budget transfer or amendment (often from contingency, fund balance, or underspent lines) to cover DA1-5-5142.",
+        "If no in-year offset exists, the gap can reduce year-end fund balance and increase pressure on next year's tax levy.",
+        "Highway operations continue; snow/ice response is typically treated as a core public safety service.",
+    )
+
+    val tradeoffs: List<Pair<String, String>> = listOf(
+        "Use contingency" to "Fastest operationally, but leaves less cushion for other surprises.",
+        "Use fund balance" to "Avoids immediate service cuts, but weakens reserves if repeated.",
+        "Cut other discretionary lines" to "Protects reserves, but delays other projects or programs.",
+        "Carry cost into next budget" to "May require higher levy or tighter spending elsewhere.",
+    )
+
+    val questions: List<String> = listOf(
+        "What is the current year-to-date snow and ice spend vs budget?",
+        "What funding source is proposed for any overrun?",
+        "Is this winter an outlier, or are snow assumptions consistently low?",
+        "Should the adopted snow line be reset to a more realistic baseline next year?",
+    )
+}

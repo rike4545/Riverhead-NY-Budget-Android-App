@@ -70,4 +70,7 @@ object Routes {
     const val POLICE_STEPS = "tools/police-steps"
     const val SALARY_COMPARISON = "budget/salary-comparison"
     const val ACCURACY_WATCHLIST = "budget/accuracy-watchlist"
+    const val SNOW_OVERRUN = "budget/snow-overrun"
+    const val WHAT_CHANGED = "budget/what-changed"
+    const val DEBT_SAVINGS = "budget/debt-savings"
 }
