@@ -63,4 +63,5 @@ object Routes {
     const val HEALTH_BUYBACK = "budget/health-buyback"
     const val HOUSING_AFFORDABILITY = "budget/housing-affordability"
     const val BUDGET_SIGNALS = "budget/signals"
+    const val CREDIT_RATING = "budget/credit-rating"
 }
