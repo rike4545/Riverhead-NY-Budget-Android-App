@@ -50,6 +50,8 @@ private val civicRealDataShortcuts = listOf(
     CivicRealDataShortcut("Candidate Watch", "Who's running in November 2026, campaign links, and platforms", Icons.Filled.Campaign, Routes.CANDIDATE_WATCH),
     CivicRealDataShortcut("Candidate Proposals: Cost & Benefit", "Every plank weighed evenly, plus a neutral fiscal view of the Town's tax increases", Icons.Filled.Campaign, Routes.CANDIDATE_COST_BENEFIT),
     CivicRealDataShortcut("How the Board Was Elected", "Each member's winning vote count vs. town population and registered voters", Icons.AutoMirrored.Filled.ListAlt, Routes.BOARD_ELECTIONS),
+    CivicRealDataShortcut("Plurality & Oversight", "Why competitive representation makes budgets and contracts survive scrutiny", Icons.Filled.HowToVote, Routes.PLURALITY),
+    CivicRealDataShortcut("Defamation Risk Analysis", "When public commentary about someone's employability becomes actionable", Icons.Filled.Gavel, Routes.DEFAMATION_RISK),
 )
 
 @Composable

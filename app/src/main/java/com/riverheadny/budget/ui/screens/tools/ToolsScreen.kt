@@ -39,6 +39,20 @@ fun ToolsScreen(navController: NavController) {
         HeroCard("Tools", "Resident Action Toolkit", "Templates and checklists for hearings, budget questions, records, and local services.")
 
         ElevatedCard(
+            onClick = { navController.navigate(Routes.RETIREMENT_WAIVERS) },
+            colors = CardDefaults.elevatedCardColors(containerColor = CardSurface),
+        ) {
+            Row(modifier = Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Filled.People, contentDescription = null, tint = BrandBlue)
+                Spacer(Modifier.width(12.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text("Retirement Waivers (NY)", fontWeight = FontWeight.SemiBold)
+                    Text("Retirees under 65 earning above the threshold while drawing a pension", color = Color.DarkGray, style = MaterialTheme.typography.bodySmall)
+                }
+            }
+        }
+
+        ElevatedCard(
             onClick = { navController.navigate(Routes.PAYROLL) },
             colors = CardDefaults.elevatedCardColors(containerColor = CardSurface),
         ) {

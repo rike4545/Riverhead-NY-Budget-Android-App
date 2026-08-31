@@ -64,4 +64,10 @@ object Routes {
     const val HOUSING_AFFORDABILITY = "budget/housing-affordability"
     const val BUDGET_SIGNALS = "budget/signals"
     const val CREDIT_RATING = "budget/credit-rating"
+    const val PLURALITY = "civic/plurality"
+    const val DEFAMATION_RISK = "civic/defamation"
+    const val RETIREMENT_WAIVERS = "tools/retirement-waivers"
+    const val POLICE_STEPS = "tools/police-steps"
+    const val SALARY_COMPARISON = "budget/salary-comparison"
+    const val ACCURACY_WATCHLIST = "budget/accuracy-watchlist"
 }
