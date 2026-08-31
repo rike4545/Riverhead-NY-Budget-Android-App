@@ -14,6 +14,10 @@ import com.riverheadny.budget.ui.screens.budget.funds.FundDetailScreen
 import com.riverheadny.budget.ui.screens.budget.funds.FundsListScreen
 import com.riverheadny.budget.ui.screens.budget.generalfund.GeneralFundHistoryScreen
 import com.riverheadny.budget.ui.screens.budget.simulator.BudgetSimulatorScreen
+import com.riverheadny.budget.ui.screens.budget.buyback.HealthInsuranceBuybackScreen
+import com.riverheadny.budget.ui.screens.budget.housing.HousingAffordabilityScreen
+import com.riverheadny.budget.ui.screens.budget.rebalanced.RebalancedSpendingScreen
+import com.riverheadny.budget.ui.screens.budget.signals.BudgetSignalsScreen
 import com.riverheadny.budget.ui.screens.budget.spendingreduction.SpendingReductionScreen
 import com.riverheadny.budget.ui.screens.budget.taxbill.TaxBillScreen
 import com.riverheadny.budget.ui.screens.budget.taxcap.TaxCapScreen
@@ -69,6 +73,10 @@ fun RiverheadNavHost(navController: NavHostController) {
             arguments = listOf(navArgument("slug") { type = NavType.StringType }),
         ) { MeetingDetailScreen() }
         composable(Routes.SPENDING_REDUCTION) { SpendingReductionScreen() }
+        composable(Routes.REBALANCED_SPENDING) { RebalancedSpendingScreen() }
+        composable(Routes.HEALTH_BUYBACK) { HealthInsuranceBuybackScreen() }
+        composable(Routes.HOUSING_AFFORDABILITY) { HousingAffordabilityScreen() }
+        composable(Routes.BUDGET_SIGNALS) { BudgetSignalsScreen() }
         composable(Routes.BUDGET_SIMULATOR) { BudgetSimulatorScreen() }
         composable(Routes.SCORECARD) { ScorecardScreen() }
         composable(Routes.COMMUNITY_PRESERVATION_FUND) { CommunityPreservationFundScreen() }

@@ -65,6 +65,10 @@ private val realDataShortcuts = listOf(
     RealDataShortcut("2027 Budget Simulator", "Adjust the levy, COLA, and savings to test the plan", Icons.Filled.Tune, Routes.BUDGET_SIMULATOR),
     RealDataShortcut("Community Preservation Fund", "The CPF's real revenue swings, debt, and the rate-increase question", Icons.Filled.AccountBalance, Routes.COMMUNITY_PRESERVATION_FUND),
     RealDataShortcut("Community Block Grants", "A one-time surplus-funded grant round for four East End nonprofits", Icons.Filled.People, Routes.COMMUNITY_BLOCK_GRANTS),
+    RealDataShortcut("Budget Signals", "Named tests on published figures, with the arithmetic shown", Icons.AutoMirrored.Filled.TrendingUp, Routes.BUDGET_SIGNALS),
+    RealDataShortcut("Rebalanced Spending", "Every flagged line tested against its own seven-year record", Icons.Filled.Tune, Routes.REBALANCED_SPENDING),
+    RealDataShortcut("Health Insurance Buy-Back", "What the Town pays to decline coverage, and how that compares", Icons.Filled.People, Routes.HEALTH_BUYBACK),
+    RealDataShortcut("Housing Affordability", "What \"affordable\" is defined as, against who actually needs it", Icons.Filled.AccountBalance, Routes.HOUSING_AFFORDABILITY),
 )
 
 @OptIn(ExperimentalLayoutApi::class)

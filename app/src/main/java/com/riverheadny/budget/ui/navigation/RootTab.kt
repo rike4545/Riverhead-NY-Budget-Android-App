@@ -59,4 +59,8 @@ object Routes {
     const val CANDIDATE_WATCH = "civic/candidates"
     const val CANDIDATE_COST_BENEFIT = "civic/candidate-cost-benefit"
     const val BOARD_ELECTIONS = "civic/board-elections"
+    const val REBALANCED_SPENDING = "budget/rebalanced"
+    const val HEALTH_BUYBACK = "budget/health-buyback"
+    const val HOUSING_AFFORDABILITY = "budget/housing-affordability"
+    const val BUDGET_SIGNALS = "budget/signals"
 }

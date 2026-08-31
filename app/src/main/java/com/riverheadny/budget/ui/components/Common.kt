@@ -143,8 +143,14 @@ fun DisclaimerCard(text: String = "Not an official Town app. Always verify with 
     }
 }
 
+/**
+ * Whole dollars. The rounding is deliberate, so the formatter must not then print ".00" — that
+ * claims a precision this function has already thrown away, and it does not match iOS or the web.
+ * Use currencyPrecise where the cents are real.
+ */
 fun currency(value: Double): String =
-    NumberFormat.getCurrencyInstance(Locale.US).format(value.roundToInt())
+    NumberFormat.getCurrencyInstance(Locale.US).apply { maximumFractionDigits = 0 }
+        .format(value.roundToInt())
 
 fun currencyPrecise(value: Double): String =
     NumberFormat.getCurrencyInstance(Locale.US).format(value)

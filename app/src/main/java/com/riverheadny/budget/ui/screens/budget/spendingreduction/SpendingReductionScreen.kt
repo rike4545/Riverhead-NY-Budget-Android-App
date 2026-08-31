@@ -137,7 +137,7 @@ private val personnelPolicyItems: List<SpendingReductionItem> = listOf(
 
 private val operationalItems: List<SpendingReductionItem> =
     DepartmentBudgetLensData.rebalancedSpending
-        .filter { it.tighten && !it.isFundNeutralReclassification }
+        .filter { it.countsAsAvailableSaving }
         .map {
             SpendingReductionItem(
                 it.account, it.account, it.change,
