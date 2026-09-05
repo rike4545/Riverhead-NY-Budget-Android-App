@@ -28,6 +28,8 @@ object Routes {
     const val SEARCH = "search"
     const val SOURCE_TRAIL = "tools/sources"
     const val ABOUT = "more/about"
+    const val BUDGET_2027_OUTLOOK = "budget/outlook-2027"
+    const val LINE_ITEM_LEDGER = "budget/ledger"
 
     const val FUNDS_LIST = "budget/funds"
     const val FUND_DETAIL = "budget/funds/{code}"
@@ -76,4 +78,5 @@ object Routes {
     const val SNOW_OVERRUN = "budget/snow-overrun"
     const val WHAT_CHANGED = "budget/what-changed"
     const val DEBT_SAVINGS = "budget/debt-savings"
+    const val DEPT_EXPENSE_EXPLORER = "budget/department-expenses"
 }

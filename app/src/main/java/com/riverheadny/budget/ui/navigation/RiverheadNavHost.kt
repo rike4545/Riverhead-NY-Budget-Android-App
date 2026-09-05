@@ -18,7 +18,10 @@ import com.riverheadny.budget.ui.screens.budget.accuracy.BudgetAccuracyWatchlist
 import com.riverheadny.budget.ui.screens.budget.buyback.HealthInsuranceBuybackScreen
 import com.riverheadny.budget.ui.screens.budget.credit.CreditRatingScreen
 import com.riverheadny.budget.ui.screens.budget.debt.DebtSavingsScreen
+import com.riverheadny.budget.ui.screens.budget.departments.DepartmentExpenseExplorerScreen
 import com.riverheadny.budget.ui.screens.budget.diff.WhatChangedScreen
+import com.riverheadny.budget.ui.screens.budget.ledger.LineItemLedgerScreen
+import com.riverheadny.budget.ui.screens.budget.outlook.Budget2027OutlookScreen
 import com.riverheadny.budget.ui.screens.budget.snow.SnowOverrunScreen
 import com.riverheadny.budget.ui.screens.civic.explainers.DefamationRiskScreen
 import com.riverheadny.budget.ui.screens.civic.explainers.PluralityGovernanceScreen
@@ -66,6 +69,8 @@ fun RiverheadNavHost(navController: NavHostController) {
         composable(Routes.SEARCH) { SearchScreen(navController) }
         composable(Routes.SOURCE_TRAIL) { SourceTrailScreen() }
         composable(Routes.ABOUT) { AboutScreen() }
+        composable(Routes.BUDGET_2027_OUTLOOK) { Budget2027OutlookScreen(navController) }
+        composable(Routes.LINE_ITEM_LEDGER) { LineItemLedgerScreen() }
 
         composable(Routes.FUNDS_LIST) { FundsListScreen(navController) }
         composable(
@@ -103,6 +108,7 @@ fun RiverheadNavHost(navController: NavHostController) {
         composable(Routes.SNOW_OVERRUN) { SnowOverrunScreen() }
         composable(Routes.WHAT_CHANGED) { WhatChangedScreen(navController) }
         composable(Routes.DEBT_SAVINGS) { DebtSavingsScreen() }
+        composable(Routes.DEPT_EXPENSE_EXPLORER) { DepartmentExpenseExplorerScreen() }
         composable(Routes.BUDGET_SIMULATOR) { BudgetSimulatorScreen() }
         composable(Routes.SCORECARD) { ScorecardScreen() }
         composable(Routes.COMMUNITY_PRESERVATION_FUND) { CommunityPreservationFundScreen() }

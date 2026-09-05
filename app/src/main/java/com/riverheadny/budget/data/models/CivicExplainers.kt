@@ -136,3 +136,22 @@ object SnowOverrun {
         "Should the adopted snow line be reset to a more realistic baseline next year?",
     )
 }
+
+object ResidentActionToolkit {
+    const val intro =
+        "Turn a concern into a question someone can answer on the record. Start with the source, name the budget line or policy choice, and ask for the document, number, or timeline that would resolve it."
+
+    val templates: List<String> = listOf(
+        "Can the Town show which 2027 costs are recurring and which are one-time?",
+        "Which fund-balance dollars are restricted, assigned, or unassigned?",
+        "What is the household tax impact per \$100,000 of assessed value?",
+        "Which capital or Town Square items create future debt-service obligations?",
+        "What budget line proves this proposal has a debit or credit attached?",
+    )
+
+    val firstPass: List<String> = listOf(
+        "Start with the question you want answered.",
+        "Open the source trail before relying on a number or claim.",
+        "Name the budget line, not just the topic — a question with an account code attached is harder to deflect.",
+    )
+}

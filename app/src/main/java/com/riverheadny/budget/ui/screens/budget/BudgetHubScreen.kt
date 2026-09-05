@@ -73,7 +73,8 @@ private val hubSections = listOf(
             RealDataShortcut("Tax Cap & Overrides", "The state 2% cap, and Riverhead's override history", Icons.Filled.Gavel, Routes.TAX_CAP),
             RealDataShortcut("Housing Affordability", "What \"affordable\" is defined as, against who actually needs it", Icons.Filled.AccountBalance, Routes.HOUSING_AFFORDABILITY),
             RealDataShortcut("Credit Rating", "Riverhead's Aa2, its Suffolk peers, and what actually moves it", Icons.Filled.AccountBalance, Routes.CREDIT_RATING),
-            RealDataShortcut("Debt Savings", "The levers that reduce debt cost, and what each one trades away", Icons.Filled.AccountBalance, Routes.DEBT_SAVINGS),
+            RealDataShortcut("Department Expense Explorer", "Every 2026 budget function, matched to payroll where the match is clean", Icons.Filled.AccountBalance, Routes.DEPT_EXPENSE_EXPLORER),
+    RealDataShortcut("Debt Savings", "The levers that reduce debt cost, and what each one trades away", Icons.Filled.AccountBalance, Routes.DEBT_SAVINGS),
         ),
     ),
     HubSection(
@@ -105,6 +106,8 @@ private val hubSections = listOf(
         "Next year",
         "Modeled by this app, not adopted by the Town — see the Source Trail.",
         listOf(
+            RealDataShortcut("2027 Outlook", "The 2026 budget grown forward account by account, and the cap gap it creates", Icons.AutoMirrored.Filled.TrendingUp, Routes.BUDGET_2027_OUTLOOK),
+            RealDataShortcut("Line-Item Ledger", "All 848 accounts: 2025 and 2026 as adopted, against the 2027 projection", Icons.Filled.Tune, Routes.LINE_ITEM_LEDGER),
             RealDataShortcut("2027 Spending Reduction", "A real, sourced recurring savings package, toggleable", Icons.Filled.Gavel, Routes.SPENDING_REDUCTION),
             RealDataShortcut("2027 Budget Simulator", "Adjust the levy, COLA, and savings to test the plan", Icons.Filled.Tune, Routes.BUDGET_SIMULATOR),
         ),

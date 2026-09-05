@@ -2,6 +2,8 @@ package com.riverheadny.budget.data
 
 import android.content.res.AssetManager
 import com.riverheadny.budget.data.models.AfrData
+import com.riverheadny.budget.data.models.Budget2027Prediction
+import com.riverheadny.budget.data.models.ProjectedLinesFile
 import com.riverheadny.budget.data.models.CommunityData
 import com.riverheadny.budget.data.models.DataMeta
 import com.riverheadny.budget.data.models.FundDetail
@@ -24,9 +26,11 @@ import kotlinx.serialization.json.Json
  * in memory since the app only reads this data — it never writes back to it.
  */
 class AssetRepository(private val assets: AssetManager) {
-    // explicitNulls = false: some AFR funds have an explicit JSON `null` for fields like
-    // fundBalance (e.g. enterprise funds tracking net position instead) rather than omitting the
-    // key — this makes kotlinx.serialization fall back to each property's default in that case.
+    // explicitNulls = false covers keys the ETL omits entirely. It does NOT turn an explicit
+    // JSON `null` into a non-nullable property's default — that still throws. Where a file writes
+    // a real null (AFR enterprise funds carry net position instead of fund balance; 20 of the 2027
+    // projection's accounts did not exist in 2025), the property has to be declared nullable, and
+    // the screen has to say so rather than printing $0.
     private val json = Json { ignoreUnknownKeys = true; explicitNulls = false }
 
     private var fundsIndexCache: FundsIndex? = null
@@ -41,6 +45,8 @@ class AssetRepository(private val assets: AssetManager) {
     private var meetingsIndexCache: MeetingsIndex? = null
     private var searchIndexCache: SearchIndex? = null
     private var metaCache: DataMeta? = null
+    private var predictionCache: Budget2027Prediction? = null
+    private var projectedLinesCache: ProjectedLinesFile? = null
     private val meetingDetailCache = mutableMapOf<String, MeetingDetail>()
 
     suspend fun fundsIndex(): FundsIndex = withContext(Dispatchers.IO) {
@@ -96,6 +102,16 @@ class AssetRepository(private val assets: AssetManager) {
     suspend fun meetingDetail(slug: String): MeetingDetail = withContext(Dispatchers.IO) {
         meetingDetailCache[slug] ?: json.decodeFromString<MeetingDetail>(readAsset("data/meetings/$slug.json"))
             .also { meetingDetailCache[slug] = it }
+    }
+
+    suspend fun budget2027Prediction(): Budget2027Prediction = withContext(Dispatchers.IO) {
+        predictionCache ?: json.decodeFromString<Budget2027Prediction>(readAsset("data/budget-2027-prediction.json"))
+            .also { predictionCache = it }
+    }
+
+    suspend fun projected2027Lines(): ProjectedLinesFile = withContext(Dispatchers.IO) {
+        projectedLinesCache ?: json.decodeFromString<ProjectedLinesFile>(readAsset("data/budget-2027-lines.json"))
+            .also { projectedLinesCache = it }
     }
 
     suspend fun dataMeta(): DataMeta = withContext(Dispatchers.IO) {
