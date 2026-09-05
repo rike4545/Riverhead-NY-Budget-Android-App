@@ -46,7 +46,10 @@ import com.riverheadny.budget.ui.screens.civic.votes.MeetingDetailScreen
 import com.riverheadny.budget.ui.screens.civic.votes.MeetingsListScreen
 import com.riverheadny.budget.ui.screens.home.HomeScreen
 import com.riverheadny.budget.ui.screens.more.MoreScreen
+import com.riverheadny.budget.ui.screens.search.SearchScreen
+import com.riverheadny.budget.ui.screens.more.AboutScreen
 import com.riverheadny.budget.ui.screens.more.BudgetGuideScreen
+import com.riverheadny.budget.ui.screens.tools.sources.SourceTrailScreen
 import com.riverheadny.budget.ui.screens.tools.ToolsScreen
 import com.riverheadny.budget.ui.screens.tools.payroll.PayrollScreen
 import com.riverheadny.budget.ui.screens.tools.payroll.WorkforceByTitleScreen
@@ -54,12 +57,15 @@ import com.riverheadny.budget.ui.screens.tools.payroll.WorkforceByTitleScreen
 @Composable
 fun RiverheadNavHost(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Routes.HOME) {
-        composable(Routes.HOME) { HomeScreen() }
+        composable(Routes.HOME) { HomeScreen(navController) }
         composable(Routes.BUDGET) { BudgetHubScreen(navController) }
         composable(Routes.CIVIC) { CivicScreen(navController) }
         composable(Routes.TOOLS) { ToolsScreen(navController) }
         composable(Routes.MORE) { MoreScreen(navController) }
         composable(Routes.BUDGET_GUIDE) { BudgetGuideScreen() }
+        composable(Routes.SEARCH) { SearchScreen(navController) }
+        composable(Routes.SOURCE_TRAIL) { SourceTrailScreen() }
+        composable(Routes.ABOUT) { AboutScreen() }
 
         composable(Routes.FUNDS_LIST) { FundsListScreen(navController) }
         composable(

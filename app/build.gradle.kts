@@ -19,6 +19,9 @@ android {
 
     buildFeatures {
         compose = true
+        // The About screen prints the shipping version rather than repeating it in a string
+        // resource that would drift from versionName the first time either is bumped.
+        buildConfig = true
     }
 
     compileOptions {

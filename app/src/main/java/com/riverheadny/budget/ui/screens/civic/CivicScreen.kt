@@ -33,7 +33,6 @@ import com.riverheadny.budget.ui.components.HeroCard
 import com.riverheadny.budget.ui.components.LinkCard
 import com.riverheadny.budget.ui.components.PageColumn
 import com.riverheadny.budget.ui.components.SectionTitle
-import com.riverheadny.budget.ui.components.ToolCard
 import com.riverheadny.budget.ui.components.ToolLink
 import com.riverheadny.budget.ui.navigation.Routes
 import com.riverheadny.budget.ui.theme.BrandBlue
@@ -76,11 +75,43 @@ fun CivicScreen(navController: NavController) {
             }
         }
 
-        SectionTitle("More")
+        SectionTitle("Related")
         listOf(
-            ToolLink("Civic Improvements", "Project ideas, resident impact, and action paths", Icons.Filled.VolunteerActivism),
-            ToolLink("Budget Signals", "Risk flags and context for the current budget", Icons.AutoMirrored.Filled.TrendingUp),
-            ToolLink("Town Code", "eCode360 lookup entry point", Icons.Filled.Search, "https://ecode360.com/RI0756"),
-        ).forEach { if (it.url == null) ToolCard(it) else LinkCard(it) }
+            CivicRealDataShortcut(
+                "Budget Signals",
+                "Risk flags and context for the current budget, with the arithmetic shown",
+                Icons.AutoMirrored.Filled.TrendingUp,
+                Routes.BUDGET_SIGNALS,
+            ),
+            CivicRealDataShortcut(
+                "Search everything",
+                "Find a resolution, a name, a budget line, or a page of the budget itself",
+                Icons.Filled.Search,
+                Routes.SEARCH,
+            ),
+            CivicRealDataShortcut(
+                "Source Trail",
+                "Which document backs each number on these screens",
+                Icons.Filled.CheckCircle,
+                Routes.SOURCE_TRAIL,
+            ),
+        ).forEach { shortcut ->
+            ElevatedCard(
+                onClick = { navController.navigate(shortcut.route) },
+                colors = CardDefaults.elevatedCardColors(containerColor = CardSurface),
+            ) {
+                Row(modifier = Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(shortcut.icon, contentDescription = null, tint = BrandBlue)
+                    Spacer(Modifier.width(12.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(shortcut.title, fontWeight = FontWeight.SemiBold)
+                        Text(shortcut.subtitle, color = Color.DarkGray, style = MaterialTheme.typography.bodySmall)
+                    }
+                }
+            }
+        }
+
+        SectionTitle("Official")
+        LinkCard(ToolLink("Town Code", "Riverhead's code of ordinances on eCode360", Icons.Filled.Search, "https://ecode360.com/RI0756"))
     }
 }

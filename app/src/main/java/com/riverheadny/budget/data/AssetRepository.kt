@@ -3,6 +3,7 @@ package com.riverheadny.budget.data
 import android.content.res.AssetManager
 import com.riverheadny.budget.data.models.AfrData
 import com.riverheadny.budget.data.models.CommunityData
+import com.riverheadny.budget.data.models.DataMeta
 import com.riverheadny.budget.data.models.FundDetail
 import com.riverheadny.budget.data.models.FundsIndex
 import com.riverheadny.budget.data.models.GeneralFundHistory
@@ -10,6 +11,7 @@ import com.riverheadny.budget.data.models.MeetingDetail
 import com.riverheadny.budget.data.models.MeetingsIndex
 import com.riverheadny.budget.data.models.PayrollRecordsFile
 import com.riverheadny.budget.data.models.PayrollSummary
+import com.riverheadny.budget.data.models.SearchIndex
 import com.riverheadny.budget.data.models.TaxBillData
 import com.riverheadny.budget.data.models.TaxCapData
 import kotlinx.coroutines.Dispatchers
@@ -37,6 +39,8 @@ class AssetRepository(private val assets: AssetManager) {
     private var afrCache: AfrData? = null
     private var taxBillCache: TaxBillData? = null
     private var meetingsIndexCache: MeetingsIndex? = null
+    private var searchIndexCache: SearchIndex? = null
+    private var metaCache: DataMeta? = null
     private val meetingDetailCache = mutableMapOf<String, MeetingDetail>()
 
     suspend fun fundsIndex(): FundsIndex = withContext(Dispatchers.IO) {
@@ -92,6 +96,22 @@ class AssetRepository(private val assets: AssetManager) {
     suspend fun meetingDetail(slug: String): MeetingDetail = withContext(Dispatchers.IO) {
         meetingDetailCache[slug] ?: json.decodeFromString<MeetingDetail>(readAsset("data/meetings/$slug.json"))
             .also { meetingDetailCache[slug] = it }
+    }
+
+    suspend fun dataMeta(): DataMeta = withContext(Dispatchers.IO) {
+        metaCache ?: json.decodeFromString<DataMeta>(readAsset("data/meta.json"))
+            .also { metaCache = it }
+    }
+
+    /**
+     * The unified index is by far the largest bundled asset (~4.7 MB, 16k entries), so it is read
+     * only when the search screen actually asks for it, and then held for the process lifetime —
+     * re-parsing it on every keystroke-driven recomposition would be the obvious way to make search
+     * feel broken.
+     */
+    suspend fun searchIndex(): SearchIndex = withContext(Dispatchers.IO) {
+        searchIndexCache ?: json.decodeFromString<SearchIndex>(readAsset("data/search/unified.json"))
+            .also { searchIndexCache = it }
     }
 
     private fun readAsset(path: String): String =

@@ -90,20 +90,6 @@ fun SectionTitle(title: String) {
 }
 
 @Composable
-fun ToolCard(link: ToolLink) {
-    ElevatedCard(colors = CardDefaults.elevatedCardColors(containerColor = CardSurface)) {
-        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(link.icon, contentDescription = null, tint = BrandBlue)
-            Spacer(Modifier.width(12.dp))
-            Column {
-                Text(link.title, fontWeight = FontWeight.SemiBold)
-                Text(link.subtitle, color = Color.DarkGray, style = MaterialTheme.typography.bodySmall)
-            }
-        }
-    }
-}
-
-@Composable
 fun LinkCard(link: ToolLink) {
     val context = LocalContext.current
     ElevatedCard(

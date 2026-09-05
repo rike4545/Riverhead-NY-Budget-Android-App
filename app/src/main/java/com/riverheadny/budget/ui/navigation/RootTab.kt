@@ -25,6 +25,9 @@ object Routes {
     const val TOOLS = "tools"
     const val MORE = "more"
     const val BUDGET_GUIDE = "more/guide"
+    const val SEARCH = "search"
+    const val SOURCE_TRAIL = "tools/sources"
+    const val ABOUT = "more/about"
 
     const val FUNDS_LIST = "budget/funds"
     const val FUND_DETAIL = "budget/funds/{code}"

@@ -3,13 +3,10 @@ package com.riverheadny.budget.ui.screens.budget
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -50,39 +47,73 @@ import com.riverheadny.budget.ui.theme.MutedText
 
 private data class RealDataShortcut(val title: String, val subtitle: String, val icon: ImageVector, val route: String)
 
-private val realDataShortcuts = listOf(
-    RealDataShortcut("Funds Explorer", "All 19 town funds, real 2026 appropriations, department drilldown", Icons.Filled.AccountBalance, Routes.FUNDS_LIST),
-    RealDataShortcut("General Fund History", "Appropriations, levy, and revenues, 2005-2025", Icons.AutoMirrored.Filled.TrendingUp, Routes.GENERAL_FUND_HISTORY),
-    RealDataShortcut("Tax Cap & Overrides", "The state 2% cap, and Riverhead's override history", Icons.Filled.Gavel, Routes.TAX_CAP),
-    RealDataShortcut("My Tax Bill", "Estimate your bill from assessed value and the real levy", Icons.Filled.Calculate, Routes.TAX_BILL),
-    RealDataShortcut("Fund Balance", "Real 2025 AFR unassigned fund balance vs. policy targets", Icons.Filled.AccountBalance, Routes.FUND_BALANCE),
-    RealDataShortcut("Payroll Explorer", "Real actual earnings 2018-2025, headcount, top earners", Icons.Filled.People, Routes.PAYROLL),
-    RealDataShortcut("Road Spending per Mile", "Riverhead vs. every Suffolk town, on the Comptroller's own figures", Icons.Filled.Gavel, Routes.ROAD_SPENDING),
-    RealDataShortcut("Overtime & Staffing", "Which police ranks run overtime instead of headcount", Icons.Filled.People, Routes.OVERTIME_STAFFING),
-    RealDataShortcut("Separation Pay", "Unused leave the Town owes, and what leaving actually costs", Icons.Filled.People, Routes.SEPARATION_PAY),
-    RealDataShortcut("Workforce by Title", "How many hold each job title, and the change 2022-2025", Icons.Filled.People, Routes.WORKFORCE_BY_TITLE),
-    RealDataShortcut("2027 Spending Reduction", "A real, sourced recurring savings package, toggleable", Icons.Filled.Gavel, Routes.SPENDING_REDUCTION),
-    RealDataShortcut("2027 Budget Simulator", "Adjust the levy, COLA, and savings to test the plan", Icons.Filled.Tune, Routes.BUDGET_SIMULATOR),
-    RealDataShortcut("Community Preservation Fund", "The CPF's real revenue swings, debt, and the rate-increase question", Icons.Filled.AccountBalance, Routes.COMMUNITY_PRESERVATION_FUND),
-    RealDataShortcut("Community Block Grants", "A one-time surplus-funded grant round for four East End nonprofits", Icons.Filled.People, Routes.COMMUNITY_BLOCK_GRANTS),
-    RealDataShortcut("Debt Savings", "The levers that reduce debt cost, and what each one trades away", Icons.Filled.AccountBalance, Routes.DEBT_SAVINGS),
-    RealDataShortcut("What Changed?", "A resident-friendly diff of the budget story, not just the numbers", Icons.AutoMirrored.Filled.TrendingUp, Routes.WHAT_CHANGED),
-    RealDataShortcut("Snow Budget Overrun", "What an overrun on the snow line costs, and the four ways to cover it", Icons.Filled.Tune, Routes.SNOW_OVERRUN),
-    RealDataShortcut("Budget Accuracy Watch List", "Cyclical, under-budgeted and renumbered lines the seven-year record reveals", Icons.Filled.Tune, Routes.ACCURACY_WATCHLIST),
-    RealDataShortcut("Town Salary Comparison", "What five Suffolk towns pay their elected and appointed officers", Icons.Filled.People, Routes.SALARY_COMPARISON),
-    RealDataShortcut("Police Pay Steps", "Every step of the signed 2023-2026 PBA salary schedule", Icons.Filled.People, Routes.POLICE_STEPS),
-    RealDataShortcut("Credit Rating", "Riverhead's Aa2, its Suffolk peers, and what actually moves it", Icons.Filled.AccountBalance, Routes.CREDIT_RATING),
-    RealDataShortcut("Budget Signals", "Named tests on published figures, with the arithmetic shown", Icons.AutoMirrored.Filled.TrendingUp, Routes.BUDGET_SIGNALS),
-    RealDataShortcut("Rebalanced Spending", "Every flagged line tested against its own seven-year record", Icons.Filled.Tune, Routes.REBALANCED_SPENDING),
-    RealDataShortcut("Health Insurance Buy-Back", "What the Town pays to decline coverage, and how that compares", Icons.Filled.People, Routes.HEALTH_BUYBACK),
-    RealDataShortcut("Housing Affordability", "What \"affordable\" is defined as, against who actually needs it", Icons.Filled.AccountBalance, Routes.HOUSING_AFFORDABILITY),
+/**
+ * The hub is grouped the way the iOS Budget hub is, rather than as one long list: a resident
+ * arriving with a question should be able to find the right screen without reading all 25 titles.
+ */
+private data class HubSection(val title: String, val blurb: String, val shortcuts: List<RealDataShortcut>)
+
+private val hubSections = listOf(
+    HubSection(
+        "Where the money is",
+        "The adopted budget as published, fund by fund and line by line.",
+        listOf(
+            RealDataShortcut("Funds Explorer", "All 19 town funds, real 2026 appropriations, department drilldown", Icons.Filled.AccountBalance, Routes.FUNDS_LIST),
+            RealDataShortcut("General Fund History", "Appropriations, levy, and revenues, 2005-2025", Icons.AutoMirrored.Filled.TrendingUp, Routes.GENERAL_FUND_HISTORY),
+            RealDataShortcut("Fund Balance", "Real 2025 AFR unassigned fund balance vs. policy targets", Icons.Filled.AccountBalance, Routes.FUND_BALANCE),
+            RealDataShortcut("Community Preservation Fund", "The CPF's real revenue swings, debt, and the rate-increase question", Icons.Filled.AccountBalance, Routes.COMMUNITY_PRESERVATION_FUND),
+            RealDataShortcut("Community Block Grants", "A one-time surplus-funded grant round for four East End nonprofits", Icons.Filled.People, Routes.COMMUNITY_BLOCK_GRANTS),
+        ),
+    ),
+    HubSection(
+        "What it costs you",
+        "The levy, the cap, and what lands on a household bill.",
+        listOf(
+            RealDataShortcut("My Tax Bill", "Estimate your bill from assessed value and the real levy", Icons.Filled.Calculate, Routes.TAX_BILL),
+            RealDataShortcut("Tax Cap & Overrides", "The state 2% cap, and Riverhead's override history", Icons.Filled.Gavel, Routes.TAX_CAP),
+            RealDataShortcut("Housing Affordability", "What \"affordable\" is defined as, against who actually needs it", Icons.Filled.AccountBalance, Routes.HOUSING_AFFORDABILITY),
+            RealDataShortcut("Credit Rating", "Riverhead's Aa2, its Suffolk peers, and what actually moves it", Icons.Filled.AccountBalance, Routes.CREDIT_RATING),
+            RealDataShortcut("Debt Savings", "The levers that reduce debt cost, and what each one trades away", Icons.Filled.AccountBalance, Routes.DEBT_SAVINGS),
+        ),
+    ),
+    HubSection(
+        "What the record shows",
+        "Tests run against the Town's own published figures.",
+        listOf(
+            RealDataShortcut("Budget Signals", "Named tests on published figures, with the arithmetic shown", Icons.AutoMirrored.Filled.TrendingUp, Routes.BUDGET_SIGNALS),
+            RealDataShortcut("Budget Accuracy Watch List", "Cyclical, under-budgeted and renumbered lines the seven-year record reveals", Icons.Filled.Tune, Routes.ACCURACY_WATCHLIST),
+            RealDataShortcut("Rebalanced Spending", "Every flagged line tested against its own seven-year record", Icons.Filled.Tune, Routes.REBALANCED_SPENDING),
+            RealDataShortcut("What Changed?", "A resident-friendly diff of the budget story, not just the numbers", Icons.AutoMirrored.Filled.TrendingUp, Routes.WHAT_CHANGED),
+            RealDataShortcut("Snow Budget Overrun", "What an overrun on the snow line costs, and the four ways to cover it", Icons.Filled.Tune, Routes.SNOW_OVERRUN),
+            RealDataShortcut("Road Spending per Mile", "Riverhead vs. every Suffolk town, on the Comptroller's own figures", Icons.Filled.Gavel, Routes.ROAD_SPENDING),
+        ),
+    ),
+    HubSection(
+        "Who works here",
+        "Personnel is the largest recurring cost in the budget.",
+        listOf(
+            RealDataShortcut("Payroll Explorer", "Real actual earnings 2018-2025, headcount, top earners", Icons.Filled.People, Routes.PAYROLL),
+            RealDataShortcut("Workforce by Title", "How many hold each job title, and the change 2022-2025", Icons.Filled.People, Routes.WORKFORCE_BY_TITLE),
+            RealDataShortcut("Overtime & Staffing", "Which police ranks run overtime instead of headcount", Icons.Filled.People, Routes.OVERTIME_STAFFING),
+            RealDataShortcut("Separation Pay", "Unused leave the Town owes, and what leaving actually costs", Icons.Filled.People, Routes.SEPARATION_PAY),
+            RealDataShortcut("Health Insurance Buy-Back", "What the Town pays to decline coverage, and how that compares", Icons.Filled.People, Routes.HEALTH_BUYBACK),
+            RealDataShortcut("Police Pay Steps", "Every step of the signed 2023-2026 PBA salary schedule", Icons.Filled.People, Routes.POLICE_STEPS),
+            RealDataShortcut("Town Salary Comparison", "What five Suffolk towns pay their elected and appointed officers", Icons.Filled.People, Routes.SALARY_COMPARISON),
+        ),
+    ),
+    HubSection(
+        "Next year",
+        "Modeled by this app, not adopted by the Town — see the Source Trail.",
+        listOf(
+            RealDataShortcut("2027 Spending Reduction", "A real, sourced recurring savings package, toggleable", Icons.Filled.Gavel, Routes.SPENDING_REDUCTION),
+            RealDataShortcut("2027 Budget Simulator", "Adjust the levy, COLA, and savings to test the plan", Icons.Filled.Tune, Routes.BUDGET_SIMULATOR),
+        ),
+    ),
 )
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun BudgetHubScreen(navController: NavController) {
     var mode by remember { mutableStateOf(AudienceMode.Resident) }
-    var selected by remember { mutableStateOf<String?>(null) }
 
     PageColumn {
         HeroCard(
@@ -102,35 +133,27 @@ fun BudgetHubScreen(navController: NavController) {
         }
         Text(mode.subtitle, color = Color.DarkGray, style = MaterialTheme.typography.bodySmall)
 
-        SectionTitle("Real Data")
-        realDataShortcuts.forEach { shortcut ->
+        if (mode == AudienceMode.Resident) {
             ElevatedCard(
-                onClick = { navController.navigate(shortcut.route) },
+                onClick = { navController.navigate(Routes.BUDGET_GUIDE) },
                 colors = CardDefaults.elevatedCardColors(containerColor = CardSurface),
             ) {
-                Row(modifier = Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(shortcut.icon, contentDescription = null, tint = BrandBlue)
-                    Spacer(Modifier.width(12.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(shortcut.title, fontWeight = FontWeight.SemiBold)
-                        Text(shortcut.subtitle, color = Color.DarkGray, style = MaterialTheme.typography.bodySmall)
-                    }
+                Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text("New to this? Start here", fontWeight = FontWeight.Bold)
+                    Text(
+                        "Budget words in plain language, with the section of Town Law behind each one.",
+                        color = Color.DarkGray,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
                 }
             }
         }
 
-        SectionTitle("More (coming soon)")
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            budgetSections.forEach { item ->
-                FilterChip(
-                    selected = selected == item.title,
-                    onClick = { selected = if (selected == item.title) null else item.title },
-                    label = { Text(item.title) },
-                    leadingIcon = { Icon(item.icon, contentDescription = null, modifier = Modifier.size(18.dp)) },
-                )
-            }
+        hubSections.forEach { section ->
+            SectionTitle(section.title)
+            Text(section.blurb, color = MutedText, style = MaterialTheme.typography.bodySmall)
+            section.shortcuts.forEach { ShortcutCard(it, navController) }
         }
-        selected?.let { BudgetDetailCard(it, mode) }
 
         SectionTitle("Budget Documents")
         budgetDocs.forEach { BudgetDocCard(it) }
@@ -138,24 +161,18 @@ fun BudgetHubScreen(navController: NavController) {
 }
 
 @Composable
-private fun BudgetDetailCard(section: String, mode: AudienceMode) {
-    val expertCopy = when (section) {
-        "Capital & Debt" -> "Model debt service, BAN exposure, capital project status, and off-balance obligations."
-        "2027 Lab" -> "Use year-over-year assumptions to shape next-cycle levy, staffing, and reserve scenarios."
-        "Glossary" -> "Crosswalk budget terms with resident-facing explanations and source document references."
-        else -> "Detailed mode preserves line-item context, audit flags, source trails, and forecast assumptions."
-    }
-    val residentCopy = when (section) {
-        "Overview" -> "See what changed, what matters to household taxes, and what to verify in the adopted budget."
-        "2027 Lab" -> "Try simple what-if choices and see how they could affect services or taxes."
-        "Glossary" -> "Translate budget language into everyday terms."
-        else -> "Start with a short explanation, then drill into the numbers when needed."
-    }
-    ElevatedCard(colors = CardDefaults.elevatedCardColors(containerColor = CardSurface)) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(section, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-            Text(if (mode == AudienceMode.Expert) expertCopy else residentCopy, color = Color.DarkGray)
-            Text("This section is still a placeholder — real data is coming in a later phase.", style = MaterialTheme.typography.bodySmall, color = MutedText)
+private fun ShortcutCard(shortcut: RealDataShortcut, navController: NavController) {
+    ElevatedCard(
+        onClick = { navController.navigate(shortcut.route) },
+        colors = CardDefaults.elevatedCardColors(containerColor = CardSurface),
+    ) {
+        Row(modifier = Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(shortcut.icon, contentDescription = null, tint = BrandBlue)
+            Spacer(Modifier.width(12.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(shortcut.title, fontWeight = FontWeight.SemiBold)
+                Text(shortcut.subtitle, color = Color.DarkGray, style = MaterialTheme.typography.bodySmall)
+            }
         }
     }
 }
