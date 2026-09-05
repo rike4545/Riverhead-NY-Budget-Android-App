@@ -42,8 +42,8 @@ private data class ToolShortcut(
 
 private val startHere = listOf(
     ToolShortcut(
-        "Start Here",
-        "Budget words in plain language, with the law behind each one",
+        "Budget words, explained",
+        "Every term this app uses, in plain language, with the law behind each one",
         Icons.Filled.Info,
         Routes.BUDGET_GUIDE,
     ),
@@ -52,6 +52,18 @@ private val startHere = listOf(
         "Budget lines, payroll, salaries, resolutions, and the budget documents themselves",
         Icons.Filled.Search,
         Routes.SEARCH,
+    ),
+    ToolShortcut(
+        "Start Here",
+        "Pick the task in front of you and get routed to the right workspace",
+        Icons.Filled.Info,
+        Routes.START_HERE,
+    ),
+    ToolShortcut(
+        "Resident Action Toolkit",
+        "Turn a concern into a question someone has to answer on the record",
+        Icons.Filled.CheckCircle,
+        Routes.RESIDENT_TOOLKIT,
     ),
     ToolShortcut(
         "Source Trail",
@@ -138,7 +150,7 @@ fun ToolsScreen(navController: NavController) {
     PageColumn {
         HeroCard(
             "Tools",
-            "Resident Action Toolkit",
+            "Look it up, then check it",
             "Start with a question, look up a number, then check what document it came from.",
         )
 

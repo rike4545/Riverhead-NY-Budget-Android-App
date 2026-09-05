@@ -26,6 +26,8 @@ import com.riverheadny.budget.ui.screens.budget.snow.SnowOverrunScreen
 import com.riverheadny.budget.ui.screens.civic.explainers.DefamationRiskScreen
 import com.riverheadny.budget.ui.screens.civic.explainers.PluralityGovernanceScreen
 import com.riverheadny.budget.ui.screens.tools.police.PoliceStepScheduleScreen
+import com.riverheadny.budget.ui.screens.tools.toolkit.ResidentActionToolkitScreen
+import com.riverheadny.budget.ui.screens.tools.toolkit.StartHereScreen
 import com.riverheadny.budget.ui.screens.tools.waivers.RetirementWaiversScreen
 import com.riverheadny.budget.ui.screens.budget.housing.HousingAffordabilityScreen
 import com.riverheadny.budget.ui.screens.budget.rebalanced.RebalancedSpendingScreen
@@ -103,6 +105,8 @@ fun RiverheadNavHost(navController: NavHostController) {
         composable(Routes.DEFAMATION_RISK) { DefamationRiskScreen() }
         composable(Routes.RETIREMENT_WAIVERS) { RetirementWaiversScreen() }
         composable(Routes.POLICE_STEPS) { PoliceStepScheduleScreen() }
+        composable(Routes.START_HERE) { StartHereScreen(navController) }
+        composable(Routes.RESIDENT_TOOLKIT) { ResidentActionToolkitScreen() }
         composable(Routes.SALARY_COMPARISON) { SalaryComparisonScreen() }
         composable(Routes.ACCURACY_WATCHLIST) { BudgetAccuracyWatchlistScreen() }
         composable(Routes.SNOW_OVERRUN) { SnowOverrunScreen() }

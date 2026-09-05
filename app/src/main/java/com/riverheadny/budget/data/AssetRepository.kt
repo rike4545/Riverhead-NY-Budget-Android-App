@@ -3,6 +3,8 @@ package com.riverheadny.budget.data
 import android.content.res.AssetManager
 import com.riverheadny.budget.data.models.AfrData
 import com.riverheadny.budget.data.models.Budget2027Prediction
+import com.riverheadny.budget.data.models.BuyoutAnalysis
+import com.riverheadny.budget.data.models.RetireeHealthComparison
 import com.riverheadny.budget.data.models.ProjectedLinesFile
 import com.riverheadny.budget.data.models.CommunityData
 import com.riverheadny.budget.data.models.DataMeta
@@ -46,6 +48,8 @@ class AssetRepository(private val assets: AssetManager) {
     private var searchIndexCache: SearchIndex? = null
     private var metaCache: DataMeta? = null
     private var predictionCache: Budget2027Prediction? = null
+    private var buyoutCache: BuyoutAnalysis? = null
+    private var retireeHealthCache: RetireeHealthComparison? = null
     private var projectedLinesCache: ProjectedLinesFile? = null
     private val meetingDetailCache = mutableMapOf<String, MeetingDetail>()
 
@@ -102,6 +106,16 @@ class AssetRepository(private val assets: AssetManager) {
     suspend fun meetingDetail(slug: String): MeetingDetail = withContext(Dispatchers.IO) {
         meetingDetailCache[slug] ?: json.decodeFromString<MeetingDetail>(readAsset("data/meetings/$slug.json"))
             .also { meetingDetailCache[slug] = it }
+    }
+
+    suspend fun buyoutAnalysis(): BuyoutAnalysis = withContext(Dispatchers.IO) {
+        buyoutCache ?: json.decodeFromString<BuyoutAnalysis>(readAsset("data/buyout-analysis.json"))
+            .also { buyoutCache = it }
+    }
+
+    suspend fun retireeHealthComparison(): RetireeHealthComparison = withContext(Dispatchers.IO) {
+        retireeHealthCache ?: json.decodeFromString<RetireeHealthComparison>(readAsset("data/retiree-health-comparison.json"))
+            .also { retireeHealthCache = it }
     }
 
     suspend fun budget2027Prediction(): Budget2027Prediction = withContext(Dispatchers.IO) {

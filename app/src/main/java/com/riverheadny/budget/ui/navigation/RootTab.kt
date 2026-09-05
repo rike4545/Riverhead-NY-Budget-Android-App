@@ -79,4 +79,6 @@ object Routes {
     const val WHAT_CHANGED = "budget/what-changed"
     const val DEBT_SAVINGS = "budget/debt-savings"
     const val DEPT_EXPENSE_EXPLORER = "budget/department-expenses"
+    const val START_HERE = "tools/start-here"
+    const val RESIDENT_TOOLKIT = "tools/resident-toolkit"
 }
