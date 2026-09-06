@@ -21,6 +21,8 @@ import com.riverheadny.budget.ui.screens.budget.debt.DebtSavingsScreen
 import com.riverheadny.budget.ui.screens.budget.departments.DepartmentExpenseExplorerScreen
 import com.riverheadny.budget.ui.screens.budget.diff.WhatChangedScreen
 import com.riverheadny.budget.ui.screens.budget.ledger.LineItemLedgerScreen
+import com.riverheadny.budget.ui.screens.budget.opeb.RetireeHealthScreen
+import com.riverheadny.budget.ui.screens.tools.buyout.RetirementBuyoutScreen
 import com.riverheadny.budget.ui.screens.budget.outlook.Budget2027OutlookScreen
 import com.riverheadny.budget.ui.screens.budget.snow.SnowOverrunScreen
 import com.riverheadny.budget.ui.screens.civic.explainers.DefamationRiskScreen
@@ -73,6 +75,8 @@ fun RiverheadNavHost(navController: NavHostController) {
         composable(Routes.ABOUT) { AboutScreen() }
         composable(Routes.BUDGET_2027_OUTLOOK) { Budget2027OutlookScreen(navController) }
         composable(Routes.LINE_ITEM_LEDGER) { LineItemLedgerScreen() }
+        composable(Routes.RETIREMENT_BUYOUT) { RetirementBuyoutScreen() }
+        composable(Routes.RETIREE_HEALTH) { RetireeHealthScreen() }
 
         composable(Routes.FUNDS_LIST) { FundsListScreen(navController) }
         composable(

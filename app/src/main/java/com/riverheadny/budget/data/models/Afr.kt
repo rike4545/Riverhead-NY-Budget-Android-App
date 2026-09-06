@@ -27,10 +27,18 @@ data class AfrFund(
     val surplus: Map<String, Double>? = null,
     val fundBalance: Map<String, Double>? = null,
     val fundBalanceClasses: List<FundBalanceClass>? = null,
+    /** Revenue broken out by category — "Property Taxes" is what the levy-reliance test reads. */
+    val revenueCategories: List<AfrRevenueCategory>? = null,
 )
 
 @Serializable
 data class FundBalanceClass(
     @SerialName("class") val classification: String,
+    val values: Map<String, Double>? = null,
+)
+
+@Serializable
+data class AfrRevenueCategory(
+    val category: String,
     val values: Map<String, Double>? = null,
 )

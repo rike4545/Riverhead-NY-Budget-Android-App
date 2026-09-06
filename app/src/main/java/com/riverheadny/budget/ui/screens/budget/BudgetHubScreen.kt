@@ -100,12 +100,14 @@ private val hubSections = listOf(
             RealDataShortcut("Health Insurance Buy-Back", "What the Town pays to decline coverage, and how that compares", Icons.Filled.People, Routes.HEALTH_BUYBACK),
             RealDataShortcut("Police Pay Steps", "Every step of the signed 2023-2026 PBA salary schedule", Icons.Filled.People, Routes.POLICE_STEPS),
             RealDataShortcut("Town Salary Comparison", "What five Suffolk towns pay their elected and appointed officers", Icons.Filled.People, Routes.SALARY_COMPARISON),
+            RealDataShortcut("Retiree Health vs. Peers", "Riverhead's retiree-health liability among ten Suffolk towns", Icons.Filled.AccountBalance, Routes.RETIREE_HEALTH),
         ),
     ),
     HubSection(
         "Next year",
         "Modeled by this app, not adopted by the Town — see the Source Trail.",
         listOf(
+            RealDataShortcut("Retirement Buyout", "The 2026 incentive: what it costs, and why the savings depend on refilling", Icons.Filled.People, Routes.RETIREMENT_BUYOUT),
             RealDataShortcut("2027 Outlook", "The 2026 budget grown forward account by account, and the cap gap it creates", Icons.AutoMirrored.Filled.TrendingUp, Routes.BUDGET_2027_OUTLOOK),
             RealDataShortcut("Line-Item Ledger", "All 848 accounts: 2025 and 2026 as adopted, against the 2027 projection", Icons.Filled.Tune, Routes.LINE_ITEM_LEDGER),
             RealDataShortcut("2027 Spending Reduction", "A real, sourced recurring savings package, toggleable", Icons.Filled.Gavel, Routes.SPENDING_REDUCTION),

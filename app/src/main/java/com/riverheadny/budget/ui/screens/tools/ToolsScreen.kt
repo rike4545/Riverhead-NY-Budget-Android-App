@@ -111,6 +111,12 @@ private val workforce = listOf(
         Routes.RETIREMENT_WAIVERS,
     ),
     ToolShortcut(
+        "Retirement Buyout",
+        "The 2026 incentive: 78 eligible, what it costs, and what refilling does to the savings",
+        Icons.Filled.People,
+        Routes.RETIREMENT_BUYOUT,
+    ),
+    ToolShortcut(
         "Health Insurance Buy-Back",
         "What the Town pays to decline coverage, and how that compares",
         Icons.Filled.People,

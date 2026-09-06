@@ -30,6 +30,8 @@ object Routes {
     const val ABOUT = "more/about"
     const val BUDGET_2027_OUTLOOK = "budget/outlook-2027"
     const val LINE_ITEM_LEDGER = "budget/ledger"
+    const val RETIREMENT_BUYOUT = "tools/buyout"
+    const val RETIREE_HEALTH = "budget/retiree-health"
 
     const val FUNDS_LIST = "budget/funds"
     const val FUND_DETAIL = "budget/funds/{code}"

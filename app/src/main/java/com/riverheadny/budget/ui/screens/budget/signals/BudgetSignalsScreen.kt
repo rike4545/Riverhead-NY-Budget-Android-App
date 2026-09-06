@@ -19,6 +19,9 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.riverheadny.budget.data.LoadState
+import com.riverheadny.budget.data.models.DepartmentBudgetLens
 import com.riverheadny.budget.data.models.BudgetSignalRubric
 import com.riverheadny.budget.data.models.DepartmentBudgetLensData
 import com.riverheadny.budget.data.models.RebalanceDirection
@@ -71,6 +74,50 @@ private fun midYearNote(rec: RebalanceRecommendation): String? {
     return "Part-way through 2025: $spend spent, $share of that year's ${BudgetSignalRubric.dollars(rec.adopted2025)} budget."
 }
 
+/**
+ * Department signals, from the 2026 budget-by-function crosswalk. These read staffing mix and
+ * mapping quality — a function whose mapped salary exceeds its own total is not overspending,
+ * it is a crosswalk artefact, and the rubric says so rather than flagging it as a finding.
+ */
+private fun departmentSignals(): List<BudgetSignal> =
+    DepartmentBudgetLens.departmentRecords.mapNotNull { r ->
+        val lowered = r.note?.lowercase().orEmpty()
+        val fuzzy = "does not map perfectly" in lowered ||
+            "not separated" in lowered ||
+            "not separate" in lowered
+
+        var criteria = BudgetSignalRubric.departmentCriteria(
+            personnelShare = r.personnelShare,
+            adoptedTotal = r.adoptedTotal,
+            positions = r.positions,
+            hasSalaryBase = r.salaryBase != null,
+            noteFlagsFuzzyMapping = fuzzy,
+        )
+
+        // The Town Attorney crosswalk has a known, specific explanation — state it rather than
+        // letting the generic mapping note stand in for it.
+        if (r.fundCode == "A01-1420") {
+            criteria = criteria.map { c ->
+                if (c.name != "Salary exceeds function total") c
+                else c.copy(
+                    observed = "16 positions mapping to \$1.594M against a \$1.429M function total",
+                    why = "The roughly \$165K overage most likely reflects fire marshal and code-compliance titles that belong to functions 3625 and 3620 rather than 1420.",
+                )
+            }
+        }
+
+        val score = BudgetSignalRubric.score(criteria)
+        if (score < BudgetSignalRubric.reportingFloor) return@mapNotNull null
+        BudgetSignal(
+            title = r.budgetDepartment,
+            criteria = criteria,
+            score = score,
+            severity = severityFor(score),
+            source = "2026 adopted budget matched to the payroll summary",
+            corroboration = null,
+        )
+    }.sortedWith(compareByDescending<BudgetSignal> { it.score }.thenBy { it.title })
+
 private fun accuracySignals(): List<BudgetSignal> =
     DepartmentBudgetLensData.rebalancedSpending.mapNotNull { rec ->
         val criteria = BudgetSignalRubric.accuracyCriteria(rec)
@@ -87,8 +134,10 @@ private fun accuracySignals(): List<BudgetSignal> =
     }.sortedWith(compareByDescending<BudgetSignal> { it.score }.thenBy { it.title })
 
 @Composable
-fun BudgetSignalsScreen() {
+fun BudgetSignalsScreen(viewModel: BudgetSignalsViewModel = viewModel()) {
     val signals = accuracySignals()
+    val departments = departmentSignals()
+    val fundState by viewModel.state.collectAsState()
 
     PageColumn {
         HeroCard(
@@ -127,16 +176,59 @@ fun BudgetSignalsScreen() {
 
         signals.forEach { SignalCard(it) }
 
-        ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
-            Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text("Not yet on Android", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+        SectionTitle("Funds")
+        when (val st = fundState) {
+            is LoadState.Success -> {
                 Text(
-                    "iOS also scores funds (reserve position, levy reliance, reserve draws, growth, volatility) and departments (staffing mix and mapping quality). Those tests need tax-levy and fund-balance fields that the Android fund data does not yet carry, so they are omitted here rather than approximated.",
+                    "Scored from the Town's own Annual Financial Report for ${st.data.latestYear}: closing fund balance against spending, the property-tax share of each fund's revenue, year-over-year growth, and how much each fund's spending swings.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MutedText,
+                )
+                if (st.data.funds.isEmpty()) {
+                    Text(
+                        "No fund currently scores above the reporting floor.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MutedText,
+                    )
+                } else {
+                    st.data.funds.forEach { f ->
+                        SignalCard(
+                            BudgetSignal(
+                                title = "${f.code} · ${f.name}",
+                                criteria = f.criteria,
+                                score = f.score,
+                                severity = severityFor(f.score),
+                                source = st.data.afrSourceTitle ?: "Town of Riverhead Annual Financial Report",
+                                corroboration = null,
+                            ),
+                        )
+                    }
+                }
+                Text(
+                    "One rubric test is absent here by design. Reserve draw measures the appropriated fund balance a budget leans on to close its own gap — that is a budget decision, so it lives in the adopted budget rather than in a year-end financial report, and substituting something adjacent would score funds against a different question than the test asks.",
                     style = MaterialTheme.typography.labelSmall,
                     color = MutedText,
                 )
             }
+            is LoadState.Error -> Text(
+                "The Annual Financial Report could not be read, so fund signals are unavailable: ${st.message}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MutedText,
+            )
+            LoadState.Loading -> Text(
+                "Reading the Annual Financial Report\u2026",
+                style = MaterialTheme.typography.bodySmall,
+                color = MutedText,
+            )
         }
+
+        SectionTitle("Departments")
+        Text(
+            "Staffing mix and mapping quality across the 2026 budget functions.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MutedText,
+        )
+        departments.forEach { SignalCard(it) }
     }
 }
 
