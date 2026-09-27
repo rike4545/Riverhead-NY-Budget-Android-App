@@ -69,6 +69,12 @@ private val inAppShortcuts = listOf(
         Routes.SOURCE_TRAIL,
     ),
     MoreShortcut(
+        "Riverhead Budget Live parity",
+        "Open all 54 current web features, including features that are not native on Android yet",
+        Icons.Filled.Link,
+        Routes.WEB_PARITY,
+    ),
+    MoreShortcut(
         "About this app",
         "What it does, what it does not do, and who it is not affiliated with",
         Icons.Filled.Info,
