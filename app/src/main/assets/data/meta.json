@@ -1,10 +1,11 @@
 {
- "generatedAt": "2026-07-13T12:06:14Z",
- "generatedAtDisplay": "July 13, 2026",
+ "generatedAt": "2026-09-27T14:49:23Z",
+ "generatedAtDisplay": "September 27, 2026",
+ "dataVersion": "0cd024f98d91c1c1",
  "datasets": {
-  "meetings": 40,
-  "votes": 1725,
-  "latestMeeting": "July 7, 2026",
+  "meetings": 49,
+  "votes": 2084,
+  "latestMeeting": "September 15, 2026",
   "budgetLineItems": 1009,
   "payrollYears": [
    2018,
@@ -16,6 +17,97 @@
    2024,
    2025
   ],
-  "searchEntries": 16355
+  "searchEntries": 17190
+ },
+ "datasetDetails": {
+  "budget": {
+   "label": "2026 Adopted Budget",
+   "asOf": "2026",
+   "status": "official",
+   "cadence": "Adopted annually; amendments may occur during the year",
+   "records": 1009,
+   "freshness": "current",
+   "freshnessNote": "2026 is the expected annual release for the current cycle.",
+   "freshnessPolicy": {
+    "mode": "year",
+    "expectedLagYears": 0,
+    "staleAfterLagYears": 1
+   }
+  },
+  "meetings": {
+   "label": "Town Board minutes and votes",
+   "asOf": "September 15, 2026",
+   "status": "official",
+   "cadence": "Checked weekly as the Town publishes minutes; meetings are not held every week",
+   "records": 2084,
+   "freshness": "current",
+   "freshnessNote": "Source date is 12 days old, inside the expected window.",
+   "freshnessPolicy": {
+    "mode": "date",
+    "currentDays": 28,
+    "staleDays": 56
+   },
+   "sourceDate": "2026-09-15"
+  },
+  "payroll": {
+   "label": "Actual payroll",
+   "asOf": "2025",
+   "status": "official",
+   "cadence": "Annual published payroll; the prior calendar year is normally the latest complete year",
+   "records": null,
+   "freshness": "current",
+   "freshnessNote": "2025 is the expected annual release for the current cycle.",
+   "freshnessPolicy": {
+    "mode": "year",
+    "expectedLagYears": 1,
+    "staleAfterLagYears": 2
+   }
+  },
+  "annualReport": {
+   "label": "Annual Financial Report",
+   "asOf": "2025",
+   "status": "official",
+   "cadence": "Annual audited / filed financial reporting",
+   "records": null,
+   "freshness": "current",
+   "freshnessNote": "2025 is the expected annual release for the current cycle.",
+   "freshnessPolicy": {
+    "mode": "year",
+    "expectedLagYears": 1,
+    "staleAfterLagYears": 2
+   }
+  },
+  "projection": {
+   "label": "2027 projection model",
+   "asOf": "September 27, 2026",
+   "status": "projected",
+   "cadence": "Regenerated with the ETL pipeline",
+   "records": null,
+   "freshness": "current",
+   "freshnessNote": "Source date is 0 days old, inside the expected window.",
+   "freshnessPolicy": {
+    "mode": "pipeline",
+    "currentDays": 7,
+    "staleDays": 14
+   },
+   "sourceDate": "2026-09-27"
+  },
+  "search": {
+   "label": "Unified search index",
+   "asOf": "September 27, 2026",
+   "status": "calculated",
+   "cadence": "Regenerated with source datasets",
+   "records": 17190,
+   "freshness": "current",
+   "freshnessNote": "Source date is 0 days old, inside the expected window.",
+   "freshnessPolicy": {
+    "mode": "pipeline",
+    "currentDays": 7,
+    "staleDays": 14
+   },
+   "sourceDate": "2026-09-27",
+   "format": "sharded",
+   "bytes": 5735910
+  }
  }
 }
