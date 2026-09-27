@@ -28,6 +28,7 @@ object Routes {
     const val SEARCH = "search"
     const val SOURCE_TRAIL = "tools/sources"
     const val ABOUT = "more/about"
+    const val WEB_PARITY = "more/web-parity"
     const val BUDGET_2027_OUTLOOK = "budget/outlook-2027"
     const val LINE_ITEM_LEDGER = "budget/ledger"
 
