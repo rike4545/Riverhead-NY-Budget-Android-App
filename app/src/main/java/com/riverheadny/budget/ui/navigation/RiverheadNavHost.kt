@@ -51,6 +51,7 @@ import com.riverheadny.budget.ui.screens.civic.votes.MeetingDetailScreen
 import com.riverheadny.budget.ui.screens.civic.votes.MeetingsListScreen
 import com.riverheadny.budget.ui.screens.home.HomeScreen
 import com.riverheadny.budget.ui.screens.more.MoreScreen
+import com.riverheadny.budget.ui.screens.more.WebParityScreen
 import com.riverheadny.budget.ui.screens.search.SearchScreen
 import com.riverheadny.budget.ui.screens.more.AboutScreen
 import com.riverheadny.budget.ui.screens.more.BudgetGuideScreen
@@ -71,6 +72,7 @@ fun RiverheadNavHost(navController: NavHostController) {
         composable(Routes.SEARCH) { SearchScreen(navController) }
         composable(Routes.SOURCE_TRAIL) { SourceTrailScreen() }
         composable(Routes.ABOUT) { AboutScreen() }
+        composable(Routes.WEB_PARITY) { WebParityScreen() }
         composable(Routes.BUDGET_2027_OUTLOOK) { Budget2027OutlookScreen(navController) }
         composable(Routes.LINE_ITEM_LEDGER) { LineItemLedgerScreen() }
 

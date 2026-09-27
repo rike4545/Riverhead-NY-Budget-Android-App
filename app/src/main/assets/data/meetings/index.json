@@ -4,13 +4,93 @@
   "url": "https://www.townofriverheadny.gov/129/Agendas-Minutes"
  },
  "totals": {
-  "meetings": 40,
-  "votes": 1721,
-  "contested": 33,
-  "failed": 1,
-  "tabled": 10
+  "meetings": 49,
+  "votes": 2084,
+  "contested": 43,
+  "failed": 3,
+  "tabled": 11
  },
  "meetings": [
+  {
+   "slug": "2026-09-15",
+   "date": "September 15, 2026",
+   "type": "Regular Meeting",
+   "total": 37,
+   "unanimous": 35,
+   "contested": 1,
+   "failed": 0,
+   "tabled": 1,
+   "voteSource": "agenda-packet",
+   "officialRecordStatus": "vote-record-parsed",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-16T17:19:31Z"
+  },
+  {
+   "slug": "2026-09-01",
+   "date": "September 1, 2026",
+   "type": "Regular Meeting",
+   "total": 27,
+   "unanimous": 26,
+   "contested": 1,
+   "failed": 0,
+   "tabled": 0,
+   "voteSource": "agenda-packet",
+   "officialRecordStatus": "vote-record-parsed",
+   "minutesRevisionCount": 1,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T16:56:16Z"
+  },
+  {
+   "slug": "2026-08-18",
+   "date": "August 18, 2026",
+   "type": "Regular Meeting",
+   "total": 49,
+   "unanimous": 48,
+   "contested": 1,
+   "failed": 1,
+   "tabled": 0,
+   "voteSource": "agenda-packet",
+   "officialRecordStatus": "vote-record-parsed",
+   "minutesRevisionCount": 1,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T16:56:10Z"
+  },
+  {
+   "slug": "2026-08-04",
+   "date": "August 4, 2026",
+   "type": "Regular Meeting",
+   "total": 49,
+   "unanimous": 49,
+   "contested": 0,
+   "failed": 0,
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 1,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T16:54:24Z"
+  },
+  {
+   "slug": "2026-07-21",
+   "date": "July 21, 2026",
+   "type": "Regular Meeting",
+   "total": 30,
+   "unanimous": 30,
+   "contested": 0,
+   "failed": 0,
+   "tabled": 0,
+   "voteSource": "agenda-packet",
+   "officialRecordStatus": "vote-record-parsed",
+   "minutesRevisionCount": 1,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T16:56:04Z"
+  },
   {
    "slug": "2026-07-07",
    "date": "July 7, 2026",
@@ -19,7 +99,13 @@
    "unanimous": 52,
    "contested": 0,
    "failed": 0,
-   "tabled": 1
+   "tabled": 1,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 1,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T16:54:22Z"
   },
   {
    "slug": "2026-06-16",
@@ -29,7 +115,13 @@
    "unanimous": 65,
    "contested": 1,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 1,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T16:54:21Z"
   },
   {
    "slug": "2026-06-02",
@@ -39,7 +131,13 @@
    "unanimous": 38,
    "contested": 1,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 1,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T16:54:20Z"
   },
   {
    "slug": "2026-05-20",
@@ -49,7 +147,13 @@
    "unanimous": 56,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 1,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T16:54:19Z"
   },
   {
    "slug": "2026-05-05",
@@ -59,7 +163,13 @@
    "unanimous": 58,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 1,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T16:54:13Z"
   },
   {
    "slug": "2026-04-21",
@@ -69,7 +179,13 @@
    "unanimous": 48,
    "contested": 4,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 1,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-09T01:27:49Z"
   },
   {
    "slug": "2026-04-07",
@@ -79,7 +195,13 @@
    "unanimous": 92,
    "contested": 1,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:46Z"
   },
   {
    "slug": "2026-03-17",
@@ -89,7 +211,13 @@
    "unanimous": 45,
    "contested": 0,
    "failed": 0,
-   "tabled": 1
+   "tabled": 1,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:45Z"
   },
   {
    "slug": "2026-03-03",
@@ -99,7 +227,13 @@
    "unanimous": 27,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:45Z"
   },
   {
    "slug": "2026-02-18",
@@ -109,7 +243,13 @@
    "unanimous": 40,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:44Z"
   },
   {
    "slug": "2026-02-03",
@@ -119,7 +259,13 @@
    "unanimous": 52,
    "contested": 2,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:44Z"
   },
   {
    "slug": "2026-01-21",
@@ -129,7 +275,13 @@
    "unanimous": 40,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:43Z"
   },
   {
    "slug": "2026-01-06",
@@ -139,7 +291,13 @@
    "unanimous": 57,
    "contested": 1,
    "failed": 0,
-   "tabled": 2
+   "tabled": 2,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:43Z"
   },
   {
    "slug": "2025-12-30",
@@ -149,7 +307,13 @@
    "unanimous": 1,
    "contested": 1,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:42Z"
   },
   {
    "slug": "2025-12-16",
@@ -159,7 +323,13 @@
    "unanimous": 62,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:42Z"
   },
   {
    "slug": "2025-12-02",
@@ -169,7 +339,13 @@
    "unanimous": 27,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:41Z"
   },
   {
    "slug": "2025-11-18",
@@ -179,7 +355,13 @@
    "unanimous": 23,
    "contested": 2,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:41Z"
   },
   {
    "slug": "2025-11-06",
@@ -189,7 +371,13 @@
    "unanimous": 26,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:40Z"
   },
   {
    "slug": "2025-10-21",
@@ -199,7 +387,13 @@
    "unanimous": 33,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:40Z"
   },
   {
    "slug": "2025-10-07",
@@ -209,7 +403,13 @@
    "unanimous": 53,
    "contested": 0,
    "failed": 0,
-   "tabled": 2
+   "tabled": 2,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:38Z"
   },
   {
    "slug": "2025-09-29",
@@ -219,7 +419,13 @@
    "unanimous": 0,
    "contested": 1,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:38Z"
   },
   {
    "slug": "2025-09-16",
@@ -229,7 +435,13 @@
    "unanimous": 27,
    "contested": 0,
    "failed": 0,
-   "tabled": 1
+   "tabled": 1,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:38Z"
   },
   {
    "slug": "2025-09-03",
@@ -239,7 +451,13 @@
    "unanimous": 28,
    "contested": 1,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:37Z"
   },
   {
    "slug": "2025-08-19",
@@ -249,7 +467,13 @@
    "unanimous": 50,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:36Z"
   },
   {
    "slug": "2025-08-05",
@@ -259,7 +483,31 @@
    "unanimous": 55,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:36Z"
+  },
+  {
+   "slug": "2025-07-24",
+   "date": "July 24, 2025",
+   "type": "Special Meeting",
+   "total": 0,
+   "unanimous": 0,
+   "contested": 0,
+   "failed": 0,
+   "tabled": 0,
+   "preliminary": true,
+   "docketCount": 1,
+   "officialRecordStatus": "minutes-published-vote-detail-omitted",
+   "voteSource": null,
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T16:54:29Z"
   },
   {
    "slug": "2025-07-15",
@@ -269,7 +517,13 @@
    "unanimous": 33,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:35Z"
   },
   {
    "slug": "2025-07-01",
@@ -279,7 +533,13 @@
    "unanimous": 30,
    "contested": 1,
    "failed": 0,
-   "tabled": 1
+   "tabled": 1,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:34Z"
   },
   {
    "slug": "2025-06-17",
@@ -289,7 +549,13 @@
    "unanimous": 66,
    "contested": 1,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:26Z"
   },
   {
    "slug": "2025-06-03",
@@ -299,7 +565,13 @@
    "unanimous": 43,
    "contested": 1,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:17Z"
   },
   {
    "slug": "2025-05-21",
@@ -309,7 +581,13 @@
    "unanimous": 42,
    "contested": 4,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:22:09Z"
   },
   {
    "slug": "2025-05-08",
@@ -319,7 +597,13 @@
    "unanimous": 3,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:21:26Z"
   },
   {
    "slug": "2025-05-06",
@@ -329,7 +613,13 @@
    "unanimous": 42,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:21:25Z"
   },
   {
    "slug": "2025-04-15",
@@ -339,7 +629,13 @@
    "unanimous": 43,
    "contested": 3,
    "failed": 0,
-   "tabled": 1
+   "tabled": 1,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:21:18Z"
   },
   {
    "slug": "2025-04-01",
@@ -349,7 +645,13 @@
    "unanimous": 48,
    "contested": 1,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:21:10Z"
   },
   {
    "slug": "2025-03-18",
@@ -359,7 +661,13 @@
    "unanimous": 38,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:20:58Z"
   },
   {
    "slug": "2025-03-04",
@@ -369,7 +677,13 @@
    "unanimous": 30,
    "contested": 2,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:20:42Z"
   },
   {
    "slug": "2025-02-19",
@@ -379,7 +693,13 @@
    "unanimous": 40,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:20:34Z"
   },
   {
    "slug": "2025-02-04",
@@ -389,7 +709,13 @@
    "unanimous": 36,
    "contested": 0,
    "failed": 0,
-   "tabled": 0
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:20:27Z"
   },
   {
    "slug": "2025-01-22",
@@ -399,7 +725,13 @@
    "unanimous": 44,
    "contested": 0,
    "failed": 0,
-   "tabled": 1
+   "tabled": 1,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:20:22Z"
   },
   {
    "slug": "2025-01-07",
@@ -409,6 +741,42 @@
    "unanimous": 85,
    "contested": 5,
    "failed": 1,
+   "tabled": 0,
+   "officialRecordStatus": "vote-record-parsed",
+   "voteSource": "minutes",
+   "minutesRevisionCount": 0,
+   "verifiedResolutionCount": 0,
+   "resolutionSourceCount": 0,
+   "sourceVersionAt": "2026-09-08T01:20:09Z"
+  },
+  {
+   "slug": "2024-01-03",
+   "date": "January 3, 2024",
+   "type": "Regular Meeting",
+   "total": 73,
+   "unanimous": 70,
+   "contested": 3,
+   "failed": 0,
+   "tabled": 0
+  },
+  {
+   "slug": "2023-01-04",
+   "date": "January 4, 2023",
+   "type": "Regular Meeting",
+   "total": 43,
+   "unanimous": 40,
+   "contested": 3,
+   "failed": 1,
+   "tabled": 0
+  },
+  {
+   "slug": "2022-01-04",
+   "date": "January 4, 2022",
+   "type": "Regular Meeting",
+   "total": 55,
+   "unanimous": 54,
+   "contested": 1,
+   "failed": 0,
    "tabled": 0
   }
  ]
