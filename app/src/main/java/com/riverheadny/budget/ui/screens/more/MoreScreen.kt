@@ -70,7 +70,7 @@ private val inAppShortcuts = listOf(
     ),
     MoreShortcut(
         "Riverhead Budget Live parity",
-        "Open all 54 current web features, including features that are not native on Android yet",
+        "Open all 64 current web features, including features that are not native on Android yet",
         Icons.Filled.Link,
         Routes.WEB_PARITY,
     ),
