@@ -4,17 +4,34 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * The unified search index built by the web platform's ETL (web/public/data/search/unified.json).
- *
- * The field names are single letters because the file carries 16,000+ entries and ships inside the
- * APK; spelling them out costs about a megabyte for no reader benefit. They are mapped to readable
- * property names here so nothing downstream has to remember what "x" meant.
+ * In-memory search index assembled from the canonical web ETL's typed shards.
  */
 @Serializable
 data class SearchIndex(
     val note: String = "",
     val counts: Map<String, Int> = emptyMap(),
     val entries: List<SearchEntry> = emptyList(),
+)
+
+@Serializable
+data class SearchManifest(
+    val version: Int,
+    val shards: Map<String, SearchShardDescriptor>,
+    val total: Int,
+)
+
+@Serializable
+data class SearchShardDescriptor(
+    val url: String,
+    val count: Int,
+    val bytes: Int = 0,
+    val sha256: String = "",
+)
+
+@Serializable
+data class SearchShard(
+    val type: String,
+    val entries: List<SearchEntry>,
 )
 
 @Serializable

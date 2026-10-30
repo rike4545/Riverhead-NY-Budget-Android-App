@@ -1,6 +1,9 @@
 name: Sync canonical web data
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: '29 15 * * *'
   workflow_dispatch:
@@ -33,12 +36,14 @@ jobs:
       - name: Commit canonical data changes
         working-directory: mobile
         run: |
-          if git diff --quiet && git diff --cached --quiet; then
+          # Stage first: git diff does not report untracked files, which are
+          # expected when the canonical manifest adds new datasets.
+          git add app/src/main/assets/data/
+          if git diff --cached --quiet; then
             echo "Already in sync with web source."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add app/src/main/assets/data/meetings                   app/src/main/assets/data/budget-supplement/lines.json                   app/src/main/assets/data/budget-supplement/outliers.json                   app/src/main/assets/data/budget-supplement/reductions.json                   app/src/main/assets/data/payroll/records.json                   app/src/main/assets/data/payroll/titles-by-year.json
           git commit -m "Sync canonical data from web source"
           git push
