@@ -16,6 +16,9 @@ import com.riverheadny.budget.data.models.MeetingsIndex
 import com.riverheadny.budget.data.models.PayrollRecordsFile
 import com.riverheadny.budget.data.models.PayrollSummary
 import com.riverheadny.budget.data.models.SearchIndex
+import com.riverheadny.budget.data.models.SearchManifest
+import com.riverheadny.budget.data.models.SearchShard
+import java.io.FileNotFoundException
 import com.riverheadny.budget.data.models.TaxBillData
 import com.riverheadny.budget.data.models.TaxCapData
 import kotlinx.coroutines.Dispatchers
@@ -140,8 +143,52 @@ class AssetRepository(private val assets: AssetManager) {
      * feel broken.
      */
     suspend fun searchIndex(): SearchIndex = withContext(Dispatchers.IO) {
-        searchIndexCache ?: json.decodeFromString<SearchIndex>(readAsset("data/search/unified.json"))
-            .also { searchIndexCache = it }
+        searchIndexCache ?: loadSearchIndex().also { searchIndexCache = it }
+    }
+
+    /**
+     * Prefer the web ETL's versioned typed shards. Verify each shard's declared
+     * type and row count, then verify the manifest total before exposing results.
+     * The old unified file is read only by app bundles that predate the manifest.
+     */
+    private fun loadSearchIndex(): SearchIndex {
+        val manifestText = try {
+            readAsset("data/search/manifest.json")
+        } catch (_: FileNotFoundException) {
+            null
+        }
+
+        if (manifestText == null) {
+            return json.decodeFromString<SearchIndex>(readAsset("data/search/unified.json"))
+        }
+
+        val manifest = json.decodeFromString<SearchManifest>(manifestText)
+        val counts = linkedMapOf<String, Int>()
+        val entries = ArrayList<com.riverheadny.budget.data.models.SearchEntry>(manifest.total)
+
+        manifest.shards.toSortedMap().forEach { (kind, descriptor) ->
+            require(descriptor.url.endsWith(".json") && !descriptor.url.contains("/") && !descriptor.url.contains("..")) {
+                "Unsafe search shard path for $kind"
+            }
+            val shard = json.decodeFromString<SearchShard>(readAsset("data/search/${descriptor.url}"))
+            require(shard.type == kind) {
+                "Search shard $kind declares type ${shard.type}"
+            }
+            require(shard.entries.size == descriptor.count) {
+                "Search shard $kind declares ${descriptor.count} rows but contains ${shard.entries.size}"
+            }
+            counts[kind] = descriptor.count
+            entries.addAll(shard.entries)
+        }
+
+        require(entries.size == manifest.total) {
+            "Search manifest declares ${manifest.total} entries but its shards contain ${entries.size}"
+        }
+        return SearchIndex(
+            note = "Canonical web search index v${manifest.version}",
+            counts = counts,
+            entries = entries,
+        )
     }
 
     private fun readAsset(path: String): String =
