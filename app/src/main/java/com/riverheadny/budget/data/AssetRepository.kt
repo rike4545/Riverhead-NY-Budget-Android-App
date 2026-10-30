@@ -18,7 +18,6 @@ import com.riverheadny.budget.data.models.PayrollSummary
 import com.riverheadny.budget.data.models.SearchIndex
 import com.riverheadny.budget.data.models.SearchManifest
 import com.riverheadny.budget.data.models.SearchShard
-import java.io.FileNotFoundException
 import com.riverheadny.budget.data.models.TaxBillData
 import com.riverheadny.budget.data.models.TaxCapData
 import kotlinx.coroutines.Dispatchers
@@ -146,22 +145,11 @@ class AssetRepository(private val assets: AssetManager) {
     }
 
     /**
-     * Prefer the web ETL's versioned typed shards. Verify each shard's declared
+     * Load the web ETL's versioned typed shards. Verify each shard's declared
      * type and row count, then verify the manifest total before exposing results.
-     * The old unified file is read only by app bundles that predate the manifest.
      */
     private fun loadSearchIndex(): SearchIndex {
-        val manifestText = try {
-            readAsset("data/search/manifest.json")
-        } catch (_: FileNotFoundException) {
-            null
-        }
-
-        if (manifestText == null) {
-            return json.decodeFromString<SearchIndex>(readAsset("data/search/unified.json"))
-        }
-
-        val manifest = json.decodeFromString<SearchManifest>(manifestText)
+        val manifest = json.decodeFromString<SearchManifest>(readAsset("data/search/manifest.json"))
         val counts = linkedMapOf<String, Int>()
         val entries = ArrayList<com.riverheadny.budget.data.models.SearchEntry>(manifest.total)
 
