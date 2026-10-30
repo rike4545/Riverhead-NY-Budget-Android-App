@@ -17,6 +17,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check out canonical web navigation
+        uses: actions/checkout@v4
+        with:
+          repository: rike4545/Riverhead-NY-Budget-Web-App
+          path: web-source
+
+      - name: Verify Android web-feature parity
+        run: node scripts/verify-web-parity.mjs web-source/web/components/SiteNav.tsx
+
       - name: Set up JDK 17
         uses: actions/setup-java@v5
         with:
