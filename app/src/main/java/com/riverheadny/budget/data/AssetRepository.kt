@@ -137,10 +137,9 @@ class AssetRepository(private val assets: AssetManager) {
     }
 
     /**
-     * The unified index is by far the largest bundled asset (~4.7 MB, 16k entries), so it is read
-     * only when the search screen actually asks for it, and then held for the process lifetime —
-     * re-parsing it on every keystroke-driven recomposition would be the obvious way to make search
-     * feel broken.
+     * The typed search shards are the largest bundled index (~5 MB, 17k entries). They are read
+     * only when the search screen asks for them, merged once, and held for the process lifetime —
+     * re-parsing them on every keystroke-driven recomposition would make search feel broken.
      */
     suspend fun searchIndex(): SearchIndex = withContext(Dispatchers.IO) {
         searchIndexCache ?: loadSearchIndex().also { searchIndexCache = it }
