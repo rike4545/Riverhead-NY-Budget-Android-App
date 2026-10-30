@@ -30,6 +30,8 @@ private val groups = listOf(
         WebParityRoute("Budget Compare", "/compare/", "Compare adopted fund appropriations across years."),
         WebParityRoute("General Fund", "/general-fund/", "Review the long-run General Fund history."),
         WebParityRoute("Where Revenue Comes From", "/revenue/", "Explore the revenue sources supporting each fund."),
+        WebParityRoute("Budget Changes, Live", "/budget-changes/", "Track Town Board changes to the adopted budget during the year."),
+        WebParityRoute("RVAC Funding", "/rvac-funding/", "Review Riverhead Volunteer Ambulance Corps funding, payments, and supporting records."),
         WebParityRoute("Annual Report", "/annual-report/", "Explore the Town annual financial report."),
         WebParityRoute("Tax Cap", "/tax-cap/", "Understand the New York property-tax cap and Riverhead history."),
         WebParityRoute("Reserves & Fund Balance", "/reserves/", "Review reserves, fund balance, and draw-down modeling."),
@@ -44,7 +46,9 @@ private val groups = listOf(
     WebParityGroup("Government", listOf(
         WebParityRoute("Resident Answers", "/answers/", "Plain-language answers to common resident questions."),
         WebParityRoute("Workforce by Title", "/workforce-by-title/", "Explore the municipal workforce by job title."),
+        WebParityRoute("Organization Chart", "/workforce-by-title/#organization", "See the municipal organization chart."),
         WebParityRoute("Officials & Pensions", "/officials/", "Review officials with pension context."),
+        WebParityRoute("Fringe Benefits", "/fringe-benefits/", "Review Town-paid deferred compensation, annuity, and life insurance allowances."),
         WebParityRoute("Management Pay", "/management-compensation/", "Review management compensation history."),
         WebParityRoute("2026 Buyout", "/buyout/", "Review the early-retirement incentive and savings cases."),
         WebParityRoute("Police Spending & Crime", "/police-crime/", "Compare police spending with reported crime trends."),
@@ -59,6 +63,11 @@ private val groups = listOf(
     )),
     WebParityGroup("Research", listOf(
         WebParityRoute("Start Here", "/guide/", "Guided entry point to the platform and its sources."),
+        WebParityRoute("Contracts & Bids", "/contracts/", "Review bid awards, purchases, change orders, and service agreements."),
+        WebParityRoute("2027 Budget Amendments", "/budget-amendments-2027/", "Review amendments to the 2027 tentative budget."),
+        WebParityRoute("Tax-Cap Letter, Checked", "/tax-cap-letter/", "Check the Suffolk supervisors’ tax-cap letter against Riverhead’s record."),
+        WebParityRoute("Brookhaven’s 2027 Tentative", "/brookhaven-2027/", "Compare Brookhaven’s 2027 tentative budget with Riverhead’s."),
+        WebParityRoute("Southold’s 2027 Tentative", "/southold-2027/", "Compare Southold’s 2027 tentative budget with Riverhead’s."),
         WebParityRoute("2027 Prediction", "/predict-2027/", "Explore the forward projection for the next adopted budget."),
         WebParityRoute("2027 Tentative Budget", "/tentative-2027/", "Explore the 2027 Tentative Budget."),
         WebParityRoute("How Budgets Get Adopted", "/budget-adoption/", "Review how tentative, preliminary, and adopted budgets change."),
@@ -78,6 +87,7 @@ private val groups = listOf(
         WebParityRoute("Election Law Case", "/election-law-case/", "Review sourced election-law case material."),
         WebParityRoute("Officials on Social Media", "/official-social-media/", "Review public-official social-media accountability context."),
         WebParityRoute("Know Your Rights (ICE)", "/know-your-rights/", "Open the sourced know-your-rights reference."),
+        WebParityRoute("Records to Request", "/records/", "Find public records worth requesting and the relevant request context."),
     )),
 )
 
