@@ -5,8 +5,6 @@ import kotlinx.serialization.Serializable
 
 /**
  * In-memory search index assembled from the canonical web ETL's typed shards.
- * A legacy unified-file fallback remains in AssetRepository for already-installed
- * bundles that predate the sharded manifest.
  */
 @Serializable
 data class SearchIndex(
