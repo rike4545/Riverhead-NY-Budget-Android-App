@@ -1,6 +1,9 @@
 name: Sync canonical web data
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: '29 15 * * *'
   workflow_dispatch:
@@ -39,6 +42,6 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add app/src/main/assets/data/meetings                   app/src/main/assets/data/budget-supplement/lines.json                   app/src/main/assets/data/budget-supplement/outliers.json                   app/src/main/assets/data/budget-supplement/reductions.json                   app/src/main/assets/data/payroll/records.json                   app/src/main/assets/data/payroll/titles-by-year.json
+          git add app/src/main/assets/data/
           git commit -m "Sync canonical data from web source"
           git push
