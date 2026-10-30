@@ -36,12 +36,14 @@ jobs:
       - name: Commit canonical data changes
         working-directory: mobile
         run: |
-          if git diff --quiet && git diff --cached --quiet; then
+          # Stage first: git diff does not report untracked files, which are
+          # expected when the canonical manifest adds new datasets.
+          git add app/src/main/assets/data/
+          if git diff --cached --quiet; then
             echo "Already in sync with web source."
             exit 0
           fi
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add app/src/main/assets/data/
+          git config user.email "41898282+users.noreply.github.com"
           git commit -m "Sync canonical data from web source"
           git push
