@@ -30,6 +30,7 @@ private val groups = listOf(
         WebParityRoute("Budget Compare", "/compare/", "Compare adopted fund appropriations across years."),
         WebParityRoute("General Fund", "/general-fund/", "Review the long-run General Fund history."),
         WebParityRoute("Where Revenue Comes From", "/revenue/", "Explore the revenue sources supporting each fund."),
+        WebParityRoute("Grants", "/grants/", "See grants and State and federal aid received since 2018, with each award and the Town’s share."),
         WebParityRoute("Annual Report", "/annual-report/", "Explore the Town annual financial report."),
         WebParityRoute("Tax Cap", "/tax-cap/", "Understand the New York property-tax cap and Riverhead history."),
         WebParityRoute("Reserves & Fund Balance", "/reserves/", "Review reserves, fund balance, and draw-down modeling."),
@@ -64,6 +65,7 @@ private val groups = listOf(
         WebParityRoute("Candidate Watch", "/candidate-watch/", "Review current candidate information and sourced claims."),
         WebParityRoute("Candidate Proposals", "/candidate-cost-benefit/", "Review candidate proposals through a cost-benefit lens."),
         WebParityRoute("Supervisor’s Promises", "/supervisor-promises/", "Track documented promises against sourced actions."),
+        WebParityRoute("State of the Town Addresses", "/state-of-the-town/", "See what each Supervisor said in inaugural and State of the Town addresses, and what the law requires."),
         WebParityRoute("Open Meetings Law", "/open-meetings/", "Review New York Open Meetings Law guidance."),
     )),
     WebParityGroup("Research", listOf(
