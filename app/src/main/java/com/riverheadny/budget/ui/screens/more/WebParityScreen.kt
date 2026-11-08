@@ -45,6 +45,7 @@ private val groups = listOf(
         WebParityRoute("Community", "/community/", "See population, assessment, and tax-base context."),
         WebParityRoute("Preserved Land", "/preserved-land/", "Map every preserved farm parcel by who holds the rights and when."),
         WebParityRoute("Transfer of Development Rights", "/tdr/", "See how farmland credits buy building room, what a credit costs, and the Walmart expansion."),
+        WebParityRoute("Comprehensive Plan Tracker", "/comprehensive-plan/", "See which 2024 Comprehensive Plan recommendations the Town Board has adopted and which show no action."),
     )),
     WebParityGroup("Government", listOf(
         WebParityRoute("Resident Answers", "/answers/", "Plain-language answers to common resident questions."),
