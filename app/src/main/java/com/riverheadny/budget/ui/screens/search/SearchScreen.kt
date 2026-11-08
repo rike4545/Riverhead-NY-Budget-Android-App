@@ -54,7 +54,7 @@ import com.riverheadny.budget.ui.theme.MutedText
 /**
  * One search box over everything the app ships: budget lines, payroll, authorized salaries, Town
  * Board resolutions, funds, and the text of the budget PDFs themselves. Parity with the iOS
- * Search and Budget PDF Search screens, reading the same unified index the web app uses.
+ * Search and Budget PDF Search screens, reading the same canonical typed search data as the web app.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
