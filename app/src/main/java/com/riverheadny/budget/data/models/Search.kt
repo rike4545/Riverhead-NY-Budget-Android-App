@@ -4,17 +4,59 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * The unified search index built by the web platform's ETL (web/public/data/search/unified.json).
- *
- * The field names are single letters because the file carries 16,000+ entries and ships inside the
- * APK; spelling them out costs about a megabyte for no reader benefit. They are mapped to readable
- * property names here so nothing downstream has to remember what "x" meant.
+ * In-memory search index assembled from the canonical web ETL's typed shards.
  */
 @Serializable
 data class SearchIndex(
     val note: String = "",
     val counts: Map<String, Int> = emptyMap(),
     val entries: List<SearchEntry> = emptyList(),
+)
+
+@Serializable
+data class SearchManifest(
+    val version: Int,
+    val shards: Map<String, SearchShardDescriptor>,
+    val total: Int,
+)
+
+@Serializable
+data class SearchShardDescriptor(
+    val url: String,
+    val count: Int,
+    val bytes: Int = 0,
+    val sha256: String = "",
+)
+
+@Serializable
+data class SearchShard(
+    val type: String,
+    val entries: List<SearchEntry>,
+)
+
+/**
+ * The page shard is laid out differently from the rest: a list of source documents, then one row
+ * per PDF page that points at its document by index. It is expanded into ordinary entries the
+ * same way the web's UnifiedSearch.tsx does: "<document> — p. <page>", linking to the document.
+ */
+@Serializable
+data class PageShard(
+    val type: String,
+    val docs: List<PageShardDoc>,
+    val entries: List<PageShardRow>,
+)
+
+@Serializable
+data class PageShardDoc(
+    val n: String,
+    val u: String = "",
+)
+
+@Serializable
+data class PageShardRow(
+    val d: Int,
+    val p: Int,
+    val x: String = "",
 )
 
 @Serializable

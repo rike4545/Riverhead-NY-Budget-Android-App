@@ -15,7 +15,11 @@ import com.riverheadny.budget.data.models.MeetingDetail
 import com.riverheadny.budget.data.models.MeetingsIndex
 import com.riverheadny.budget.data.models.PayrollRecordsFile
 import com.riverheadny.budget.data.models.PayrollSummary
+import com.riverheadny.budget.data.models.PageShard
+import com.riverheadny.budget.data.models.SearchEntry
 import com.riverheadny.budget.data.models.SearchIndex
+import com.riverheadny.budget.data.models.SearchManifest
+import com.riverheadny.budget.data.models.SearchShard
 import com.riverheadny.budget.data.models.TaxBillData
 import com.riverheadny.budget.data.models.TaxCapData
 import kotlinx.coroutines.Dispatchers
@@ -134,14 +138,62 @@ class AssetRepository(private val assets: AssetManager) {
     }
 
     /**
-     * The unified index is by far the largest bundled asset (~4.7 MB, 16k entries), so it is read
-     * only when the search screen actually asks for it, and then held for the process lifetime —
-     * re-parsing it on every keystroke-driven recomposition would be the obvious way to make search
-     * feel broken.
+     * The typed search shards are the largest bundled index (~5 MB, 17k entries). They are read
+     * only when the search screen asks for them, merged once, and held for the process lifetime —
+     * re-parsing them on every keystroke-driven recomposition would make search feel broken.
      */
     suspend fun searchIndex(): SearchIndex = withContext(Dispatchers.IO) {
-        searchIndexCache ?: json.decodeFromString<SearchIndex>(readAsset("data/search/unified.json"))
-            .also { searchIndexCache = it }
+        searchIndexCache ?: loadSearchIndex().also { searchIndexCache = it }
+    }
+
+    /**
+     * Load the web ETL's versioned typed shards. Verify each shard's declared
+     * type and row count, then verify the manifest total before exposing results.
+     */
+    private fun loadSearchIndex(): SearchIndex {
+        val manifest = json.decodeFromString<SearchManifest>(readAsset("data/search/manifest.json"))
+        val counts = linkedMapOf<String, Int>()
+        val entries = ArrayList<SearchEntry>(manifest.total)
+
+        manifest.shards.toSortedMap().forEach { (kind, descriptor) ->
+            require(descriptor.url.endsWith(".json") && !descriptor.url.contains("/") && !descriptor.url.contains("..")) {
+                "Unsafe search shard path for $kind"
+            }
+            val text = readAsset("data/search/${descriptor.url}")
+            val shardType: String
+            val rows: List<SearchEntry>
+            if (kind == "page") {
+                // Page rows carry a document index and a page number, not a name; expand them.
+                val shard = json.decodeFromString<PageShard>(text)
+                shardType = shard.type
+                rows = shard.entries.map { row ->
+                    val doc = shard.docs.getOrNull(row.d)
+                        ?: error("Search page row points at document ${row.d}, but the shard lists ${shard.docs.size}")
+                    SearchEntry(type = "page", name = "${doc.n} — p. ${row.p}", context = row.x, target = doc.u)
+                }
+            } else {
+                val shard = json.decodeFromString<SearchShard>(text)
+                shardType = shard.type
+                rows = shard.entries
+            }
+            require(shardType == kind) {
+                "Search shard $kind declares type $shardType"
+            }
+            require(rows.size == descriptor.count) {
+                "Search shard $kind declares ${descriptor.count} rows but contains ${rows.size}"
+            }
+            counts[kind] = descriptor.count
+            entries.addAll(rows)
+        }
+
+        require(entries.size == manifest.total) {
+            "Search manifest declares ${manifest.total} entries but its shards contain ${entries.size}"
+        }
+        return SearchIndex(
+            note = "Canonical web search index v${manifest.version}",
+            counts = counts,
+            entries = entries,
+        )
     }
 
     private fun readAsset(path: String): String =
