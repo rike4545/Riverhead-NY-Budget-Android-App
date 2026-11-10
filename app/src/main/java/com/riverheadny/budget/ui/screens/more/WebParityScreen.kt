@@ -55,6 +55,7 @@ private val groups = listOf(
         WebParityRoute("Workforce by Title", "/workforce-by-title/", "Explore the municipal workforce by job title."),
         WebParityRoute("Officials & Pensions", "/officials/", "Review officials with pension context."),
         WebParityRoute("Management Pay", "/management-compensation/", "Review management compensation history."),
+        WebParityRoute("Supervisor's Office Pay Compared", "/supervisor-office-pay/", "Compare the 2026 salaries of the Supervisor's office roles with Southampton, Southold, Smithtown and Huntington."),
         WebParityRoute("Fringe Benefits", "/fringe-benefits/", "Review the yearly Town-paid allowance elected officials and some managers receive."),
         WebParityRoute("2026 Buyout", "/buyout/", "Review the early-retirement incentive and savings cases."),
         WebParityRoute("Police Spending & Crime", "/police-crime/", "Compare police spending with reported crime trends."),
