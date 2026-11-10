@@ -27,6 +27,7 @@ In active development, not yet published. Split out from the iOS repo's former `
   - **Town Board Votes** — every meeting since January 2025, resolution-by-resolution, with mover/seconder and full per-member roll-call votes
   - **Procurement Watch** — sourced facts and open questions on the Town Square land-sale/procurement process
   - **Campaign Donation Ethics** — how the Town's $1,000 campaign-contribution aggregation rule actually works
+- **Every website page, reachable from the app.** The More tab's *Riverhead Budget Live parity* screen lists all 87 pages in the website's menu (as of November 10, 2026), in the same groups, and opens each on the website. The newest are the Fiscal Impact Statement Helper and How the Town's Books Work (Help), Department Efficiency (Spending checks) and Supervisor's Office Pay Compared (Pay and staff). On every pull request, CI runs `scripts/verify-web-parity.mjs` against the website's `SiteNav.tsx` and fails if a page is missing or extra, so a website page added without its Android entry, or the reverse, cannot merge unnoticed.
 - Riverhead-inspired color system, hero cards, link cards, and resident-facing disclaimer language.
 - Official Riverhead links for town services, Channel 22, payments, departments, financial reports, and feedback.
 
