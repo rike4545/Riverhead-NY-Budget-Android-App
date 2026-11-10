@@ -89,6 +89,7 @@ private val groups = listOf(
         WebParityRoute("Budget Accuracy", "/budget-accuracy/", "Compare budget assumptions with subsequent results."),
         WebParityRoute("Fiscal Impact", "/fiscal-impact/", "Read Town Board fiscal-impact statements."),
         WebParityRoute("Contracts & Bids", "/contracts/", "Review bid awards, extensions, purchases and service agreements."),
+        WebParityRoute("Optimum Cable Franchise and Verizon", "/cable-franchise/", "See the 2016 Optimum franchise terms, the fees the Town receives, when it is due for renewal, and whether Verizon could compete."),
         WebParityRoute("Budget Flow", "/budget-flow/", "Follow the 2027 Preliminary budget from revenue, through the funds, to spending."),
         WebParityRoute("Assessment Roll", "/assessment/", "Graph the 2026 assessment rolls by property class, exemptions and home values."),
         WebParityRoute("Legal Costs", "/legal-costs/", "Review the Town’s legal spending by account and year."),
