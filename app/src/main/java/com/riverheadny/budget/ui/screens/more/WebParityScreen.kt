@@ -73,6 +73,8 @@ private val groups = listOf(
     )),
     WebParityGroup("Research", listOf(
         WebParityRoute("Start Here", "/guide/", "Guided entry point to the platform and its sources."),
+        WebParityRoute("Glossary of Terms", "/glossary/", "Look up plain-English definitions of 91 budget, tax, accounting, debt, pay and Town Board terms."),
+        WebParityRoute("How the Town's Books Work", "/accounting-basics/", "Learn how funds, the bases of accounting and the five tiers of fund balance work, using the Town's own audit."),
         WebParityRoute("Guided Tour", "/explore/", "Take a plain-English tour of where the Town's money comes from, where it goes, and who decides."),
         WebParityRoute("2027 Prediction", "/predict-2027/", "Explore the forward projection for the next adopted budget."),
         WebParityRoute("2027 Budget Amendments", "/budget-amendments-2027/", "Review the amendments adopted to the 2027 budget."),
