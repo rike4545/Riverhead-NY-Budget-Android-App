@@ -5,3 +5,14 @@ captures/
 *.iml
 .idea/
 local.properties
+
+# Secrets and signing material: never commit
+.env
+*.p12
+*.p8
+*.mobileprovision
+*.jks
+*.keystore
+*.pem
+.env.*
+!.env.example
