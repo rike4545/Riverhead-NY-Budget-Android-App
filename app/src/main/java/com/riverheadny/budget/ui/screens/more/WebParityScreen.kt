@@ -83,7 +83,7 @@ private val groups = listOf(
         WebParityRoute("Review of the Tax-Cap Letter", "/tax-cap-letter/", "Check the Suffolk supervisors’ tax-cap letter against Riverhead’s record."),
         WebParityRoute("Brookhaven’s 2027 Tentative", "/brookhaven-2027/", "Set Brookhaven’s 2027 Tentative budget beside Riverhead’s."),
         WebParityRoute("Southold’s 2027 Tentative", "/southold-2027/", "Set Southold’s 2027 Tentative budget beside Riverhead’s."),
-        WebParityRoute("2027 Tentative Budget", "/tentative-2027/", "Explore the 2027 Tentative Budget."),
+        WebParityRoute("The 2027 Budget", "/tentative-2027/", "The Town's 2027 budget at its latest stage, Tentative then Preliminary."),
         WebParityRoute("How Budgets Get Adopted", "/budget-adoption/", "Review how tentative, preliminary, and adopted budgets change."),
         WebParityRoute("Scenario Lab", "/scenarios/", "Model alternative fiscal assumptions and tradeoffs."),
         WebParityRoute("2027 Spending Reduction", "/spending-reduction-2027/", "Review sourced recurring spending-reduction candidates."),
