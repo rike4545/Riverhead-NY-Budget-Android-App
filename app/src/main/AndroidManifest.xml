@@ -5,6 +5,7 @@
     <application
         android:name=".RiverheadApplication"
         android:allowBackup="true"
+        android:usesCleartextTraffic="false"
         android:icon="@drawable/ic_launcher_foreground"
         android:label="Riverhead NY Budget"
         android:roundIcon="@drawable/ic_launcher_foreground"
