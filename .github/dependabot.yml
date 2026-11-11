@@ -17,3 +17,7 @@ updates:
       gradle-updates:
         patterns: ["*"]
         update-types: ["minor", "patch"]
+    ignore:
+      # Major upgrades need a deliberate migration; propose them by hand.
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
