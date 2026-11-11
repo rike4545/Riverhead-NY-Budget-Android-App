@@ -77,6 +77,7 @@ private val groups = listOf(
         WebParityRoute("Glossary of Terms", "/glossary/", "Look up plain-English definitions of 91 budget, tax, accounting, debt, pay and Town Board terms."),
         WebParityRoute("How the Town's Books Work", "/accounting-basics/", "Learn how funds, the bases of accounting and the five tiers of fund balance work, using the Town's own audit."),
         WebParityRoute("Fiscal Impact Statement Helper", "/fiscal-impact-helper/", "For Town staff: pick a department and up to ten journal entries, reconcile them, and print the Fiscal Impact Statement."),
+        WebParityRoute("Resolution Builder", "/resolution-builder/", "For Town staff: draft a Town Board resolution in the Town's layout, with a budget table, checks and a printable copy."),
         WebParityRoute("Guided Tour", "/explore/", "Take a plain-English tour of where the Town's money comes from, where it goes, and who decides."),
         WebParityRoute("2027 Prediction", "/predict-2027/", "Explore the forward projection for the next adopted budget."),
         WebParityRoute("2027 Budget Amendments", "/budget-amendments-2027/", "Review the amendments adopted to the 2027 budget."),
