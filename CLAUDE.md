@@ -16,7 +16,7 @@ app follows for screens and tab names.
 - `app/src/main/assets/data/`: bundled JSON, copied from the website's
   `web/public/data/`.
 - `ui/screens/more/WebParityScreen.kt`: the catalog of every website page,
-  opened in a web view (88 routes as of November 11, 2026).
+  opened in a web view (89 routes as of November 12, 2026).
 - `scripts/verify-web-parity.mjs`: checks that catalog against the website's
   `web/components/SiteNav.tsx`.
 - `.github/workflows/`: `android.yml` (parity check, then build) and
