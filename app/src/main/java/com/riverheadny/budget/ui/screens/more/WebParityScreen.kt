@@ -39,6 +39,7 @@ private val groups = listOf(
         WebParityRoute("Approved Budget Changes", "/budget-changes/", "Track every budget change the Town Board has passed this year."),
         WebParityRoute("Capital & Debt", "/capital-debt/", "Review debt, BANs, bonds, and financing scenarios."),
         WebParityRoute("Town Square", "/town-square/", "Review Town Square financing and source records."),
+        WebParityRoute("IDA Tax Breaks", "/ida/", "What the Industrial Development Agency's projects were spared in taxes, paid back in PILOTs and reported in jobs."),
         WebParityRoute("New Justice Court at 200 Howell", "/justice-court/", "Follow the plan to turn the former Town Hall into the Justice Court, its $6.5 million bond, and the grants that could help."),
         WebParityRoute("Road Spending", "/road-spending/", "Explore road and highway spending context."),
         WebParityRoute("Community Preservation Fund", "/community-preservation-fund/", "Review CPF revenues and obligations."),
