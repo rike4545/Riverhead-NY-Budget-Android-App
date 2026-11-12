@@ -48,6 +48,8 @@ private val groups = listOf(
         WebParityRoute("Preserved Land", "/preserved-land/", "Map every preserved farm parcel by who holds the rights and when."),
         WebParityRoute("Transfer of Development Rights", "/tdr/", "See how farmland credits buy building room, what a credit costs, and the Walmart expansion."),
         WebParityRoute("Comprehensive Plan Tracker", "/comprehensive-plan/", "See which 2024 Comprehensive Plan recommendations the Town Board has adopted and which show no action."),
+        WebParityRoute("EPCAL at Calverton", "/epcal/", "Where the failed sale of the Town's Calverton land and the lawsuit stand, what the land earns and costs, and what to weigh next."),
+        WebParityRoute("Downtown Pattern Book", "/pattern-book/", "The 2021 downtown design guide, why it was never written into the zoning code, and why doing that now may be a hard sell."),
         WebParityRoute("The Former Armory and the YMCA", "/armory/", "See what State law allows at the former armory, the bill to lease it to the YMCA, and the Town's letter of intent."),
     )),
     WebParityGroup("Government", listOf(
