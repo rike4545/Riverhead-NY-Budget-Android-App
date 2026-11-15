@@ -60,6 +60,34 @@ object PoliceContracts2027 {
     const val LADDER_INCREASE_2027 = 428_561.0
     const val LADDER_OFFICERS = 74
 
+    /**
+     * The 2026-2029 CSEA agreement, Article 15(2) (Wages), approved December 16, 2025
+     * (Resolution 2025-1001): each step rises by the percentage, then the flat amount is added to
+     * every step and carries into later years. Mirrors CSEA_TERMS in web/lib/raises-2027.ts.
+     */
+    data class CseaTerm(val year: Int, val pct: Double, val flat: Double)
+
+    val cseaTerms = listOf(
+        CseaTerm(2026, 0.02, 1_500.0),
+        CseaTerm(2027, 0.025, 1_000.0),
+        CseaTerm(2028, 0.03, 500.0),
+        CseaTerm(2029, 0.035, 0.0),
+    )
+
+    /** What $100 of 2026 pay becomes by [year] under the proposed police terms (percentages only). */
+    fun policePer100(year: Int): Double = 100 * Math.pow(1 + IMPLIED_RAISE, (year - 2026).toDouble())
+
+    /** The same for CSEA, percentages only; its flat amounts are per person. */
+    fun cseaPer100(year: Int): Double =
+        cseaTerms.filter { it.year in 2027..year }.fold(100.0) { acc, t -> acc * (1 + t.pct) }
+
+    /** One CSEA salary carried through the contract: the percentage, then the flat amount. */
+    fun cseaSalary(from2026: Double, year: Int): Double =
+        cseaTerms.filter { it.year in 2027..year }.fold(from2026) { acc, t -> acc * (1 + t.pct) + t.flat }
+
+    /** The middle salary of the CSEA members on the 2026 authorized list, as the website computes it. */
+    const val CSEA_TYPICAL_2026 = 68_564.79
+
     /** Item IX.2 on the same agenda: one-time retirement-incentive payouts from General Fund balance. */
     const val PAYOUTS_FROM_FUND_BALANCE = 1_387_034.0
 

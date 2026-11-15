@@ -16,6 +16,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontStyle
@@ -102,38 +106,58 @@ private fun ScheduleTable(rows: List<StepRow>) {
 @Composable
 private fun ProposedContracts() {
     val uri = LocalUriHandler.current
+    val top = PoliceContracts2027.pbaOfficers[6].rates
+    var showAll by remember { mutableStateOf(false) }
     ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
         Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(PoliceContracts2027.statusLabel, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold, color = BrandCoral)
             Text(
-                "Items IX.26 and IX.27 on the Town Board's ${PoliceContracts2027.MEETING_DATE} agenda ask it to approve stipulations with the PBA and the SOA. " +
-                    "The agenda packet attaches their salary and night-differential schedules, not the stipulations themselves. " +
-                    "Every step rises 3.75% a year, and 2027 salaries add ${currency(PoliceContracts2027.BODYCAM_2027)} for the body-camera agreement.",
+                "On ${PoliceContracts2027.MEETING_DATE} the Town Board is asked to approve new contracts with the two police unions: " +
+                    "officers and detectives (PBA), and sergeants and lieutenants (SOA). The Town has published the pay tables, but not the rest of the contracts.",
                 style = MaterialTheme.typography.bodyMedium,
             )
-            HorizontalDivider()
-            Text("2026 to 2030", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MutedText)
-            (PoliceContracts2027.pbaOfficers + PoliceContracts2027.pbaDetectives + PoliceContracts2027.soaRanks).forEach { ContractLine(it) }
-            HorizontalDivider()
-            Text("Night differential, yearly amounts", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MutedText)
-            PoliceContracts2027.nightDifferential.forEach { ContractLine(it) }
-            HorizontalDivider()
-            Text(
-                "What it might cost: on the Police Officer ladder alone, the higher 2027 rates come to about " +
-                    "${currency(PoliceContracts2027.LADDER_INCREASE_2027)} for the ${PoliceContracts2027.LADDER_OFFICERS} officers the website counts, " +
-                    "on top of step raises owed either way. That is the website's estimate, not a Town figure, and it leaves out detectives, " +
-                    "superior officers, night differential, overtime and pensions.",
-                style = MaterialTheme.typography.bodySmall, color = MutedText,
+            Text("In short", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+            Point("Pay goes up by the same share every year for four years: 3.75%, a little under 4 cents on every dollar.")
+            Point("In 2027 everyone also gets ${currency(PoliceContracts2027.BODYCAM_2027)} more for agreeing to wear body cameras, the last such increase.")
+            Point("A top-step police officer earns ${currency(top[0])} this year. That would become ${currency(top[1])} next year and ${currency(top[4])} in 2030: ${currency(top[4] - top[0])} more a year.")
+            Point(
+                "What it might cost: roughly ${currency(Math.round(PoliceContracts2027.LADDER_INCREASE_2027 / 1000.0) * 1000.0)} more in 2027 for the " +
+                    "${PoliceContracts2027.LADDER_OFFICERS} rank-and-file officers the website counts, on top of the step raises the Town owes anyway. " +
+                    "That is the website's estimate, not a Town figure, and it leaves out detectives, sergeants, lieutenants, night pay, overtime and pensions.",
             )
-            Text(
-                "A likely concern: both Fiscal Impact Statements answer \u201C${PoliceContracts2027.FISCAL_IMPACT_ANSWER}\u201D and leave the cost sections blank.",
-                style = MaterialTheme.typography.bodySmall, color = MutedText,
+            HorizontalDivider()
+            Text("Compared with the Town's civilian workers", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+            Point(
+                "Most non-police employees are in the CSEA union. Their 2026-2029 contract was approved on December 16, 2025; it isn't new. " +
+                    "For every \$100 of pay today, the police proposal would pay about ${currency(PoliceContracts2027.policePer100(2029))} in 2029 and " +
+                    "${currency(PoliceContracts2027.policePer100(2030))} in 2030. The CSEA contract pays about ${currency(PoliceContracts2027.cseaPer100(2029))} " +
+                    "in 2029, plus flat dollar raises, and then ends.",
             )
-            Text(
-                "On the same agenda, item IX.2 asks the Board to move ${currency(PoliceContracts2027.PAYOUTS_FROM_FUND_BALANCE)} of General Fund balance " +
-                    "to pay the retirement-incentive severance payouts for three CSEA members and seven PBA members.",
-                style = MaterialTheme.typography.bodySmall, color = MutedText,
+            Point(
+                "For example, the middle CSEA salary on the 2026 list, ${currency(PoliceContracts2027.CSEA_TYPICAL_2026)}, would reach about " +
+                    "${currency(PoliceContracts2027.cseaSalary(PoliceContracts2027.CSEA_TYPICAL_2026, 2029))} in 2029.",
             )
+            listOf(2027, 2028, 2029, 2030).forEach { year ->
+                val t = PoliceContracts2027.cseaTerms.firstOrNull { it.year == year }
+                val csea = if (t == null) "contract ends" else {
+                    val pct = String.format(java.util.Locale.US, "%.2f", t.pct * 100).trimEnd('0').trimEnd('.') + "%"
+                    if (t.flat > 0) "$pct and ${currency(t.flat)}" else pct
+                }
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("$year", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, modifier = Modifier.width(48.dp))
+                    Text("Police: " + if (year == 2027) "3.75% and ${currency(PoliceContracts2027.BODYCAM_2027)}" else "3.75%", style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f))
+                    Text("CSEA: $csea", style = MaterialTheme.typography.labelLarge, color = MutedText, modifier = Modifier.weight(1f))
+                }
+            }
+            HorizontalDivider()
+            Point("Something to ask about: the form that says whether a resolution costs money answers \u201CNo\u201D on both, with the cost lines blank. A four-year raise does cost money.")
+            Point("On the same agenda, item IX.2 asks the Board to move ${currency(PoliceContracts2027.PAYOUTS_FROM_FUND_BALANCE)} of General Fund savings to pay the retirement-incentive payouts for three CSEA members and seven PBA members.")
+            TextButton(onClick = { showAll = !showAll }) {
+                Text(if (showAll) "Hide the pay steps" else "See every pay step and the night pay")
+            }
+            if (showAll) {
+                (PoliceContracts2027.pbaOfficers + PoliceContracts2027.pbaDetectives + PoliceContracts2027.soaRanks + PoliceContracts2027.nightDifferential).forEach { ContractLine(it) }
+            }
             TextButton(onClick = { uri.openUri(PoliceContracts2027.PACKET_URL) }) {
                 Text("Open the November 17 agenda packet")
             }
@@ -142,10 +166,15 @@ private fun ProposedContracts() {
 }
 
 @Composable
+private fun Point(text: String) {
+    Text(text, style = MaterialTheme.typography.bodySmall)
+}
+
+@Composable
 private fun ContractLine(row: ContractRow) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(row.title, style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f))
         Text("${currency(row.rates[0])} to ${currency(row.rates[4])}", style = MaterialTheme.typography.labelLarge, color = BrandNavy, fontWeight = FontWeight.SemiBold)
-        Text("+" + String.format(java.util.Locale.US, "%.1f", row.fourYearChange * 100) + "%", style = MaterialTheme.typography.labelLarge, color = BrandCoral)
+        Text("+" + currency(row.rates[4] - row.rates[0]), style = MaterialTheme.typography.labelLarge, color = BrandCoral)
     }
 }
