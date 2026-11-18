@@ -48,7 +48,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.10.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0")
-    implementation("androidx.navigation:navigation-compose:2.10.2")
+    // 2.10.x needs Android Gradle plugin 9.1+ and compileSdk 37; stay on 2.9 until that migration.
+    implementation("androidx.navigation:navigation-compose:2.9.5")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.12.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.1")
     implementation("io.coil-kt:coil-compose:2.7.0")
