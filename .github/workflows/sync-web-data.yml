@@ -17,12 +17,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out Android app
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: mobile
 
       - name: Check out canonical web source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: rike4545/Riverhead-NY-Budget-Web-App
           path: web-source
