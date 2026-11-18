@@ -1,8 +1,10 @@
 package com.riverheadny.budget.data.models
 
 /**
- * The proposed 2027-2030 PBA and SOA stipulations, items IX.26 and IX.27 on the Town Board's
- * November 17, 2026 agenda. PROPOSED, NOT APPROVED: set [adopted] once the Board votes.
+ * The 2027-2030 PBA and SOA stipulations, items IX.26 and IX.27 on the Town Board's
+ * November 17, 2026 agenda. The Board approved both that night, 5-0 (Resolutions 2026-1020 and
+ * 2026-1021), with item IX.2's payouts (2026-996), per the agenda packet with the votes filled in
+ * (CivicClerk file 12615).
  *
  * Mirrors the website's web/lib/police-stipulations-2027.ts, whose verify script checks every
  * figure against the agenda packet. Copy changes from there; don't edit figures here alone.
@@ -12,8 +14,8 @@ data class ContractRow(val title: String, /** 2026 (current) through 2030. */ va
 }
 
 object PoliceContracts2027 {
-    /** null until the Board votes; then true or false. */
-    val adopted: Boolean? = null
+    /** null until the Board votes; then true or false. Approved November 17, 2026, 5-0. */
+    val adopted: Boolean? = true
 
     const val MEETING_DATE = "November 17, 2026"
     const val PACKET_URL = "https://riverheadny.portal.civicclerk.com/event/6457/files/agenda/12599"
@@ -74,7 +76,7 @@ object PoliceContracts2027 {
         CseaTerm(2029, 0.035, 0.0),
     )
 
-    /** What $100 of 2026 pay becomes by [year] under the proposed police terms (percentages only). */
+    /** What $100 of 2026 pay becomes by [year] under the police contracts' terms (percentages only). */
     fun policePer100(year: Int): Double = 100 * Math.pow(1 + IMPLIED_RAISE, (year - 2026).toDouble())
 
     /** The same for CSEA, percentages only; its flat amounts are per person. */
@@ -94,7 +96,7 @@ object PoliceContracts2027 {
     val statusLabel: String
         get() = when (adopted) {
             null -> "Proposed, not yet voted on"
-            true -> "Approved by the Town Board"
+            true -> "Approved by the Town Board on November 17, 2026, 5–0"
             false -> "Not approved by the Town Board"
         }
 }

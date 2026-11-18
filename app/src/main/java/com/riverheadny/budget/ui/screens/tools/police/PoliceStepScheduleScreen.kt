@@ -47,7 +47,7 @@ fun PoliceStepScheduleScreen() {
             body = "What the signed 2023-2026 PBA contract pays at each step. These are contract rates, not payroll: they show what the Town agreed to, before overtime, holiday pay, longevity or any buy-back.",
         )
 
-        SectionTitle("Proposed contracts, 2027 to 2030")
+        SectionTitle(if (PoliceContracts2027.adopted == true) "New contracts, 2027 to 2030" else "Proposed contracts, 2027 to 2030")
         ProposedContracts()
 
         SectionTitle("Officers hired on or after Dec. 3, 2012")
@@ -112,14 +112,14 @@ private fun ProposedContracts() {
         Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(PoliceContracts2027.statusLabel, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold, color = BrandCoral)
             Text(
-                "On ${PoliceContracts2027.MEETING_DATE} the Town Board is asked to approve new contracts with the two police unions: " +
+                "On ${PoliceContracts2027.MEETING_DATE} the Town Board " + (if (PoliceContracts2027.adopted == true) "approved" else "is asked to approve") + " new contracts with the two police unions: " +
                     "officers and detectives (PBA), and sergeants and lieutenants (SOA). The Town has published the pay tables, but not the rest of the contracts.",
                 style = MaterialTheme.typography.bodyMedium,
             )
             Text("In short", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
             Point("Pay goes up by the same share every year for four years: 3.75%, a little under 4 cents on every dollar.")
             Point("In 2027 everyone also gets ${currency(PoliceContracts2027.BODYCAM_2027)} more for agreeing to wear body cameras, the last such increase.")
-            Point("A top-step police officer earns ${currency(top[0])} this year. That would become ${currency(top[1])} next year and ${currency(top[4])} in 2030: ${currency(top[4] - top[0])} more a year.")
+            Point("A top-step police officer earns ${currency(top[0])} this year. That " + (if (PoliceContracts2027.adopted == true) "becomes" else "would become") + " ${currency(top[1])} next year and ${currency(top[4])} in 2030: ${currency(top[4] - top[0])} more a year.")
             Point(
                 "What it might cost: roughly ${currency(Math.round(PoliceContracts2027.LADDER_INCREASE_2027 / 1000.0) * 1000.0)} more in 2027 for the " +
                     "${PoliceContracts2027.LADDER_OFFICERS} rank-and-file officers the website counts, on top of the step raises the Town owes anyway. " +
@@ -129,7 +129,7 @@ private fun ProposedContracts() {
             Text("Compared with the Town's civilian workers", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
             Point(
                 "Most non-police employees are in the CSEA union. Their 2026-2029 contract was approved on December 16, 2025; it isn't new. " +
-                    "For every \$100 of pay today, the police proposal would pay about ${currency(PoliceContracts2027.policePer100(2029))} in 2029 and " +
+                    "For every \$100 of pay today, the police " + (if (PoliceContracts2027.adopted == true) "contracts pay" else "proposal would pay") + " about ${currency(PoliceContracts2027.policePer100(2029))} in 2029 and " +
                     "${currency(PoliceContracts2027.policePer100(2030))} in 2030. The CSEA contract pays about ${currency(PoliceContracts2027.cseaPer100(2029))} " +
                     "in 2029, plus flat dollar raises, and then ends.",
             )
@@ -151,7 +151,7 @@ private fun ProposedContracts() {
             }
             HorizontalDivider()
             Point("Something to ask about: the form that says whether a resolution costs money answers \u201CNo\u201D on both, with the cost lines blank. A four-year raise does cost money.")
-            Point("On the same agenda, item IX.2 asks the Board to move ${currency(PoliceContracts2027.PAYOUTS_FROM_FUND_BALANCE)} of General Fund savings to pay the retirement-incentive payouts for three CSEA members and seven PBA members.")
+            Point(if (PoliceContracts2027.adopted == true) "On the same night the Board approved item IX.2 (Resolution 2026-996, 5\u20130), moving ${currency(PoliceContracts2027.PAYOUTS_FROM_FUND_BALANCE)} of General Fund savings to pay the retirement-incentive payouts for three CSEA members and seven PBA members." else "On the same agenda, item IX.2 asks the Board to move ${currency(PoliceContracts2027.PAYOUTS_FROM_FUND_BALANCE)} of General Fund savings to pay the retirement-incentive payouts for three CSEA members and seven PBA members.")
             TextButton(onClick = { showAll = !showAll }) {
                 Text(if (showAll) "Hide the pay steps" else "See every pay step and the night pay")
             }
