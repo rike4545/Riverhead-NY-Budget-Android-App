@@ -2,6 +2,7 @@ package com.riverheadny.budget.data
 
 import android.content.res.AssetManager
 import com.riverheadny.budget.data.models.AfrData
+import com.riverheadny.budget.data.models.BudgetStagesFile
 import com.riverheadny.budget.data.models.Budget2027Prediction
 import com.riverheadny.budget.data.models.BuyoutAnalysis
 import com.riverheadny.budget.data.models.RetireeHealthComparison
@@ -55,6 +56,7 @@ class AssetRepository(private val assets: AssetManager) {
     private var buyoutCache: BuyoutAnalysis? = null
     private var retireeHealthCache: RetireeHealthComparison? = null
     private var projectedLinesCache: ProjectedLinesFile? = null
+    private var budgetStagesCache: BudgetStagesFile? = null
     private val meetingDetailCache = mutableMapOf<String, MeetingDetail>()
 
     suspend fun fundsIndex(): FundsIndex = withContext(Dispatchers.IO) {
@@ -75,6 +77,11 @@ class AssetRepository(private val assets: AssetManager) {
     suspend fun taxCap(): TaxCapData = withContext(Dispatchers.IO) {
         taxCapCache ?: json.decodeFromString<TaxCapData>(readAsset("data/tax-cap.json"))
             .also { taxCapCache = it }
+    }
+
+    suspend fun budgetStages(): BudgetStagesFile = withContext(Dispatchers.IO) {
+        budgetStagesCache ?: json.decodeFromString<BudgetStagesFile>(readAsset("data/history/budget-stages.json"))
+            .also { budgetStagesCache = it }
     }
 
     suspend fun community(): CommunityData = withContext(Dispatchers.IO) {
