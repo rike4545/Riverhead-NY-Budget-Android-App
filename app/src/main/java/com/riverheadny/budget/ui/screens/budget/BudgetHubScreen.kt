@@ -66,6 +66,9 @@ private val hubSections = listOf(
             RealDataShortcut("Reserve Fund Breakdown", "The GASB 54 tiers, the NY reserve types, and a what-if segmentation model", Icons.Filled.AccountBalance, Routes.RESERVE_FUND_BREAKDOWN),
             RealDataShortcut("Off-Balance Liabilities", "Costs that sit outside the yearly budget line, with the audited snapshot", Icons.Filled.AccountBalance, Routes.OFF_BALANCE_LIABILITIES),
             RealDataShortcut("Peer Reserve Comparison", "Riverhead's unassigned balance against Suffolk towns, OSC and GFOA benchmarks", Icons.Filled.AccountBalance, Routes.PEER_RESERVE_BENCHMARK),
+            RealDataShortcut("Budget Overview", "The newest adopted budget's snapshot, with the fund balance used by fund", Icons.Filled.AccountBalance, Routes.BUDGET_OVERVIEW),
+            RealDataShortcut("Fund Balance Trend", "Audited unassigned balance and reserve ratio, 2023 to 2025", Icons.Filled.AccountBalance, Routes.FUND_BALANCE_TREND),
+            RealDataShortcut("Tax Impact Calculator", "What a General Fund levy change or reserve draw does to your bill", Icons.Filled.Calculate, Routes.TAX_IMPACT_CALCULATOR),
         ),
     ),
     HubSection(

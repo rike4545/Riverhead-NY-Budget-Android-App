@@ -37,6 +37,10 @@ object Routes {
     const val BUDGET_TERM_GLOSSARY = "more/glossary"
     const val ACCESSIBILITY_CHECKLIST = "more/accessibility"
     const val PERFORMANCE_PLAN = "more/performance"
+    const val TAX_IMPACT_CALCULATOR = "budget/tax-impact"
+    const val FUND_BALANCE_TREND = "budget/fund-balance-trend"
+    const val BUDGET_OVERVIEW = "budget/overview"
+    const val FUND_BALANCE_USE = "budget/overview/fund-balance-use"
 
     const val FUNDS_LIST = "budget/funds"
     const val FUND_DETAIL = "budget/funds/{code}"
