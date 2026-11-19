@@ -11,6 +11,10 @@ import com.riverheadny.budget.ui.screens.budget.cpf.CommunityPreservationFundScr
 import com.riverheadny.budget.ui.screens.budget.fundbalance.FundBalanceScreen
 import com.riverheadny.budget.ui.screens.budget.reserves.CommunityBlockGrantsScreen
 import com.riverheadny.budget.ui.screens.budget.reserves.ReserveFundBreakdownScreen
+import com.riverheadny.budget.ui.screens.budget.reserves.PeerReserveBenchmarkScreen
+import com.riverheadny.budget.ui.screens.more.BudgetTermGlossaryScreen
+import com.riverheadny.budget.ui.screens.more.AccessibilityChecklistScreen
+import com.riverheadny.budget.ui.screens.more.PerformancePlanScreen
 import com.riverheadny.budget.ui.screens.budget.offbalance.OffBalanceLiabilitiesScreen
 import com.riverheadny.budget.ui.screens.budget.funds.FundDetailScreen
 import com.riverheadny.budget.ui.screens.budget.funds.FundsListScreen
@@ -123,6 +127,10 @@ fun RiverheadNavHost(navController: NavHostController) {
         composable(Routes.COMMUNITY_BLOCK_GRANTS) { CommunityBlockGrantsScreen() }
         composable(Routes.RESERVE_FUND_BREAKDOWN) { ReserveFundBreakdownScreen() }
         composable(Routes.OFF_BALANCE_LIABILITIES) { OffBalanceLiabilitiesScreen() }
+        composable(Routes.PEER_RESERVE_BENCHMARK) { PeerReserveBenchmarkScreen() }
+        composable(Routes.BUDGET_TERM_GLOSSARY) { BudgetTermGlossaryScreen() }
+        composable(Routes.ACCESSIBILITY_CHECKLIST) { AccessibilityChecklistScreen() }
+        composable(Routes.PERFORMANCE_PLAN) { PerformancePlanScreen() }
         composable(Routes.OFFICIALS_PENSIONS) { OfficialsPensionsScreen() }
         composable(Routes.CANDIDATE_WATCH) { CandidateWatchScreen() }
         composable(Routes.CANDIDATE_COST_BENEFIT) { CandidateCostBenefitScreen() }

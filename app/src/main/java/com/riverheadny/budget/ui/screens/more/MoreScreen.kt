@@ -63,6 +63,24 @@ private val inAppShortcuts = listOf(
         Routes.SEARCH,
     ),
     MoreShortcut(
+        "Budget term glossary",
+        "Plain-English definitions of the budget terms that come up most",
+        Icons.Filled.Info,
+        Routes.BUDGET_TERM_GLOSSARY,
+    ),
+    MoreShortcut(
+        "Accessibility checklist",
+        "Your text size and motion settings, and what this app is checked against",
+        Icons.Filled.Info,
+        Routes.ACCESSIBILITY_CHECKLIST,
+    ),
+    MoreShortcut(
+        "Performance plan",
+        "How the app loads its data and what is deferred until you search",
+        Icons.Filled.Info,
+        Routes.PERFORMANCE_PLAN,
+    ),
+    MoreShortcut(
         "Source Trail",
         "Every dataset, the document behind it, and how much weight it carries",
         Icons.Filled.CheckCircle,
