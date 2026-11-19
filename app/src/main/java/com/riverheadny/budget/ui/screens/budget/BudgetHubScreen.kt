@@ -63,6 +63,8 @@ private val hubSections = listOf(
             RealDataShortcut("Fund Balance", "Real 2025 AFR unassigned fund balance vs. policy targets", Icons.Filled.AccountBalance, Routes.FUND_BALANCE),
             RealDataShortcut("Community Preservation Fund", "The CPF's real revenue swings, debt, and the rate-increase question", Icons.Filled.AccountBalance, Routes.COMMUNITY_PRESERVATION_FUND),
             RealDataShortcut("Community Block Grants", "A one-time surplus-funded grant round for four East End nonprofits", Icons.Filled.People, Routes.COMMUNITY_BLOCK_GRANTS),
+            RealDataShortcut("Reserve Fund Breakdown", "The GASB 54 tiers, the NY reserve types, and a what-if segmentation model", Icons.Filled.AccountBalance, Routes.RESERVE_FUND_BREAKDOWN),
+            RealDataShortcut("Off-Balance Liabilities", "Costs that sit outside the yearly budget line, with the audited snapshot", Icons.Filled.AccountBalance, Routes.OFF_BALANCE_LIABILITIES),
         ),
     ),
     HubSection(
