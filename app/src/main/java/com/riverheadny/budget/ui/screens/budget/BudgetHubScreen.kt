@@ -65,6 +65,7 @@ private val hubSections = listOf(
             RealDataShortcut("Community Block Grants", "A one-time surplus-funded grant round for four East End nonprofits", Icons.Filled.People, Routes.COMMUNITY_BLOCK_GRANTS),
             RealDataShortcut("Reserve Fund Breakdown", "The GASB 54 tiers, the NY reserve types, and a what-if segmentation model", Icons.Filled.AccountBalance, Routes.RESERVE_FUND_BREAKDOWN),
             RealDataShortcut("Off-Balance Liabilities", "Costs that sit outside the yearly budget line, with the audited snapshot", Icons.Filled.AccountBalance, Routes.OFF_BALANCE_LIABILITIES),
+            RealDataShortcut("Peer Reserve Comparison", "Riverhead's unassigned balance against Suffolk towns, OSC and GFOA benchmarks", Icons.Filled.AccountBalance, Routes.PEER_RESERVE_BENCHMARK),
         ),
     ),
     HubSection(

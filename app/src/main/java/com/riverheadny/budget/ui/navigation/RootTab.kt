@@ -33,6 +33,10 @@ object Routes {
     const val LINE_ITEM_LEDGER = "budget/ledger"
     const val OFF_BALANCE_LIABILITIES = "budget/off-balance"
     const val RESERVE_FUND_BREAKDOWN = "budget/reserves/breakdown"
+    const val PEER_RESERVE_BENCHMARK = "budget/reserves/peers"
+    const val BUDGET_TERM_GLOSSARY = "more/glossary"
+    const val ACCESSIBILITY_CHECKLIST = "more/accessibility"
+    const val PERFORMANCE_PLAN = "more/performance"
 
     const val FUNDS_LIST = "budget/funds"
     const val FUND_DETAIL = "budget/funds/{code}"
