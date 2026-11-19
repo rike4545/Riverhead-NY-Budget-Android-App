@@ -33,13 +33,16 @@ fun FundsListScreen(navController: NavController, viewModel: FundsListViewModel 
     val state by viewModel.state.collectAsState()
 
     PageColumn {
-        HeroCard(
-            eyebrow = "Budget",
-            title = "Funds Explorer",
-            body = "Every Town of Riverhead operating fund, from the 2026 Adopted Budget. Tap a fund to see its departments and line items.",
-        )
-
         LoadStateView(state) { index ->
+            HeroCard(
+                eyebrow = "Budget",
+                title = "Funds Explorer",
+                body = if (index.year > 2026) {
+                    "Every Town of Riverhead operating fund in the ${index.year} Adopted Budget, adopted November 17, 2026 (Resolution 2026-995, 5–0), unchanged from the Preliminary. Tap a fund to see its departments and line items."
+                } else {
+                    "Every Town of Riverhead operating fund, from the 2026 Adopted Budget. Tap a fund to see its departments and line items."
+                },
+            )
             Text(
                 "${index.fundCount} funds · ${index.totalLineItems} line items reconciled against the official Summary page",
                 style = MaterialTheme.typography.bodySmall,

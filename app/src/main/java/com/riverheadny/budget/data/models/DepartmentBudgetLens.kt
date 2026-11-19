@@ -1,7 +1,8 @@
 package com.riverheadny.budget.data.models
 
 /**
- * The 2026 adopted budget by function, matched to the payroll summary where the match is clean.
+ * The 2026 adopted budget by function, matched to the payroll summary where the match is clean,
+ * with each function's 2027 adopted total beside it (adopted2027).
  * Ported from iOS DepartmentBudgetLensData.swift.
  *
  * A null positions or salaryBase is a real answer: the payroll summary does not separate that
@@ -27,7 +28,14 @@ data class DepartmentBudgetRecord(
     val adoptedTotal: Double,
     val keyTitles: List<String> = emptyList(),
     val note: String? = null,
+    /**
+     * The same function's total in the 2027 Adopted Budget, summed from
+     * budget-2027-preliminary-lines.json (the Preliminary, adopted unchanged November 17, 2026).
+     * Its 2026 column matches adoptedTotal for every department listed; null where the file has no match.
+     */
+    val adopted2027: Double? = null,
 ) {
+    val change2027: Double? get() = adopted2027?.let { it - adoptedTotal }
     val id: String get() = "$fundCode-$budgetDepartment"
 
     val otherExpense: Double? get() = salaryBase?.let { adoptedTotal - it }
@@ -47,6 +55,7 @@ object DepartmentBudgetLens {
             positions = null,
             salaryBase = null,
             adoptedTotal = 295301.0,
+            adopted2027 = 301196.0,
             keyTitles = emptyList(),
             note = "Budget function total from the 2026 adopted budget. Staffing was not separated cleanly in the payroll summary.",
         ),
@@ -58,6 +67,7 @@ object DepartmentBudgetLens {
             positions = 12,
             salaryBase = 710357.98,
             adoptedTotal = 907513.0,
+            adopted2027 = 973962.0,
             keyTitles = listOf("Court Officer (5)", "Justice Court Clerk (2)", "Senior Justice Court Clerk (2)"),
             note = "Court detail includes interpreters, stenographic services, training, and office support above the salary base.",
         ),
@@ -69,6 +79,7 @@ object DepartmentBudgetLens {
             positions = 3,
             salaryBase = 247790.94,
             adoptedTotal = 407084.0,
+            adopted2027 = 405475.0,
             keyTitles = listOf("Town Budget Officer (1)", "Secretary (1)", "Deputy Town Supervisor (1)"),
             note = "Budget line is materially above pure payroll because of part-time support and office operating costs.",
         ),
@@ -80,6 +91,7 @@ object DepartmentBudgetLens {
             positions = 7,
             salaryBase = 655281.74,
             adoptedTotal = 977942.0,
+            adopted2027 = 997378.0,
             keyTitles = listOf("Chief Accountant (1)", "Principal Accountant (1)", "Payroll Supervisor (1)"),
             note = "Professional services and accounting support make this one of the bigger non-salary governance functions.",
         ),
@@ -91,6 +103,7 @@ object DepartmentBudgetLens {
             positions = 3,
             salaryBase = 162205.21,
             adoptedTotal = 261537.0,
+            adopted2027 = 269569.0,
             keyTitles = listOf("Deputy Tax Receiver (1)", "Account Clerk (1)", "Office Assistant (1)"),
             note = "Postage moved sharply higher in the adopted budget and is called out separately in the rebalance view.",
         ),
@@ -102,6 +115,7 @@ object DepartmentBudgetLens {
             positions = 2,
             salaryBase = 165093.93,
             adoptedTotal = 221368.0,
+            adopted2027 = 278924.0,
             keyTitles = listOf("Senior Purchasing Agent (1)", "Purchasing Technician (1)"),
             note = "Mostly a payroll-driven office with modest equipment and postage support.",
         ),
@@ -113,6 +127,7 @@ object DepartmentBudgetLens {
             positions = 3,
             salaryBase = 190431.2,
             adoptedTotal = 563314.0,
+            adopted2027 = 550126.0,
             keyTitles = listOf("Senior Assessment Clerk (1)", "Assessment Clerk (1)", "Account Clerk (1)"),
             note = "The function total includes board stipends and assessment operating support, so the gap above salary is unusually large.",
         ),
@@ -124,6 +139,7 @@ object DepartmentBudgetLens {
             positions = 3,
             salaryBase = 181579.36,
             adoptedTotal = 307219.0,
+            adopted2027 = 345980.0,
             keyTitles = listOf("Deputy Town Clerk (1)", "Senior Account Clerk (1)", "Clerk-Spanish Speaking (1)"),
             note = "Town Clerk operating costs stay fairly contained relative to total spending.",
         ),
@@ -135,6 +151,7 @@ object DepartmentBudgetLens {
             positions = 16,
             salaryBase = 1594542.1,
             adoptedTotal = 1429097.0,
+            adopted2027 = 1521407.0,
             keyTitles = listOf("Deputy Town Attorney (3)", "Paralegal (2)", "Fire Marshal I (2)"),
             note = "Action required: 16 mapped positions carry a \$1.594M salary base against the \$1.429M function 1420 adopted total, a roughly \$165K overage. Confirm whether fire marshal and code-compliance titles belong under functions 3625/3620, or correct the staffing-to-budget crosswalk.",
         ),
@@ -146,6 +163,7 @@ object DepartmentBudgetLens {
             positions = 2,
             salaryBase = 167583.29,
             adoptedTotal = 217834.0,
+            adopted2027 = 243571.0,
             keyTitles = listOf("Town Personnel Officer (1)", "Personnel Assistant (1)"),
             note = "Small office, but it carries recurring EAP and professional support contracts.",
         ),
@@ -157,6 +175,7 @@ object DepartmentBudgetLens {
             positions = 5,
             salaryBase = 537883.8,
             adoptedTotal = 638674.0,
+            adopted2027 = 680643.0,
             keyTitles = listOf("Town Engineer (2)", "Junior Civil Engineer (1)", "Administrative Assistant (1)"),
             note = "A relatively balanced function with a visible but not excessive contractual layer.",
         ),
@@ -168,6 +187,7 @@ object DepartmentBudgetLens {
             positions = 18,
             salaryBase = 1250421.89,
             adoptedTotal = 2239916.0,
+            adopted2027 = 2368757.0,
             keyTitles = listOf("Maintenance Mechanic II (7)", "Maintenance Mechanic III (3)", "Maintenance Mechanic IV (2)"),
             note = "Large non-salary footprint driven by vehicles, equipment, maintenance, and grounds support.",
         ),
@@ -179,6 +199,7 @@ object DepartmentBudgetLens {
             positions = 92,
             salaryBase = 12929775.95,
             adoptedTotal = 22388906.0,
+            adopted2027 = 23244090.0,
             keyTitles = listOf("Police Officer (77)", "Sergeant (8)", "Lieutenant (3)"),
             note = "Largest matched operating function in the General Fund. Overtime, holiday pay, vehicle support, and buy-backs are major drivers.",
         ),
@@ -190,6 +211,7 @@ object DepartmentBudgetLens {
             positions = 2,
             salaryBase = 148867.32,
             adoptedTotal = 160841.0,
+            adopted2027 = 143394.0,
             keyTitles = listOf("Youth Counselor (1)", "Account Clerk (1)"),
             note = "One of the tighter budget matches between payroll and adopted total.",
         ),
@@ -201,6 +223,7 @@ object DepartmentBudgetLens {
             positions = 7,
             salaryBase = 483273.09,
             adoptedTotal = 521209.0,
+            adopted2027 = 651464.0,
             keyTitles = listOf("Office Assistant (2)", "Building Inspector (1)", "Electrical Inspector (1)"),
             note = "This is a very lean department budget relative to the field workload and is one of the better candidates for targeted strengthening.",
         ),
@@ -212,6 +235,7 @@ object DepartmentBudgetLens {
             positions = null,
             salaryBase = null,
             adoptedTotal = 671254.0,
+            adopted2027 = 787723.0,
             keyTitles = emptyList(),
             note = "Budget function is clear, but the staffing source does not separate code personnel cleanly from related legal and compliance titles.",
         ),
@@ -223,6 +247,7 @@ object DepartmentBudgetLens {
             positions = 36,
             salaryBase = 2446036.22,
             adoptedTotal = 3553226.0,
+            adopted2027 = 3803201.0,
             keyTitles = listOf("Automotive Equipment Operator (17)", "Construction Equipment Operator (8)", "Heavy Equipment Operator (5)"),
             note = "Highway operations are payroll-heavy but still carry a large non-salary layer for resurfacing, fuel, rentals, and traffic work.",
         ),
@@ -234,6 +259,7 @@ object DepartmentBudgetLens {
             positions = null,
             salaryBase = null,
             adoptedTotal = 1049154.0,
+            adopted2027 = 1149546.0,
             keyTitles = emptyList(),
             note = "The adopted budget clearly shows the program total, but staffing is split across several senior program groups in the salary source.",
         ),
@@ -245,6 +271,7 @@ object DepartmentBudgetLens {
             positions = null,
             salaryBase = null,
             adoptedTotal = 630273.0,
+            adopted2027 = 594889.0,
             keyTitles = emptyList(),
             note = "Use alongside the staffing summary's Recreation rows; this budget function is the closest overall operating match.",
         ),
@@ -256,6 +283,7 @@ object DepartmentBudgetLens {
             positions = 4,
             salaryBase = 394737.1,
             adoptedTotal = 561495.0,
+            adopted2027 = 591347.0,
             keyTitles = listOf("Senior Planner (2)", "Site Plan Reviewer (1)", "Planner (1)"),
             note = "Board stipends and consultant support make this more than a simple four-person payroll function.",
         ),
@@ -267,6 +295,7 @@ object DepartmentBudgetLens {
             positions = 3,
             salaryBase = 183756.78,
             adoptedTotal = 481427.0,
+            adopted2027 = 566960.0,
             keyTitles = listOf("Automotive Equipment Operator (3)"),
             note = "The function total reflects disposal and vehicle support costs well beyond the small crew payroll base.",
         ),
@@ -278,6 +307,7 @@ object DepartmentBudgetLens {
             positions = 7,
             salaryBase = 656874.44,
             adoptedTotal = 771565.0,
+            adopted2027 = 788307.0,
             keyTitles = listOf("Associate Administrator (1)", "Grants Analyst (1)", "Housing Inspector (1)"),
             note = "This function is useful for downtown, grant, and project-delivery tracking.",
         ),
@@ -289,6 +319,7 @@ object DepartmentBudgetLens {
             positions = 17,
             salaryBase = 1245421.0,
             adoptedTotal = 3251515.0,
+            adopted2027 = 3557892.0,
             keyTitles = listOf("Wastewater Treatment Plant Operator Trainee (3)", "Maintenance Mechanic II (2)", "Wastewater Dist. Super. (1)"),
             note = "Operations only. The full ES1 fund total is much higher because of depreciation, debt service, transfers, and fund-balance use.",
         ),
@@ -300,6 +331,7 @@ object DepartmentBudgetLens {
             positions = 18,
             salaryBase = 1489474.47,
             adoptedTotal = 5311840.0,
+            adopted2027 = 5500227.0,
             keyTitles = listOf("Water Treatment Plant Operator Type II B (3)", "Water Treatment Plant Operator Trainee (2)", "Maintenance Mechanic II (2)"),
             note = "Operations only. Water fund totals are much larger once debt, benefits, depreciation, and transfers are added back.",
         ),
@@ -308,5 +340,5 @@ object DepartmentBudgetLens {
     val totalAdopted: Double = departmentRecords.sumOf { it.adoptedTotal }
 
     fun byCategory(): Map<DepartmentBudgetCategory, Double> =
-        departmentRecords.groupBy { it.category }.mapValues { (_, v) -> v.sumOf { it.adoptedTotal } }
+        departmentRecords.groupBy { it.category }.mapValues { (_, v) -> v.sumOf { it.adopted2027 ?: it.adoptedTotal } }
 }

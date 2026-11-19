@@ -61,14 +61,14 @@ fun DepartmentExpenseExplorerScreen() {
                     it.fundCode.contains(query, true) ||
                     it.keyTitles.any { t -> t.contains(query, true) }
             }
-            .sortedByDescending { it.adoptedTotal }
+            .sortedByDescending { it.adopted2027 ?: it.adoptedTotal }
     }
 
     PageColumn {
         HeroCard(
             eyebrow = "Budget",
             title = "Department Expense Explorer",
-            body = "Every budget function in the 2026 adopted budget, matched to the payroll summary where the match is clean. Where it is not clean the app says so rather than showing a tidy number that would mislead.",
+            body = "Every budget function's total in the 2027 Adopted Budget, beside 2026. The payroll match (positions, salary base, share of the function that is payroll) is the 2026 payroll against the 2026 total, where the match is clean. Where it is not clean the app says so rather than showing a tidy number that would mislead.",
         )
 
         OutlinedTextField(
@@ -91,7 +91,7 @@ fun DepartmentExpenseExplorerScreen() {
             }
         }
 
-        SectionTitle("Where the money sits")
+        SectionTitle("Where the money sits, 2027 adopted")
         ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
             Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 val totals = DepartmentBudgetLens.byCategory()
@@ -129,7 +129,14 @@ private fun RecordCard(r: DepartmentBudgetRecord) {
                     Text(r.budgetDepartment, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
                     Text("${r.fundCode} · ${r.category.label}", style = MaterialTheme.typography.labelSmall, color = MutedText)
                 }
-                Text(currency(r.adoptedTotal), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = color)
+                Text(currency(r.adopted2027 ?: r.adoptedTotal), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = color)
+            }
+            r.change2027?.let { change ->
+                Text(
+                    "2027 adopted · ${if (change >= 0) "+" else "−"}${currency(kotlin.math.abs(change))} from 2026 (${currency(r.adoptedTotal)})",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MutedText,
+                )
             }
 
             val share = r.personnelShare
@@ -143,7 +150,7 @@ private fun RecordCard(r: DepartmentBudgetRecord) {
                     )
                 }
                 Text(
-                    "${(share * 100).roundToInt()}% base payroll" +
+                    "${(share * 100).roundToInt()}% base payroll in 2026" +
                         (r.positions?.let { " · $it position${if (it == 1) "" else "s"}" } ?: "") +
                         (r.otherExpense?.let { " · ${currency(it)} outside payroll" } ?: ""),
                     style = MaterialTheme.typography.labelSmall,

@@ -11,6 +11,8 @@ import kotlinx.coroutines.launch
 
 data class FundBalanceUiData(
     val appropriations2026: Double,
+    /** The budget year `appropriations2026` belongs to (2027 once its lines reconcile). */
+    val budgetYear: Int = 2026,
     val unassignedFundBalance2025: Double,
     val unassignedFundBalance2024: Double,
     val afrSourceTitle: String?,
@@ -25,18 +27,19 @@ class FundBalanceViewModel : ViewModel() {
     init {
         viewModelScope.launch {
             _state.value = try {
-                val afr = repository.afr2025()
                 val fundsIndex = repository.fundsIndex()
-                val generalFundAfr = afr.funds.first { it.code == "A" }
-                val unassigned = generalFundAfr.fundBalanceClasses.orEmpty().first { it.classification == "Unassigned" }
                 val appropriations = fundsIndex.funds.first { it.code == "A01" }.expenditureTotal2026
+                val budgetYear = fundsIndex.year
 
                 LoadState.Success(
                     FundBalanceUiData(
                         appropriations2026 = appropriations,
-                        unassignedFundBalance2025 = unassigned.values.orEmpty()["2025"] ?: 0.0,
-                        unassignedFundBalance2024 = unassigned.values.orEmpty()["2024"] ?: 0.0,
-                        afrSourceTitle = afr.source?.title,
+                        budgetYear = budgetYear,
+                        // The audited figures (web/lib/audits.ts), not the unaudited AFR's
+                        // \$29,671,084: the 2025 audit was accepted September 1, 2026, Resolution 2026-834.
+                        unassignedFundBalance2025 = 28_829_513.0,
+                        unassignedFundBalance2024 = 23_887_952.0,
+                        afrSourceTitle = "2025 and 2024 audited financial statements",
                     ),
                 )
             } catch (e: Exception) {

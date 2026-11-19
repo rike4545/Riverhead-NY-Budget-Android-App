@@ -40,11 +40,11 @@ fun FundDetailScreen(viewModel: FundDetailViewModel = viewModel()) {
                 body = "${fund.departmentCount} departments · ${fund.lineItemCount} line items",
             )
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                MetricTile("2025 expenditures", currency(fund.expenditureTotal2025))
-                MetricTile("2026 expenditures", currency(fund.expenditureTotal2026))
+                MetricTile("${fund.year - 1} expenditures", currency(fund.expenditureTotal2025))
+                MetricTile("${fund.year} expenditures", currency(fund.expenditureTotal2026))
             }
             fund.departments.sortedByDescending { it.adopted2026 }.forEach { dept ->
-                DepartmentCard(dept)
+                DepartmentCard(dept, fund.year)
             }
         }
     }
@@ -59,7 +59,7 @@ private fun MetricTile(label: String, value: String) {
 }
 
 @Composable
-private fun DepartmentCard(dept: FundDepartment) {
+private fun DepartmentCard(dept: FundDepartment, year: Int) {
     var expanded by remember { mutableStateOf(false) }
     ElevatedCard(onClick = { expanded = !expanded }) {
         Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
@@ -69,7 +69,7 @@ private fun DepartmentCard(dept: FundDepartment) {
             }
             val changeColor = if (dept.change >= 0) Color(0xFFB45309) else Color(0xFF1F7A5C)
             Text(
-                "${if (dept.change >= 0) "+" else ""}${currency(dept.change)} vs. 2025",
+                "${if (dept.change >= 0) "+" else ""}${currency(dept.change)} vs. ${year - 1}",
                 color = changeColor,
                 style = MaterialTheme.typography.bodySmall,
             )

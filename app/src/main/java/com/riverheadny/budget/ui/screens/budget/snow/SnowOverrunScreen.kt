@@ -41,7 +41,7 @@ fun SnowOverrunScreen() {
             body = "Snow and ice is budgeted before anyone knows what the winter will do. This shows what an overrun on the Highway Fund's snow line would cost, and the four ways a Town Board can cover it — each with a different consequence.",
         )
 
-        SectionTitle("Riverhead 2026 snow line (DA1-5-5142)")
+        SectionTitle("Riverhead 2027 snow line (DA1-5-5142)")
         ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
             Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 row("Personal Services (OT)", currency(SnowOverrun.personalServicesAdopted))

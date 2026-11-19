@@ -29,6 +29,8 @@ data class LedgerState(
     val category: String? = null,
     val query: String = "",
     val sort: LedgerSort = LedgerSort.BiggestIncrease,
+    /** Each account's figure in the 2027 Adopted Budget, from its line file (empty if it does not reconcile). */
+    val adopted2027: Map<String, Double> = emptyMap(),
 ) {
     val filtered: List<ProjectedLine> get() {
         val q = query.trim().lowercase()
@@ -64,9 +66,13 @@ class LineItemLedgerViewModel : ViewModel() {
         viewModelScope.launch {
             _state.value = try {
                 val lines = repository.projected2027Lines().lines
+                val adopted = repository.adoptedLines()?.lines.orEmpty()
+                    .filter { it.isExpenditure && it.preliminary != null }
+                    .associate { it.account to (it.preliminary ?: 0.0) }
                 LoadState.Success(
                     LedgerState(
                         all = lines,
+                        adopted2027 = adopted,
                         funds = lines.map { it.fund }.distinct().sorted(),
                         categories = lines.map { it.category }.distinct().sorted(),
                     )

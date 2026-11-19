@@ -12,6 +12,9 @@ data class TaxBillData(
     val rates2026: TaxRates = TaxRates(),
     val rates2025: TaxRates = TaxRates(),
     val equalization: Equalization? = null,
+    /** The newest adopted year's rates (2027), added by AssetRepository from budget-stages.json. */
+    val newerYear: Int? = null,
+    val ratesNewer: TaxRates? = null,
 )
 
 @Serializable

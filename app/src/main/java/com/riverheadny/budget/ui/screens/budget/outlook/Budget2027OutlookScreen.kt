@@ -42,7 +42,7 @@ import com.riverheadny.budget.ui.theme.MutedText
 
 /**
  * What 2027 looks like if nothing changes: the 2026 Adopted Budget grown line by line at each
- * category's own rate. The Town has adopted no 2027 budget, so the disclaimer, the method and
+ * category's own rate. It was made before the Board adopted the 2027 budget, so the disclaimer, the method and
  * every growth assumption are shown in full — the assumptions are the part worth arguing with.
  */
 @Composable
@@ -51,12 +51,17 @@ fun Budget2027OutlookScreen(
     viewModel: Budget2027OutlookViewModel = viewModel(),
 ) {
     val state by viewModel.state.collectAsState()
+    val adopted by viewModel.adopted.collectAsState()
 
     PageColumn {
         HeroCard(
             eyebrow = "2027",
             title = "2027 Outlook",
-            body = "The 2026 Adopted Budget grown forward account by account, and what that does to the tax cap.",
+            body = if (adopted != null) {
+                "This app's September model: the 2026 Adopted Budget grown forward account by account. The Board adopted the actual 2027 budget on November 17, 2026 (Resolution 2026-995, 5–0); its figures are shown beside the model."
+            } else {
+                "The 2026 Adopted Budget grown forward account by account, and what that does to the tax cap."
+            },
         )
 
         LoadStateView(state) { p ->
@@ -75,6 +80,7 @@ fun Budget2027OutlookScreen(
                 Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     MetricRow("2026 adopted", currency(p.totals.appropriations2026))
                     MetricRow("2027 projected", currency(p.totals.appropriations2027))
+                    adopted?.let { MetricRow("2027 adopted", currency(it.totals.appropriations)) }
                     MetricRow("Increase", "${currency(p.totals.delta)}  (+${fmtPct(p.totals.pct)})")
                     Text(
                         "Across ${p.totals.lineItems} appropriation accounts.",
@@ -102,6 +108,7 @@ fun Budget2027OutlookScreen(
                 Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     MetricRow("2026 levy", currency(p.levyEstimate.levy2026))
                     MetricRow("2027 levy (modeled)", currency(p.levyEstimate.levy2027))
+                    adopted?.let { MetricRow("2027 levy (adopted)", currency(it.totals.levy)) }
                     MetricRow("Increase", "+${fmtPct(p.levyEstimate.levyIncreasePct)}")
                     Text(p.levyEstimate.note, style = MaterialTheme.typography.bodySmall, color = MutedText)
                     if (p.levyEstimate.recentLevyIncreases.isNotBlank()) {
