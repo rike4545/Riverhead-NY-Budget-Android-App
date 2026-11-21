@@ -30,7 +30,7 @@ fun FundBalanceScreen(viewModel: FundBalanceViewModel = viewModel()) {
         HeroCard(
             eyebrow = "Budget",
             title = "Fund Balance",
-            body = "The General Fund's unassigned fund balance against common reserve-policy targets.",
+            body = "The General Fund's unassigned fund balance at the end of 2025, per the audit, against the Town's 15% floor. Resolution 918 of 2011 sets no ceiling; the 20% line is a reference point.",
         )
 
         LoadStateView(state) { data ->
@@ -41,7 +41,7 @@ fun FundBalanceScreen(viewModel: FundBalanceViewModel = viewModel()) {
 
             ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Unassigned fund balance (2025 AFR)", style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
+                    Text("Unassigned fund balance (2025 audit)", style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
                     Text(currency(data.unassignedFundBalance2025), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, color = BrandMint)
                     Text(
                         "${if (yoyChange >= 0) "+" else ""}${currency(yoyChange)} vs. 2024",
@@ -54,11 +54,11 @@ fun FundBalanceScreen(viewModel: FundBalanceViewModel = viewModel()) {
             ElevatedCard(colors = CardDefaults.elevatedCardColors()) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text("Policy check", fontWeight = FontWeight.SemiBold)
-                    MetricRow("2026 appropriations", currency(data.appropriations2026))
-                    MetricRow("Minimum reserve (15%)", currency(minimum))
-                    MetricRow("Upper target (20%)", currency(target))
+                    MetricRow("${data.budgetYear} General Fund appropriations", currency(data.appropriations2026))
+                    MetricRow("Policy floor (15%, Resolution 918 of 2011)", currency(minimum))
+                    MetricRow("20% reference line (not Town policy)", currency(target))
                     MetricRow(
-                        if (aboveTarget >= 0) "Above upper target" else "Below upper target",
+                        if (aboveTarget >= 0) "Above the 20% line" else "Below the 20% line",
                         currency(kotlin.math.abs(aboveTarget)),
                     )
                 }

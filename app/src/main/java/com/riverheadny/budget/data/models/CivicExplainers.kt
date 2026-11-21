@@ -108,12 +108,14 @@ object BudgetChanges {
 
 /** The 2026 snow and ice line, DA1-5-5142. */
 object SnowOverrun {
+    // The 2027 Adopted Budget's snow line (budget-2027-preliminary-lines.json, the Preliminary the
+    // Board adopted unchanged): DA1-5-5142-111 OT \$75,000 and DA1-5-5142-400 contractual \$394,608.
     const val personalServicesAdopted = 75_000.0
-    const val contractualAdopted = 225_000.0
+    const val contractualAdopted = 394_608.0
     val adoptedTotal: Double get() = personalServicesAdopted + contractualAdopted
 
     const val codeNote =
-        "Code set: DA1-5-5142-000 / 100 / 111 / 400. 2026 adopted totals: OT \$75,000 + Contractual \$225,000 = \$300,000."
+        "Code set: DA1-5-5142-111 / 400. 2027 adopted: OT \$75,000 + Contractual \$394,608 = \$469,608, up from \$300,000 in 2026 (contractual was \$225,000)."
 
     val whatUsuallyHappens: List<String> = listOf(
         "Department reports the overrun risk as storms accumulate.",

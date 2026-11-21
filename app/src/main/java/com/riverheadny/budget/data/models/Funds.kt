@@ -2,9 +2,12 @@ package com.riverheadny.budget.data.models
 
 import kotlinx.serialization.Serializable
 
-// Matches web/public/data/subaccounts/index.json
+// Matches web/public/data/subaccounts/index.json (the 2026 book). AssetRepository builds the
+// same shape from the 2027 line file when it reconciles; `year` says which. Fields named
+// "2026" hold the shown year's figures and fields named "2025" the year before's.
 @Serializable
 data class FundsIndex(
+    val year: Int = 2026,
     val source: SourceRef? = null,
     val generatedFrom: String? = null,
     val fundCount: Int = 0,
@@ -29,6 +32,7 @@ data class FundSummary(
 // Matches web/public/data/subaccounts/{code}.json
 @Serializable
 data class FundDetail(
+    val year: Int = 2026,
     val code: String,
     val name: String,
     val source: SourceRef? = null,

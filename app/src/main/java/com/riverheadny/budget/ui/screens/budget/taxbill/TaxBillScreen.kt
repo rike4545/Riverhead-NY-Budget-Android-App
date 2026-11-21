@@ -37,7 +37,7 @@ fun TaxBillScreen(viewModel: TaxBillViewModel = viewModel()) {
         HeroCard(
             eyebrow = "Budget",
             title = "My Tax Bill",
-            body = "The Town's own published 2025/2026 rate table — county, school, fire, and library taxes are billed separately and aren't included here.",
+            body = "The Town's own published rate tables, through the 2027 Adopted Budget — county, school, fire, and library taxes are billed separately and aren't included here.",
         )
 
         LoadStateView(state) { data -> TaxBillCalculator(data) }
@@ -52,8 +52,14 @@ private fun TaxBillCalculator(data: TaxBillData) {
     val ratio = (data.equalization?.residentialAssessmentRatio ?: 7.44) / 100.0
     val assessedValue = if (useAssessedDirectly) marketValue.toDouble() else marketValue * ratio
 
-    val tax2026 = assessedValue / 1000.0 * data.rates2026.totalTownWide
-    val tax2025 = assessedValue / 1000.0 * data.rates2025.totalTownWide
+    // The newest adopted year against the one before: 2027 against 2026 when budget-stages.json
+    // has 2027's rates, else 2026 against 2025.
+    val newRates = data.ratesNewer ?: data.rates2026
+    val oldRates = if (data.ratesNewer != null) data.rates2026 else data.rates2025
+    val newYear = data.newerYear ?: 2026
+    val oldYear = newYear - 1
+    val tax2026 = assessedValue / 1000.0 * newRates.totalTownWide
+    val tax2025 = assessedValue / 1000.0 * oldRates.totalTownWide
     val change = tax2026 - tax2025
     val changePct = if (tax2025 != 0.0) (change / tax2025) * 100.0 else 0.0
 
@@ -85,14 +91,14 @@ private fun TaxBillCalculator(data: TaxBillData) {
             Text("Estimated Town-portion tax bill", fontWeight = FontWeight.SemiBold)
             Text(currencyPrecise(tax2026), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
             Text(
-                "${if (change >= 0) "+" else ""}${currencyPrecise(change)} (${"%.1f".format(changePct)}%) vs. 2025",
+                "${if (change >= 0) "+" else ""}${currencyPrecise(change)} (${"%.1f".format(changePct)}%) vs. $oldYear, at the $newYear adopted rate of ${newRates.totalTownWide} per \$1,000",
                 color = if (change >= 0) Color(0xFFB45309) else Color(0xFF1F7A5C),
                 style = MaterialTheme.typography.bodySmall,
             )
-            MetricRow("General Fund (${data.rates2026.generalFund}/1000)", currencyPrecise(assessedValue / 1000.0 * data.rates2026.generalFund))
-            MetricRow("Highway (${data.rates2026.highway}/1000)", currencyPrecise(assessedValue / 1000.0 * data.rates2026.highway))
-            MetricRow("Street Lighting (${data.rates2026.streetLighting}/1000)", currencyPrecise(assessedValue / 1000.0 * data.rates2026.streetLighting))
-            MetricRow("2025 estimated bill", currencyPrecise(tax2025))
+            MetricRow("General Fund (${newRates.generalFund}/1000)", currencyPrecise(assessedValue / 1000.0 * newRates.generalFund))
+            MetricRow("Highway (${newRates.highway}/1000)", currencyPrecise(assessedValue / 1000.0 * newRates.highway))
+            MetricRow("Street Lighting (${newRates.streetLighting}/1000)", currencyPrecise(assessedValue / 1000.0 * newRates.streetLighting))
+            MetricRow("$oldYear estimated bill", currencyPrecise(tax2025))
         }
     }
 

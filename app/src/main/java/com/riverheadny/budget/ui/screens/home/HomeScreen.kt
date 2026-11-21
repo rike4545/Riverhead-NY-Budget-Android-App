@@ -77,7 +77,7 @@ private val goals = listOf(
     ),
     Goal(
         "Where is the money going?",
-        "All 19 funds, real 2026 appropriations, department and line-item drilldown.",
+        "All 19 funds in the 2027 Adopted Budget, with department and line-item drilldown.",
         Icons.Filled.AccountBalance,
         Routes.FUNDS_LIST,
     ),

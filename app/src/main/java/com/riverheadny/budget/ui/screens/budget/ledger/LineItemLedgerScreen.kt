@@ -41,8 +41,9 @@ import com.riverheadny.budget.ui.theme.CardSurface
 import com.riverheadny.budget.ui.theme.MutedText
 
 /**
- * Every appropriation account in the 2026 Adopted Budget, with its 2025 and 2026 figures and the
- * 2027 projection. Parity with the iOS Line-Item Ledger.
+ * Every appropriation account in the 2026 Adopted Budget, with its 2025 and 2026 figures, the
+ * app's 2027 projection, and the 2027 adopted figure from budget-2027-preliminary-lines.json
+ * (the Preliminary, adopted unchanged).
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -53,7 +54,7 @@ fun LineItemLedgerScreen(viewModel: LineItemLedgerViewModel = viewModel()) {
         HeroCard(
             eyebrow = "Budget",
             title = "Line-Item Ledger",
-            body = "Every appropriation account: what it was budgeted at in 2025 and 2026, and where the projection puts it in 2027.",
+            body = "Every appropriation account: what it was budgeted at in 2025 and 2026, where this app's September projection put it in 2027, and what the Board adopted for 2027 on November 17, 2026.",
         )
 
         LoadStateView(state) { s ->
@@ -127,7 +128,7 @@ fun LineItemLedgerScreen(viewModel: LineItemLedgerViewModel = viewModel()) {
             if (s.visible.isEmpty()) {
                 Text("No account matches those filters.", color = Color.DarkGray)
             } else {
-                s.visible.forEach { LineCard(it) }
+                s.visible.forEach { LineCard(it, s.adopted2027[it.account]) }
             }
         }
     }
@@ -141,7 +142,7 @@ private fun summaryLine(s: LedgerState): String {
 }
 
 @Composable
-private fun LineCard(line: ProjectedLine) {
+private fun LineCard(line: ProjectedLine, adopted2027: Double?) {
     ElevatedCard(colors = CardDefaults.elevatedCardColors(containerColor = CardSurface)) {
         Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(line.name, fontWeight = FontWeight.SemiBold)
@@ -167,6 +168,12 @@ private fun LineCard(line: ProjectedLine) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text("2027 projected (+${fmtPct(line.rate * 100)})", color = MutedText, style = MaterialTheme.typography.bodySmall)
                 Text(currency(line.v2027), fontWeight = FontWeight.Bold, color = BrandNavy)
+            }
+            if (adopted2027 != null) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text("2027 adopted", color = MutedText, style = MaterialTheme.typography.bodySmall)
+                    Text(currency(adopted2027), fontWeight = FontWeight.Bold)
+                }
             }
             if (line.delta != 0.0) {
                 val sign = if (line.delta > 0) "+" else ""

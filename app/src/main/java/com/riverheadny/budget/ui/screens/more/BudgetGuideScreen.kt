@@ -77,7 +77,7 @@ private val concepts = listOf(
     Concept(
         "GASB 54: not all “fund balance” is spendable",
         "Accounting rules sort a fund's balance into five tiers by how tied-up the money is: Nonspendable (can't be spent at all), Restricted (locked by outside law or grant terms), Committed (set aside by the Board's own action), Assigned (earmarked by intent), and Unassigned (genuinely flexible). Only that last tier is the true cushion. Town Law still uses the older phrase “unappropriated unreserved fund balance” — assets minus liabilities, deferred revenues, encumbrances, amounts already appropriated into next year's budget, and amounts reserved by law.",
-        "Riverhead's 2025 General Fund balance was \$33,407,251 in total — but \$2,012,534 is nonspendable, \$17,924 restricted, \$42,435 committed, and \$1,663,273 assigned. The actually-flexible unassigned balance is \$28,829,513 in the 2025 audited statements (accepted September 1, 2026, Resolution 2026-834). The unaudited Annual Financial Report showed \$29,671,084.",
+        "Riverhead's 2025 General Fund balance was \$33,303,051 in total, per the 2025 audit (accepted September 1, 2026, Resolution 2026-834) — but \$2,012,534 is nonspendable, \$17,924 restricted, \$42,435 committed, and \$2,400,645 assigned. The actually-flexible unassigned balance is \$28,829,513. The unaudited Annual Financial Report showed \$29,671,084.",
         "Ask which tiers a fund-balance number includes, how much is unassigned — and whether the Town has adopted a written fund-balance policy, which OSC recommends every local government adopt and review annually.",
         "Town Law §103; GASB Statement No. 54",
     ),
