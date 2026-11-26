@@ -5,7 +5,9 @@
 
     <application
         android:name=".RiverheadApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
         android:usesCleartextTraffic="false"
         android:icon="@drawable/ic_launcher_foreground"
         android:label="Riverhead NY Budget"
